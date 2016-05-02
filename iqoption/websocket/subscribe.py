@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option subscribe websocket chanel."""
 
-from iqoption_api.chanel import Chanel
+from iqoption.networking.chanel import Chanel
 
 
 class Subscribe(Chanel):

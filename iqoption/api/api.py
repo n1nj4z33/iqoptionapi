@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option api."""
 
-import time
 import json
-import logging
-import requests
 import threading
 
-from login import Login
-from websocket import Websocket
+import requests
+
+from iqoption.actives.setactives import SetActives
+from iqoption.deals.buy import Buy
+from iqoption.enums.directions import Direction
+from iqoption.enums.strategies import Strategy
+from iqoption.networking.websocket import Websocket
+from iqoption.websocket.subscribe import Subscribe
+from iqoption.websocket.unsubscribe import UnSubscribe
 from ssid import Ssid
-from subscribe import Subscribe
-from unsubscribe import UnSubscribe
-from setactives import SetActives
-from buy import Buy
-from strategies import Strategy
-from directions import Direction
-
-
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
 # Adding certificate verification is strongly advised.
@@ -30,24 +26,18 @@ class IQOptionAPI(object):
     
     def __init__(self, ssid):
         """
-        :param str host: The hostname or ip address of a IQ option server.
-        :param str username: The username of a IQ option server.
-        :param str password: The password of a IQ option server.
+        :param str ssid: Session Secure ID from Website
         """
-
 
         self.wss_url = "wss://iqoption.com/echo/websocket"
         self.websocket = None
         self.myssid = ssid
 
-
-
     def send_wss_request(self, name, msg):
         """
         Send wss request to IQ option server.
-
-        :param chanel: :class:`Chanel <iqoption_api.chanel.Chanel>`.
-        :param dict data: The websocket request data.
+        :param name: Channel name
+        :param msg Message
 
         :returns: 
         """
@@ -134,9 +124,10 @@ class IQOptionAPI(object):
         self.unsubscribe("timeSync")
         self.setactives(active)
 
-        if strategy == Strategy.candle_martin:
-            self.buy(active, Direction.call, exp_period, self.websocket.time)
-
-        # for i in range(60):
-        #     time.sleep(1)
-        #     self.buy(self.websocket.time, self.websocket.show_value)
+        ready_to_buy = True
+        while True:
+            if strategy == Strategy.candle_martin:
+                activate_strategy(strategy)
+                if ready_to_buy:
+                    self.buy(active, Direction.call, exp_period, self.websocket.time)
+                    ready_to_buy = False

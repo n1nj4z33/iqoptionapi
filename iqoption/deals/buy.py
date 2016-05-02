@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option buy websocket chanel."""
 
-from chanel import Chanel
-from periods import Period
-from websocket import Websocket
+from iqoption.networking.chanel import Chanel
 
 
 class Buy(Chanel):
