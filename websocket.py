@@ -32,8 +32,8 @@ class Websocket(WebSocketClient):
             self.message = json.loads(str(message))
             # return self.message
 
-            if self.message["name"] == "newChartData":
-                self.time = self.message["msg"]["time"]
-                self.show_value = self.message["msg"]["show_value"]
+            if self.message["name"] == "timeSync":
+                self.time = self.message["msg"]
+                #self.show_value = self.message["msg"]["show_value"]
 
 

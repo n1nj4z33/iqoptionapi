@@ -24,62 +24,21 @@ requests.packages.urllib3.disable_warnings()
 class IQOptionAPI(object):
     """Class for communication with IQ option api."""
     
-    def __init__(self, host, username, password):
+    def __init__(self, ssid):
         """
         :param str host: The hostname or ip address of a IQ option server.
         :param str username: The username of a IQ option server.
         :param str password: The password of a IQ option server.
         """
-        self.https_url = "https://%s/api" % host
-        self.wss_url = "wss://%s/echo/websocket" % host
+
+
+        self.wss_url = "wss://iqoption.com/echo/websocket"
         self.websocket = None
         self.session = requests.Session()
         self.session.verify = False
         self.session.trust_env = False
-        self.username = username
-        self.password = password
+        self.myssid = ssid
 
-
-    def prepare_url(self, resource):
-        """
-        Construct url from resource url.
-
-        :param resource: :class:`Resource
-            <iqoption_api.resource.Resource>`.
-
-        :returns: The full url to IQ option http resource.
-        """
-        return '/'.join((self.https_url, resource.url))
-
-    def send_http_request(self, resource, method, data=None, params=None, headers=None):
-        #pylint: disable=too-many-arguments
-        """
-        Send http request to IQ option server.
-
-        :param resource: :class:`Resource <iqoption_api.resource.Resource>`.
-        :param str method: The HTTP request method.
-        :param dict data: (optional) The HTTP request data.
-        :param dict params: (optional) The HTTP request params.
-        :param dict headers: (optional) The HTTP request headers.
-
-        :returns: :class:`Response <requests.Response>`.
-        """
-        url = self.prepare_url(resource)
-        
-        logger = logging.getLogger(__name__)
-
-        logger.debug(url)
-        response = self.session.request(method=method,
-                                        url=url,
-                                        data=data,
-                                        params=params,
-                                        headers=headers)
-        logger.debug(response)
-        logger.debug(response.text)
-        logger.debug(response.headers)
-        logger.debug(response.cookies)
-        response.raise_for_status()
-        return response
 
     def send_wss_request(self, name, msg):
         """
@@ -158,12 +117,9 @@ class IQOptionAPI(object):
         """Method for websocket thread.""" 
         self.websocket.run_forever()
 
-    def connect(self):
+    def connect(self, active, strategy, period):
         """Method for connection to api."""
-        response = self.login(self.username, self.password)
-        ssid = response.cookies["ssid"]
 
-        ssid = "ea1cc76cc8237ea766f53e87f7063a01"
 
         websocket = Websocket(self.wss_url)
         websocket.connect()
@@ -174,7 +130,7 @@ class IQOptionAPI(object):
         websocket_thread.daemon = True
         websocket_thread.start()
 
-        self.ssid(ssid)
+        self.ssid(self.myssid)
 
         self.subscribe("deposited")
         self.unsubscribe("deposited")
@@ -185,9 +141,10 @@ class IQOptionAPI(object):
         self.unsubscribe("feedTopTraders2")
         self.unsubscribe("feedRecentBetsMulti")
         self.unsubscribe("timeSync")
-        self.setactives(99)
+        self.setactives(active)
 
 
-        for i in range(60):
-            time.sleep(1)
-            self.buy(self.websocket.time, self.websocket.show_value)
+
+        # for i in range(60):
+        #     time.sleep(1)
+        #     self.buy(self.websocket.time, self.websocket.show_value)
