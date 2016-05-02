@@ -7,13 +7,17 @@ import logging
 import requests
 import threading
 
-from iqoption_api.login import Login
-from iqoption_api.websocket import Websocket
-from iqoption_api.ssid import Ssid
-from iqoption_api.subscribe import Subscribe
-from iqoption_api.unsubscribe import UnSubscribe
-from iqoption_api.setactives import SetActives
-from iqoption_api.buy import Buy
+from login import Login
+from websocket import Websocket
+from ssid import Ssid
+from subscribe import Subscribe
+from unsubscribe import UnSubscribe
+from setactives import SetActives
+from buy import Buy
+from strategies import Strategy
+from directions import Direction
+
+
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
 # Adding certificate verification is strongly advised.
@@ -34,10 +38,8 @@ class IQOptionAPI(object):
 
         self.wss_url = "wss://iqoption.com/echo/websocket"
         self.websocket = None
-        self.session = requests.Session()
-        self.session.verify = False
-        self.session.trust_env = False
         self.myssid = ssid
+
 
 
     def send_wss_request(self, name, msg):
@@ -52,16 +54,6 @@ class IQOptionAPI(object):
         data = json.dumps(dict(name=name, 
                                msg=msg))
         self.websocket.send(data)
-
-    @property
-    def login(self):
-        """
-        Property for get IQ option login resource.
-
-        :returns: :class:`Login
-            <iqoption_api.login.Login>`.
-        """
-        return Login(self)
 
     @property
     def ssid(self):
@@ -117,9 +109,8 @@ class IQOptionAPI(object):
         """Method for websocket thread.""" 
         self.websocket.run_forever()
 
-    def connect(self, active, strategy, period):
+    def connect(self, active, strategy, exp_period):
         """Method for connection to api."""
-
 
         websocket = Websocket(self.wss_url)
         websocket.connect()
@@ -143,7 +134,8 @@ class IQOptionAPI(object):
         self.unsubscribe("timeSync")
         self.setactives(active)
 
-
+        if strategy == Strategy.candle_martin:
+            self.buy(active, Direction.call, exp_period, self.websocket.time)
 
         # for i in range(60):
         #     time.sleep(1)
