@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option subscribe websocket chanel."""
 
-from iqoption_api.chanel import Chanel
+from iqoption_api.ws.chanels.base import Base
 
 
-class Subscribe(Chanel):
-    # pylint: disable=too-few-public-methods
+class Subscribe(Base):
     """Class for IQ option subscribe websocket chanel."""
+    # pylint: disable=too-few-public-methods
 
     name = "subscribe"
 
@@ -15,4 +15,4 @@ class Subscribe(Chanel):
 
         :param msg: The websocket subscribe chanel message.
         """
-        self.send_wss_request(self.name, msg)
+        self.send_websocket_request(self.name, msg)
