@@ -7,19 +7,19 @@ import logging
 import threading
 import requests
 
-from iqoption_api.http.login import Login
-from iqoption_api.http.getprofile import Getprofile
-from iqoption_api.ws.client import WebsocketClient
-from iqoption_api.ws.chanels.ssid import Ssid
-from iqoption_api.ws.chanels.subscribe import Subscribe
-from iqoption_api.ws.chanels.unsubscribe import Unsubscribe
-from iqoption_api.ws.chanels.setactives import SetActives
-from iqoption_api.ws.chanels.candles import GetCandles
-from iqoption_api.ws.chanels.buy import Buy
+from iqapi.http.login import Login
+from iqapi.http.getprofile import Getprofile
+from iqapi.ws.client import WebsocketClient
+from iqapi.ws.chanels.ssid import Ssid
+from iqapi.ws.chanels.subscribe import Subscribe
+from iqapi.ws.chanels.unsubscribe import Unsubscribe
+from iqapi.ws.chanels.setactives import SetActives
+from iqapi.ws.chanels.candles import GetCandles
+from iqapi.ws.chanels.buy import Buy
 
-from iqoption_api.ws.objects.timesync import TimeSync
-from iqoption_api.ws.objects.profile import Profile
-from iqoption_api.ws.objects.candles import Candles
+from iqapi.ws.objects.timesync import TimeSync
+from iqapi.ws.objects.profile import Profile
+from iqapi.ws.objects.candles import Candles
 
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
@@ -56,7 +56,7 @@ class IQOptionAPI(object):
         """Construct http url from resource url.
 
         :param resource: The instance of
-            :class:`Resource <iqoption_api.http.resource.Resource>`.
+            :class:`Resource <iqapi.http.resource.Resource>`.
 
         :returns: The full url to IQ Option http resource.
         """
@@ -66,7 +66,7 @@ class IQOptionAPI(object):
         """Send http request to IQ Option server.
 
         :param resource: The instance of
-            :class:`Resource <iqoption_api.http.resource.Resource>`.
+            :class:`Resource <iqapi.http.resource.Resource>`.
         :param str method: The http request method.
         :param dict data: (optional) The http request data.
         :param dict params: (optional) The http request params.
@@ -120,7 +120,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option http login resource.
 
         :returns: The instance of
-            :class:`Login <iqoption_api.http.login.Login>`.
+            :class:`Login <iqapi.http.login.Login>`.
         """
         return Login(self)
 
@@ -129,7 +129,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option http getprofile resource.
 
         :returns: The instance of
-            :class:`Login <iqoption_api.http.getprofile.Getprofile>`.
+            :class:`Login <iqapi.http.getprofile.Getprofile>`.
         """
         return Getprofile(self)
 
@@ -137,7 +137,7 @@ class IQOptionAPI(object):
     def ssid(self):
         """Property for get IQ Option websocket ssid chanel.
 
-        :returns: The instance of :class:`Ssid <iqoption_api.ws.chanels.ssid.Ssid>`.
+        :returns: The instance of :class:`Ssid <iqapi.ws.chanels.ssid.Ssid>`.
         """
         return Ssid(self)
 
@@ -146,7 +146,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option websocket subscribe chanel.
 
         :returns: The instance of
-            :class:`Subscribe <iqoption_api.ws.chanels.subscribe.Subscribe>`.
+            :class:`Subscribe <iqapi.ws.chanels.subscribe.Subscribe>`.
         """
         return Subscribe(self)
 
@@ -155,7 +155,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option websocket unsubscribe chanel.
 
         :returns: The instance of
-            :class:`Unsubscribe <iqoption_api.ws.chanels.unsubscribe.Unsubscribe>`.
+            :class:`Unsubscribe <iqapi.ws.chanels.unsubscribe.Unsubscribe>`.
         """
         return Unsubscribe(self)
 
@@ -164,7 +164,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option websocket setactives chanel.
 
         :returns: The instance of
-            :class:`SetActives <iqoption_api.ws.chanels.setactives.SetActives>`.
+            :class:`SetActives <iqapi.ws.chanels.setactives.SetActives>`.
         """
         return SetActives(self)
 
@@ -173,7 +173,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option websocket candles chanel.
 
         :returns: The instance of
-            :class:`GetCandles <iqoption_api.ws.chanels.candles.GetCandles>`.
+            :class:`GetCandles <iqapi.ws.chanels.candles.GetCandles>`.
         """
         return GetCandles(self)
 
@@ -181,7 +181,7 @@ class IQOptionAPI(object):
     def buy(self):
         """Property for get IQ Option websocket buy request.
 
-        :returns: The instance of :class:`Buy <iqoption_api.ws.chanels.buy.Buy>`.
+        :returns: The instance of :class:`Buy <iqapi.ws.chanels.buy.Buy>`.
         """
         return Buy(self)
 

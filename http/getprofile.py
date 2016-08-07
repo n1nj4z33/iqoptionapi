@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ Option http getprofile resource."""
 
-from iqoption_api.http.resource import Resource
+from iqapi.http.resource import Resource
 
 
 class Getprofile(Resource):

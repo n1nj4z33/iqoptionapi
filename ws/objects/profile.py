@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ Option Profile websocket object."""
 
-from iqoption_api.ws.objects.base import Base
+from iqapi.ws.objects.base import Base
 
 
 class Profile(Base):

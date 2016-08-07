@@ -11,7 +11,7 @@ class WebsocketClient(object):
 
     def __init__(self, api):
         """
-        :param api: The instance of :class:`IQOptionAPI <iqoption_api.api.IQOptionAPI>`.
+        :param api: The instance of :class:`IQOptionAPI <iqapi.api.IQOptionAPI>`.
         """
         self.api = api
         self.wss = websocket.WebSocketApp(

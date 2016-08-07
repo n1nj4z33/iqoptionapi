@@ -9,7 +9,7 @@ class Base(object):
     def __init__(self, api):
         """
         :param api: The instance of
-            :class:`IQOptionAPI <iqoption_api.api.IQOptionAPI>`.
+            :class:`IQOptionAPI <iqapi.api.IQOptionAPI>`.
         """
         self.api = api
 

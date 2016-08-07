@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option API ssid websocket chanel."""
 
-from iqoption_api.ws.chanels.base import Base
+from iqapi.ws.chanels.base import Base
 
 
 class Ssid(Base):

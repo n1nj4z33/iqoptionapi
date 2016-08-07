@@ -4,7 +4,7 @@
 import time
 import datetime
 
-from iqoption_api.ws.objects.base import Base
+from iqapi.ws.objects.base import Base
 
 
 class TimeSync(Base):
