@@ -3,7 +3,7 @@
 
 ####Basic usage:
 ```
-from iqoption_api.api import IQOptionAPI
+from iqapi.api import IQOptionAPI
 
 api = IQOptionAPI("iqoption.com", "username", "password")
 api.connect()
