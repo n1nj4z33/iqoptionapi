@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Module for IQ option ssid websocket chanel."""
+"""Module for IQ option API ssid websocket chanel."""
 
-from iqoption_api.chanel import Chanel
+from iqoption_api.ws.chanels.base import Base
 
 
-class Ssid(Chanel):
+class Ssid(Base):
+    """Class for IQ option API ssid websocket chanel."""
     # pylint: disable=too-few-public-methods
-    """Class for IQ option ssid websocket chanel."""
 
     name = "ssid"
 
@@ -15,4 +15,4 @@ class Ssid(Chanel):
 
         :param msg: The websocket ssid chanel message.
         """
-        self.send_wss_request(self.name, msg)
+        self.send_websocket_request(self.name, msg)

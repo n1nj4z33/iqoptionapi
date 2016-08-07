@@ -1,0 +1,9 @@
+[TYPECHECK]
+# disable 'no-member' error for modules
+ignored-classes = websocket
+
+[DESIGN]
+min-public-methods=0
+
+[FORMAT]
+max-line-length=100

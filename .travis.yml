@@ -8,4 +8,4 @@ install:
     - "pip install -r requirements.txt"
 
 script:
-    - "nosetests"
+    - "pylint iqoption_api --rcfile=./pylint.rc"
