@@ -8,14 +8,22 @@ import threading
 import requests
 
 from iqapi.http.login import Login
+from iqapi.http.loginv2 import Loginv2
 from iqapi.http.getprofile import Getprofile
+from iqapi.http.auth import Auth
+from iqapi.http.tocken import Tocken
+from iqapi.http.appinit import Appinit
+# from iqapi.http.profile import Profile
+from iqapi.http.billing import Billing
+from iqapi.http.buyback import Buyback
+from iqapi.http.changebalance import Changebalance
 from iqapi.ws.client import WebsocketClient
 from iqapi.ws.chanels.ssid import Ssid
 from iqapi.ws.chanels.subscribe import Subscribe
 from iqapi.ws.chanels.unsubscribe import Unsubscribe
 from iqapi.ws.chanels.setactives import SetActives
 from iqapi.ws.chanels.candles import GetCandles
-from iqapi.ws.chanels.buy import Buy
+from iqapi.ws.chanels.buyv2 import Buyv2
 
 from iqapi.ws.objects.timesync import TimeSync
 from iqapi.ws.objects.profile import Profile
@@ -60,7 +68,7 @@ class IQOptionAPI(object):
 
         :returns: The full url to IQ Option http resource.
         """
-        return '/'.join((self.https_url, resource.url))
+        return "/".join((self.https_url, resource.url))
 
     def send_http_request(self, resource, method, data=None, params=None, headers=None):
         """Send http request to IQ Option server.
@@ -125,6 +133,78 @@ class IQOptionAPI(object):
         return Login(self)
 
     @property
+    def loginv2(self):
+        """Property for get IQ Option http loginv2 resource.
+
+        :returns: The instance of
+            :class:`Login <iqapi.http.loginv2.Loginv2>`.
+        """
+        return Loginv2(self)
+
+    @property
+    def auth(self):
+        """Property for get IQ Option http auth resource.
+
+        :returns: The instance of
+            :class:`Auth <iqapi.http.auth.Auth>`.
+        """
+        return Auth(self)
+
+    @property
+    def appinit(self):
+        """Property for get IQ Option http appinit resource.
+
+        :returns: The instance of
+            :class:`Appinit <iqapi.http.appinit.Appinit>`.
+        """
+        return Appinit(self)
+
+    @property
+    def tocken(self):
+        """Property for get IQ Option http tocken resource.
+
+        :returns: The instance of
+            :class:`Tocken <iqapi.http.auth.Tocken>`.
+        """
+        return Tocken(self)
+
+    # @property
+    # def profile(self):
+    #     """Property for get IQ Option http profile resource.
+
+    #     :returns: The instance of
+    #         :class:`Profile <iqapi.http.profile.Profile>`.
+    #     """
+    #     return Profile(self)
+
+    @property
+    def changebalance(self):
+        """Property for get IQ Option http changebalance resource.
+
+        :returns: The instance of
+            :class:`Changebalance <iqapi.http.changebalance.Changebalance>`.
+        """
+        return Changebalance(self)
+
+    @property
+    def billing(self):
+        """Property for get IQ Option http billing resource.
+
+        :returns: The instance of
+            :class:`Billing <iqapi.http.billing.Billing>`.
+        """
+        return Billing(self)
+
+    @property
+    def buyback(self):
+        """Property for get IQ Option http buyback resource.
+
+        :returns: The instance of
+            :class:`Buyback <iqapi.http.buyback.Buyback>`.
+        """
+        return Buyback(self)
+
+    @property
     def getprofile(self):
         """Property for get IQ Option http getprofile resource.
 
@@ -179,11 +259,11 @@ class IQOptionAPI(object):
 
     @property
     def buy(self):
-        """Property for get IQ Option websocket buy request.
+        """Property for get IQ Option websocket buyv2 request.
 
-        :returns: The instance of :class:`Buy <iqapi.ws.chanels.buy.Buy>`.
+        :returns: The instance of :class:`Buyv2 <iqapi.ws.chanels.buyv2.Buyv2>`.
         """
-        return Buy(self)
+        return Buyv2(self)
 
     def set_session_cookies(self):
         """Method to set session cookies."""

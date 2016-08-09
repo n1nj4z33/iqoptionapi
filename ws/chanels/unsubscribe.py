@@ -10,9 +10,9 @@ class Unsubscribe(Base):
 
     name = "unSubscribe"
 
-    def __call__(self, msg):
+    def __call__(self, chanel_name):
         """Method to send message to unsubscribe websocket chanel.
 
-        :param msg: The websocket unsubscribe chanel message.
+        :param chanel_name: The websocket chanel name to unsubsribe.
         """
-        self.send_websocket_request(self.name, msg)
+        self.send_websocket_request(self.name, chanel_name)

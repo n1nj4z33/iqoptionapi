@@ -36,22 +36,22 @@ class WebsocketClient(object):
         if message["name"] == "candles":
             self.api.candles.candles_data = message["msg"]["data"]
 
-    @staticmethod
-    def on_error(wss, error):
+    @classmethod
+    def on_error(cls, error):
         """Method to process websocket errors."""
         # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)
         logger.error(error)
 
-    @staticmethod
-    def on_open(wss):
+    @classmethod
+    def on_open(cls):
         """Method to process websocket open."""
         # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)
         logger.debug("Websocket client connected.")
 
-    @staticmethod
-    def on_close(wss):
+    @classmethod
+    def on_close(cls):
         """Method to process websocket close."""
         # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)

@@ -8,25 +8,24 @@ class Login(Resource):
     """Class for IQ option login resource."""
     # pylint: disable=too-few-public-methods
 
-    url = "login/v2"
+    url = "login"
 
     def _post(self, data=None, headers=None):
-        """
-        Send post request
+        """Send get request for IQ Option API login http resource.
 
-        :returns: :class:`requests.Response`.
+        :returns: The instace of :class:`requests.Response`.
         """
         return self.send_http_request("POST", data=data, headers=headers)
 
     def __call__(self, username, password):
-        """
-        Method to api login.
+        """Method to get IQ Option API login http request.
 
         :param str username: The username of a IQ Option server.
         :param str password: The password of a IQ Option server.
 
-        :returns: :class:`requests.Response`.
+        :returns: The instance of :class:`requests.Response`.
         """
-        data = dict(email=username,
-                    password=password)
+        data = {"email": username,
+                "password": password}
+
         return self._post(data=data)

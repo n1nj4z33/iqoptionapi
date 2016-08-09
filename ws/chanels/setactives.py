@@ -13,7 +13,7 @@ class SetActives(Base):
     def __call__(self, actives):
         """Method to send message to setactives websocket chanel.
 
-        :param msg: The websocket setactives chanel message.
+        :param actives: The list of actives identifiers.
         """
-        msg = dict(actives=actives)
-        self.send_websocket_request(self.name, msg)
+        data = {"actives": actives}
+        self.send_websocket_request(self.name, data)
