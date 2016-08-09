@@ -38,6 +38,7 @@ requests.packages.urllib3.disable_warnings()
 
 class IQOptionAPI(object):
     """Class for communication with IQ Option API."""
+    # pylint: disable=too-many-public-methods
 
     timesync = TimeSync()
     profile = Profile()

@@ -4,7 +4,7 @@
 from iqapi.ws.chanels.base import Base
 
 
-class BuyV2(Base):
+class Buyv2(Base):
     """Class for IQ option buy websocket chanel."""
     # pylint: disable=too-few-public-methods
 
