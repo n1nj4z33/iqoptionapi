@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option buyback resource."""
 
-from iqapi.http.resource import Resource
-from iqapi.http.billing import Billing
+from .resource import Resource
+from .billing import Billing
 
 
 class Buyback(Resource):

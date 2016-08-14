@@ -4,7 +4,7 @@
 import time
 import datetime
 
-from iqapi.ws.objects.base import Base
+from .base import Base
 
 
 class TimeSync(Base):

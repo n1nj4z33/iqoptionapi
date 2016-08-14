@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option unsubscribe websocket chanel."""
 
-from iqapi.ws.chanels.base import Base
+from .base import Base
 
 
 class Unsubscribe(Base):

@@ -7,27 +7,27 @@ import logging
 import threading
 import requests
 
-from iqapi.http.login import Login
-from iqapi.http.loginv2 import Loginv2
-from iqapi.http.getprofile import Getprofile
-from iqapi.http.auth import Auth
-from iqapi.http.tocken import Tocken
-from iqapi.http.appinit import Appinit
-# from iqapi.http.profile import Profile
-from iqapi.http.billing import Billing
-from iqapi.http.buyback import Buyback
-from iqapi.http.changebalance import Changebalance
-from iqapi.ws.client import WebsocketClient
-from iqapi.ws.chanels.ssid import Ssid
-from iqapi.ws.chanels.subscribe import Subscribe
-from iqapi.ws.chanels.unsubscribe import Unsubscribe
-from iqapi.ws.chanels.setactives import SetActives
-from iqapi.ws.chanels.candles import GetCandles
-from iqapi.ws.chanels.buyv2 import Buyv2
+from .http.login import Login
+from .http.loginv2 import Loginv2
+from .http.getprofile import Getprofile
+from .http.auth import Auth
+from .http.token import Token
+from .http.appinit import Appinit
+# from .http.profile import Profile
+from .http.billing import Billing
+from .http.buyback import Buyback
+from .http.changebalance import Changebalance
+from .ws.client import WebsocketClient
+from .ws.chanels.ssid import Ssid
+from .ws.chanels.subscribe import Subscribe
+from .ws.chanels.unsubscribe import Unsubscribe
+from .ws.chanels.setactives import SetActives
+from .ws.chanels.candles import GetCandles
+from .ws.chanels.buyv2 import Buyv2
 
-from iqapi.ws.objects.timesync import TimeSync
-from iqapi.ws.objects.profile import Profile
-from iqapi.ws.objects.candles import Candles
+from .ws.objects.timesync import TimeSync
+from .ws.objects.profile import Profile
+from .ws.objects.candles import Candles
 
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
@@ -161,13 +161,13 @@ class IQOptionAPI(object):
         return Appinit(self)
 
     @property
-    def tocken(self):
-        """Property for get IQ Option http tocken resource.
+    def token(self):
+        """Property for get IQ Option http token resource.
 
         :returns: The instance of
-            :class:`Tocken <iqapi.http.auth.Tocken>`.
+            :class:`Token <iqapi.http.auth.Token>`.
         """
-        return Tocken(self)
+        return Token(self)
 
     # @property
     # def profile(self):

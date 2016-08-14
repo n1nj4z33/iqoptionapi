@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Module for IQ Option http getregdata resource."""
 
-from iqapi.http.resource import Resource
-from iqapi.http.register import Register
+from .resource import Resource
+from .register import Register
 
 
 class Getprofile(Resource):

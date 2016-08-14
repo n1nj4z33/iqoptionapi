@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option appinit http resource."""
 
-from iqapi.http.resource import Resource
+from .resource import Resource
 
 
 class Appinit(Resource):

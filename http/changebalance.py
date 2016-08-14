@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option changebalance resource."""
 
-from iqapi.http.resource import Resource
-from iqapi.http.profile import Profile
+from .resource import Resource
+from .profile import Profile
 
 
 class Changebalance(Resource):

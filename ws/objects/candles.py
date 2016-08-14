@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ Option Candles websocket object."""
 
-from iqapi.ws.objects.base import Base
+from .base import Base
 
 
 class Candle(object):
