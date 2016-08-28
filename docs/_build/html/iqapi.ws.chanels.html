@@ -47,154 +47,32 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.base">
-<span id="iqapi-ws-chanels-base-module"></span><h2>iqapi.ws.chanels.base module<a class="headerlink" href="#module-iqapi.ws.chanels.base" title="Permalink to this headline">¶</a></h2>
-<p>Module for base IQ Option base websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.base.Base">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.base.</code><code class="descname">Base</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/base.html#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.base.Base" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Class for base IQ Option websocket chanel.</p>
-<dl class="method">
-<dt id="iqapi.ws.chanels.base.Base.send_websocket_request">
-<code class="descname">send_websocket_request</code><span class="sig-paren">(</span><em>name</em>, <em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/base.html#Base.send_websocket_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.base.Base.send_websocket_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Send request to IQ Option server websocket.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; The websocket chanel name.</li>
-<li><strong>msg</strong> (<em>dict</em>) &#8211; The websocket chanel msg.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The instance of
-<code class="xref py py-class docutils literal"><span class="pre">requests.Response</span></code>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-base-module">
+<h2>iqapi.ws.chanels.base module<a class="headerlink" href="#iqapi-ws-chanels-base-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.buyback">
-<span id="iqapi-ws-chanels-buyback-module"></span><h2>iqapi.ws.chanels.buyback module<a class="headerlink" href="#module-iqapi.ws.chanels.buyback" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ Option buyback websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.buyback.Buyback">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.buyback.</code><code class="descname">Buyback</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/buyback.html#Buyback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.buyback.Buyback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option subscribe to buyback websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.buyback.Buyback.name">
-<code class="descname">name</code><em class="property"> = 'buyback'</em><a class="headerlink" href="#iqapi.ws.chanels.buyback.Buyback.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-buyback-module">
+<h2>iqapi.ws.chanels.buyback module<a class="headerlink" href="#iqapi-ws-chanels-buyback-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.buyv2">
-<span id="iqapi-ws-chanels-buyv2-module"></span><h2>iqapi.ws.chanels.buyv2 module<a class="headerlink" href="#module-iqapi.ws.chanels.buyv2" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ Option buyV2 websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.buyv2.Buyv2">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.buyv2.</code><code class="descname">Buyv2</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/buyv2.html#Buyv2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.buyv2.Buyv2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option buy websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.buyv2.Buyv2.name">
-<code class="descname">name</code><em class="property"> = 'buyV2'</em><a class="headerlink" href="#iqapi.ws.chanels.buyv2.Buyv2.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-buyv2-module">
+<h2>iqapi.ws.chanels.buyv2 module<a class="headerlink" href="#iqapi-ws-chanels-buyv2-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.candles">
-<span id="iqapi-ws-chanels-candles-module"></span><h2>iqapi.ws.chanels.candles module<a class="headerlink" href="#module-iqapi.ws.chanels.candles" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ option candles websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.candles.GetCandles">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.candles.</code><code class="descname">GetCandles</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/candles.html#GetCandles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.candles.GetCandles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option candles websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.candles.GetCandles.name">
-<code class="descname">name</code><em class="property"> = 'candles'</em><a class="headerlink" href="#iqapi.ws.chanels.candles.GetCandles.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-candles-module">
+<h2>iqapi.ws.chanels.candles module<a class="headerlink" href="#iqapi-ws-chanels-candles-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.setactives">
-<span id="iqapi-ws-chanels-setactives-module"></span><h2>iqapi.ws.chanels.setactives module<a class="headerlink" href="#module-iqapi.ws.chanels.setactives" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ option setactives websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.setactives.SetActives">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.setactives.</code><code class="descname">SetActives</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/setactives.html#SetActives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.setactives.SetActives" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option setactives websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.setactives.SetActives.name">
-<code class="descname">name</code><em class="property"> = 'setActives'</em><a class="headerlink" href="#iqapi.ws.chanels.setactives.SetActives.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-setactives-module">
+<h2>iqapi.ws.chanels.setactives module<a class="headerlink" href="#iqapi-ws-chanels-setactives-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.ssid">
-<span id="iqapi-ws-chanels-ssid-module"></span><h2>iqapi.ws.chanels.ssid module<a class="headerlink" href="#module-iqapi.ws.chanels.ssid" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ option API ssid websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.ssid.Ssid">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.ssid.</code><code class="descname">Ssid</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/ssid.html#Ssid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.ssid.Ssid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option API ssid websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.ssid.Ssid.name">
-<code class="descname">name</code><em class="property"> = 'ssid'</em><a class="headerlink" href="#iqapi.ws.chanels.ssid.Ssid.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-ssid-module">
+<h2>iqapi.ws.chanels.ssid module<a class="headerlink" href="#iqapi-ws-chanels-ssid-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.subscribe">
-<span id="iqapi-ws-chanels-subscribe-module"></span><h2>iqapi.ws.chanels.subscribe module<a class="headerlink" href="#module-iqapi.ws.chanels.subscribe" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ option subscribe websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.subscribe.Subscribe">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.subscribe.</code><code class="descname">Subscribe</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/subscribe.html#Subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.subscribe.Subscribe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option subscribe websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.subscribe.Subscribe.name">
-<code class="descname">name</code><em class="property"> = 'subscribe'</em><a class="headerlink" href="#iqapi.ws.chanels.subscribe.Subscribe.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-subscribe-module">
+<h2>iqapi.ws.chanels.subscribe module<a class="headerlink" href="#iqapi-ws-chanels-subscribe-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels.unsubscribe">
-<span id="iqapi-ws-chanels-unsubscribe-module"></span><h2>iqapi.ws.chanels.unsubscribe module<a class="headerlink" href="#module-iqapi.ws.chanels.unsubscribe" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ option unsubscribe websocket chanel.</p>
-<dl class="class">
-<dt id="iqapi.ws.chanels.unsubscribe.Unsubscribe">
-<em class="property">class </em><code class="descclassname">iqapi.ws.chanels.unsubscribe.</code><code class="descname">Unsubscribe</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/chanels/unsubscribe.html#Unsubscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.chanels.unsubscribe.Unsubscribe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.chanels.base.Base" title="iqapi.ws.chanels.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.chanels.base.Base</span></code></a></p>
-<p>Class for IQ option unsubscribe websocket chanel.</p>
-<dl class="attribute">
-<dt id="iqapi.ws.chanels.unsubscribe.Unsubscribe.name">
-<code class="descname">name</code><em class="property"> = 'unSubscribe'</em><a class="headerlink" href="#iqapi.ws.chanels.unsubscribe.Unsubscribe.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="iqapi-ws-chanels-unsubscribe-module">
+<h2>iqapi.ws.chanels.unsubscribe module<a class="headerlink" href="#iqapi-ws-chanels-unsubscribe-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-iqapi.ws.chanels">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-iqapi.ws.chanels" title="Permalink to this headline">¶</a></h2>
-<p>Module for IQ Option API websocket chanels.</p>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -208,15 +86,15 @@
   <ul>
 <li><a class="reference internal" href="#">iqapi.ws.chanels package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.base">iqapi.ws.chanels.base module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.buyback">iqapi.ws.chanels.buyback module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.buyv2">iqapi.ws.chanels.buyv2 module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.candles">iqapi.ws.chanels.candles module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.setactives">iqapi.ws.chanels.setactives module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.ssid">iqapi.ws.chanels.ssid module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.subscribe">iqapi.ws.chanels.subscribe module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels.unsubscribe">iqapi.ws.chanels.unsubscribe module</a></li>
-<li><a class="reference internal" href="#module-iqapi.ws.chanels">Module contents</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-base-module">iqapi.ws.chanels.base module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-buyback-module">iqapi.ws.chanels.buyback module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-buyv2-module">iqapi.ws.chanels.buyv2 module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-candles-module">iqapi.ws.chanels.candles module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-setactives-module">iqapi.ws.chanels.setactives module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-ssid-module">iqapi.ws.chanels.ssid module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-subscribe-module">iqapi.ws.chanels.subscribe module</a></li>
+<li><a class="reference internal" href="#iqapi-ws-chanels-unsubscribe-module">iqapi.ws.chanels.unsubscribe module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
