@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>iqapi.ws.objects package &mdash; iqapi 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="iqapi 0.1 documentation" href="index.html" />
+    <link rel="up" title="iqapi.ws package" href="iqapi.ws.html" />
+    <link rel="prev" title="iqapi.ws.chanels package" href="iqapi.ws.chanels.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="iqapi-ws-objects-package">
+<h1>iqapi.ws.objects package<a class="headerlink" href="#iqapi-ws-objects-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-iqapi.ws.objects.base">
+<span id="iqapi-ws-objects-base-module"></span><h2>iqapi.ws.objects.base module<a class="headerlink" href="#module-iqapi.ws.objects.base" title="Permalink to this headline">¶</a></h2>
+<p>Module for IQ Option Base websocket object.</p>
+<dl class="class">
+<dt id="iqapi.ws.objects.base.Base">
+<em class="property">class </em><code class="descclassname">iqapi.ws.objects.base.</code><code class="descname">Base</code><a class="reference internal" href="_modules/iqapi/ws/objects/base.html#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.objects.base.Base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class for IQ Option Base websocket object.</p>
+<dl class="attribute">
+<dt id="iqapi.ws.objects.base.Base.name">
+<code class="descname">name</code><a class="headerlink" href="#iqapi.ws.objects.base.Base.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get websocket object name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The name of websocket object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iqapi.ws.objects.candles">
+<span id="iqapi-ws-objects-candles-module"></span><h2>iqapi.ws.objects.candles module<a class="headerlink" href="#module-iqapi.ws.objects.candles" title="Permalink to this headline">¶</a></h2>
+<p>Module for IQ Option Candles websocket object.</p>
+<dl class="class">
+<dt id="iqapi.ws.objects.candles.Candle">
+<em class="property">class </em><code class="descclassname">iqapi.ws.objects.candles.</code><code class="descname">Candle</code><span class="sig-paren">(</span><em>candle_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iqapi/ws/objects/candles.html#Candle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.objects.candles.Candle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class for IQ Option candle.</p>
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candle.candle_close">
+<code class="descname">candle_close</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candle.candle_close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candle close value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The candle close value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candle.candle_high">
+<code class="descname">candle_high</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candle.candle_high" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candle high value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The candle high value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candle.candle_low">
+<code class="descname">candle_low</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candle.candle_low" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candle low value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The candle low value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candle.candle_open">
+<code class="descname">candle_open</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candle.candle_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candle open value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The candle open value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candle.candle_time">
+<code class="descname">candle_time</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candle.candle_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candle time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The candle time.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candle.candle_type">
+<code class="descname">candle_type</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candle.candle_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candle type value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The candle type value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iqapi.ws.objects.candles.Candles">
+<em class="property">class </em><code class="descclassname">iqapi.ws.objects.candles.</code><code class="descname">Candles</code><a class="reference internal" href="_modules/iqapi/ws/objects/candles.html#Candles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.objects.candles.Candles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.objects.base.Base" title="iqapi.ws.objects.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.objects.base.Base</span></code></a></p>
+<p>Class for IQ Option Candles websocket object.</p>
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candles.candles_data">
+<code class="descname">candles_data</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candles.candles_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get candles data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of candles data.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candles.current_candle">
+<code class="descname">current_candle</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candles.current_candle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get current candle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The instance of <a class="reference internal" href="#iqapi.ws.objects.candles.Candle" title="iqapi.ws.objects.candles.Candle"><code class="xref py py-class docutils literal"><span class="pre">Candle</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candles.first_candle">
+<code class="descname">first_candle</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candles.first_candle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get first candle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The instance of <a class="reference internal" href="#iqapi.ws.objects.candles.Candle" title="iqapi.ws.objects.candles.Candle"><code class="xref py py-class docutils literal"><span class="pre">Candle</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.candles.Candles.second_candle">
+<code class="descname">second_candle</code><a class="headerlink" href="#iqapi.ws.objects.candles.Candles.second_candle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get second candle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The instance of <a class="reference internal" href="#iqapi.ws.objects.candles.Candle" title="iqapi.ws.objects.candles.Candle"><code class="xref py py-class docutils literal"><span class="pre">Candle</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iqapi.ws.objects.profile">
+<span id="iqapi-ws-objects-profile-module"></span><h2>iqapi.ws.objects.profile module<a class="headerlink" href="#module-iqapi.ws.objects.profile" title="Permalink to this headline">¶</a></h2>
+<p>Module for IQ Option Profile websocket object.</p>
+<dl class="class">
+<dt id="iqapi.ws.objects.profile.Profile">
+<em class="property">class </em><code class="descclassname">iqapi.ws.objects.profile.</code><code class="descname">Profile</code><a class="reference internal" href="_modules/iqapi/ws/objects/profile.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.objects.profile.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.objects.base.Base" title="iqapi.ws.objects.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.objects.base.Base</span></code></a></p>
+<p>Class for IQ Option Profile websocket object.</p>
+<dl class="attribute">
+<dt id="iqapi.ws.objects.profile.Profile.balance">
+<code class="descname">balance</code><a class="headerlink" href="#iqapi.ws.objects.profile.Profile.balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get balance value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The balance value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.profile.Profile.skey">
+<code class="descname">skey</code><a class="headerlink" href="#iqapi.ws.objects.profile.Profile.skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get skey value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The skey value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iqapi.ws.objects.timesync">
+<span id="iqapi-ws-objects-timesync-module"></span><h2>iqapi.ws.objects.timesync module<a class="headerlink" href="#module-iqapi.ws.objects.timesync" title="Permalink to this headline">¶</a></h2>
+<p>Module for IQ Option TimeSync websocket object.</p>
+<dl class="class">
+<dt id="iqapi.ws.objects.timesync.TimeSync">
+<em class="property">class </em><code class="descclassname">iqapi.ws.objects.timesync.</code><code class="descname">TimeSync</code><a class="reference internal" href="_modules/iqapi/ws/objects/timesync.html#TimeSync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iqapi.ws.objects.timesync.TimeSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iqapi.ws.objects.base.Base" title="iqapi.ws.objects.base.Base"><code class="xref py py-class docutils literal"><span class="pre">iqapi.ws.objects.base.Base</span></code></a></p>
+<p>Class for IQ Option TimeSync websocket object.</p>
+<dl class="attribute">
+<dt id="iqapi.ws.objects.timesync.TimeSync.expiration_datetime">
+<code class="descname">expiration_datetime</code><a class="headerlink" href="#iqapi.ws.objects.timesync.TimeSync.expiration_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get expiration datetime.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The expiration datetime.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.timesync.TimeSync.expiration_time">
+<code class="descname">expiration_time</code><a class="headerlink" href="#iqapi.ws.objects.timesync.TimeSync.expiration_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get expiration time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The expiration time.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.timesync.TimeSync.expiration_timestamp">
+<code class="descname">expiration_timestamp</code><a class="headerlink" href="#iqapi.ws.objects.timesync.TimeSync.expiration_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get expiration timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The expiration timestamp.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.timesync.TimeSync.server_datetime">
+<code class="descname">server_datetime</code><a class="headerlink" href="#iqapi.ws.objects.timesync.TimeSync.server_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get server datetime.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The server datetime.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iqapi.ws.objects.timesync.TimeSync.server_timestamp">
+<code class="descname">server_timestamp</code><a class="headerlink" href="#iqapi.ws.objects.timesync.TimeSync.server_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to get server timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The server timestamp.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iqapi.ws.objects">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-iqapi.ws.objects" title="Permalink to this headline">¶</a></h2>
+<p>Module for IQ Option API websocket objects.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">iqapi.ws.objects package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-iqapi.ws.objects.base">iqapi.ws.objects.base module</a></li>
+<li><a class="reference internal" href="#module-iqapi.ws.objects.candles">iqapi.ws.objects.candles module</a></li>
+<li><a class="reference internal" href="#module-iqapi.ws.objects.profile">iqapi.ws.objects.profile module</a></li>
+<li><a class="reference internal" href="#module-iqapi.ws.objects.timesync">iqapi.ws.objects.timesync module</a></li>
+<li><a class="reference internal" href="#module-iqapi.ws.objects">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">iqapi</a><ul>
+  <li><a href="iqapi.html">iqapi package</a><ul>
+  <li><a href="iqapi.ws.html">iqapi.ws package</a><ul>
+      <li>Previous: <a href="iqapi.ws.chanels.html" title="previous chapter">iqapi.ws.chanels package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/iqapi.ws.objects.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, n1nj4z33.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/iqapi.ws.objects.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
