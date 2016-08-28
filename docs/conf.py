@@ -13,4 +13,14 @@ master_doc = "index"
 
 autoclass_content = "both"
 
-html_static_path = ['_static']
+html_static_path = ["_static"]
+
+templates_path = ['_templates']
+
+project = "iqapi"
+
+copyright = "2016, n1nj4z33"
+
+author = "n1nj4z33"
+
+version = "0.1"
