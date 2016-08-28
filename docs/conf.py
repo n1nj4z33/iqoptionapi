@@ -12,3 +12,5 @@ extensions = ["sphinx.ext.todo",
 master_doc = "index"
 
 autoclass_content = "both"
+
+html_static_path = ['_static']
