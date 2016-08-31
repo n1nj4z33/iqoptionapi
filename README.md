@@ -5,7 +5,7 @@
 
 A friendly python wrapper around the [IQ Option API](https://iqoption.com).
 
-Auto generated Sphinx documentation you can  find here [Documentation](http://iqapi.readthedocs.io/).
+Auto generated Sphinx documentation you can  find here [Documentation](http://iqoption-api.readthedocs.io/en/latest/).
 
 ###Basic usage:
 ```
