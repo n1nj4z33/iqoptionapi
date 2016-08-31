@@ -1,5 +1,5 @@
 # IQ Option API
-[![Build Status](https://travis-ci.org/n1nj4z33/iqapi.png)](https://travis-ci.org/n1nj4z33/iqapi)
+[![Build Status](https://travis-ci.org/n1nj4z33/iqoption_api.svg?branch=master)](https://travis-ci.org/n1nj4z33/iqoption_api)
 [![Documentation Status](https://readthedocs.org/projects/iqapi/badge/?version=latest)](http://iqapi.readthedocs.io/en/latest/?badge=latest)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/b46b3e988c76418ab1e724f36c7b7e05/badge.svg)](https://www.quantifiedcode.com/app/project/b46b3e988c76418ab1e724f36c7b7e05)
 
