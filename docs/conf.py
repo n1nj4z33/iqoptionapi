@@ -17,7 +17,7 @@ html_static_path = ["_static"]
 
 templates_path = ['_templates']
 
-project = "iqapi"
+project = "iqoption_api"
 
 copyright = "2016, n1nj4z33"
 
