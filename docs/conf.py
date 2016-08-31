@@ -3,7 +3,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../iqoption_api"))
+sys.path.insert(0, os.path.abspath("."))
 
 extensions = ["sphinx.ext.todo",
               "sphinx.ext.viewcode",
