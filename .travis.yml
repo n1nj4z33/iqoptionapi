@@ -1,11 +1,11 @@
-language: 
+language:
     - "python"
 
 python:
     - "2.7"
 
-install: 
+install:
     - "pip install -r requirements.txt"
 
 script:
-    - "pylint iqoption-api --rcfile=./pylint.rc"
+    - "pylint iqoptionapi --rcfile=./pylint.rc"
