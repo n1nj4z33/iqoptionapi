@@ -7,6 +7,11 @@ A friendly python wrapper around the [IQ Option API](https://iqoption.com).
 
 Auto generated Sphinx documentation you can  find [here](http://iqoptionapi.readthedocs.io/en/latest/).
 
+###Installation
+```
+python setup.py install
+```
+
 ###Basic usage:
 ```
 from iqoptionapi.api import IQOptionAPI
