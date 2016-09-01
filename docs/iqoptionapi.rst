@@ -28,14 +28,6 @@ iqoptionapi.constants module
     :undoc-members:
     :show-inheritance:
 
-iqoptionapi.setup module
-------------------------
-
-.. automodule:: iqoptionapi.setup
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
