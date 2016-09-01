@@ -1,5 +1,5 @@
 # IQ Option API
-[![Build Status](https://travis-ci.org/n1nj4z33/iqoption_api.svg?branch=master)](https://travis-ci.org/n1nj4z33/iqoption_api)
+[![Build Status](https://travis-ci.org/n1nj4z33/iqoption-api.svg?branch=master)](https://travis-ci.org/n1nj4z33/iqoption-api)
 [![Documentation Status](https://readthedocs.org/projects/iqoption-api/badge/?version=latest)](http://iqoption-api.readthedocs.io/en/latest/?badge=latest)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/b46b3e988c76418ab1e724f36c7b7e05/badge.svg)](https://www.quantifiedcode.com/app/project/b46b3e988c76418ab1e724f36c7b7e05)
 
@@ -9,7 +9,7 @@ Auto generated Sphinx documentation you can  find here [Documentation](http://iq
 
 ###Basic usage:
 ```
-from iqapi.api import IQOptionAPI
+from iqoption-api.api import IQOptionAPI
 
 api = IQOptionAPI("iqoption.com", "username", "password")
 api.connect()
