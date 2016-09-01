@@ -1,5 +1,5 @@
-.
-=
+iqoption_api
+============
 
 .. toctree::
    :maxdepth: 4
