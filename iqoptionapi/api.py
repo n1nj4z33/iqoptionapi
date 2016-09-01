@@ -138,7 +138,7 @@ class IQOptionAPI(object):
         """Property for get IQ Option http loginv2 resource.
 
         :returns: The instance of
-            :class:`Login <iqapi.http.loginv2.Loginv2>`.
+            :class:`Loginv2 <iqapi.http.loginv2.Loginv2>`.
         """
         return Loginv2(self)
 
