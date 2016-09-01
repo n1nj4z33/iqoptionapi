@@ -1,4 +1,4 @@
-iqoption_api.ws package
+iqoption-api.ws package
 =======================
 
 Subpackages
@@ -6,16 +6,16 @@ Subpackages
 
 .. toctree::
 
-    iqoption_api.ws.chanels
-    iqoption_api.ws.objects
+    iqoption-api.ws.chanels
+    iqoption-api.ws.objects
 
 Submodules
 ----------
 
-iqoption_api.ws.client module
+iqoption-api.ws.client module
 -----------------------------
 
-.. automodule:: iqoption_api.ws.client
+.. automodule:: iqoption-api.ws.client
     :members:
     :undoc-members:
     :show-inheritance:
@@ -24,7 +24,7 @@ iqoption_api.ws.client module
 Module contents
 ---------------
 
-.. automodule:: iqoption_api.ws
+.. automodule:: iqoption-api.ws
     :members:
     :undoc-members:
     :show-inheritance:

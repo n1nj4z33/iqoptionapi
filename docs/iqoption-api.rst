@@ -1,4 +1,4 @@
-iqoption_api package
+iqoption-api package
 ====================
 
 Subpackages
@@ -6,32 +6,32 @@ Subpackages
 
 .. toctree::
 
-    iqoption_api.http
-    iqoption_api.ws
+    iqoption-api.http
+    iqoption-api.ws
 
 Submodules
 ----------
 
-iqoption_api.api module
+iqoption-api.api module
 -----------------------
 
-.. automodule:: iqoption_api.api
+.. automodule:: iqoption-api.api
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.constants module
+iqoption-api.constants module
 -----------------------------
 
-.. automodule:: iqoption_api.constants
+.. automodule:: iqoption-api.constants
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.setup module
+iqoption-api.setup module
 -------------------------
 
-.. automodule:: iqoption_api.setup
+.. automodule:: iqoption-api.setup
     :members:
     :undoc-members:
     :show-inheritance:
@@ -40,7 +40,7 @@ iqoption_api.setup module
 Module contents
 ---------------
 
-.. automodule:: iqoption_api
+.. automodule:: iqoption-api
     :members:
     :undoc-members:
     :show-inheritance:

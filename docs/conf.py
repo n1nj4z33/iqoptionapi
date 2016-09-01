@@ -12,7 +12,7 @@ html_static_path = ["_static"]
 
 templates_path = ['_templates']
 
-project = "iqoption_api"
+project = "iqoption-api"
 
 copyright = "2016, n1nj4z33"
 

@@ -1,69 +1,69 @@
-iqoption_api.ws.chanels package
+iqoption-api.ws.chanels package
 ===============================
 
 Submodules
 ----------
 
-iqoption_api.ws.chanels.base module
+iqoption-api.ws.chanels.base module
 -----------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.base
+.. automodule:: iqoption-api.ws.chanels.base
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.buyback module
+iqoption-api.ws.chanels.buyback module
 --------------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.buyback
+.. automodule:: iqoption-api.ws.chanels.buyback
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.buyv2 module
+iqoption-api.ws.chanels.buyv2 module
 ------------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.buyv2
+.. automodule:: iqoption-api.ws.chanels.buyv2
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.candles module
+iqoption-api.ws.chanels.candles module
 --------------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.candles
+.. automodule:: iqoption-api.ws.chanels.candles
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.setactives module
+iqoption-api.ws.chanels.setactives module
 -----------------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.setactives
+.. automodule:: iqoption-api.ws.chanels.setactives
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.ssid module
+iqoption-api.ws.chanels.ssid module
 -----------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.ssid
+.. automodule:: iqoption-api.ws.chanels.ssid
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.subscribe module
+iqoption-api.ws.chanels.subscribe module
 ----------------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.subscribe
+.. automodule:: iqoption-api.ws.chanels.subscribe
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.chanels.unsubscribe module
+iqoption-api.ws.chanels.unsubscribe module
 ------------------------------------------
 
-.. automodule:: iqoption_api.ws.chanels.unsubscribe
+.. automodule:: iqoption-api.ws.chanels.unsubscribe
     :members:
     :undoc-members:
     :show-inheritance:
@@ -72,7 +72,7 @@ iqoption_api.ws.chanels.unsubscribe module
 Module contents
 ---------------
 
-.. automodule:: iqoption_api.ws.chanels
+.. automodule:: iqoption-api.ws.chanels
     :members:
     :undoc-members:
     :show-inheritance:

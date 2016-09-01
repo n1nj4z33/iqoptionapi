@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to iqoption_api's documentation!
+Welcome to iqoption-api's documentation!
 =================================
 
 Contents:
@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 4
 
-   iqoption_api
+   iqoption-api
 
 
 Indices and tables

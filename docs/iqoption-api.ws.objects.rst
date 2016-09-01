@@ -1,37 +1,37 @@
-iqoption_api.ws.objects package
+iqoption-api.ws.objects package
 ===============================
 
 Submodules
 ----------
 
-iqoption_api.ws.objects.base module
+iqoption-api.ws.objects.base module
 -----------------------------------
 
-.. automodule:: iqoption_api.ws.objects.base
+.. automodule:: iqoption-api.ws.objects.base
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.objects.candles module
+iqoption-api.ws.objects.candles module
 --------------------------------------
 
-.. automodule:: iqoption_api.ws.objects.candles
+.. automodule:: iqoption-api.ws.objects.candles
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.objects.profile module
+iqoption-api.ws.objects.profile module
 --------------------------------------
 
-.. automodule:: iqoption_api.ws.objects.profile
+.. automodule:: iqoption-api.ws.objects.profile
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.ws.objects.timesync module
+iqoption-api.ws.objects.timesync module
 ---------------------------------------
 
-.. automodule:: iqoption_api.ws.objects.timesync
+.. automodule:: iqoption-api.ws.objects.timesync
     :members:
     :undoc-members:
     :show-inheritance:
@@ -40,7 +40,7 @@ iqoption_api.ws.objects.timesync module
 Module contents
 ---------------
 
-.. automodule:: iqoption_api.ws.objects
+.. automodule:: iqoption-api.ws.objects
     :members:
     :undoc-members:
     :show-inheritance:

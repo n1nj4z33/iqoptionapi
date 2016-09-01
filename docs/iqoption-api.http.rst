@@ -1,109 +1,109 @@
-iqoption_api.http package
+iqoption-api.http package
 =========================
 
 Submodules
 ----------
 
-iqoption_api.http.appinit module
+iqoption-api.http.appinit module
 --------------------------------
 
-.. automodule:: iqoption_api.http.appinit
+.. automodule:: iqoption-api.http.appinit
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.auth module
+iqoption-api.http.auth module
 -----------------------------
 
-.. automodule:: iqoption_api.http.auth
+.. automodule:: iqoption-api.http.auth
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.billing module
+iqoption-api.http.billing module
 --------------------------------
 
-.. automodule:: iqoption_api.http.billing
+.. automodule:: iqoption-api.http.billing
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.buyback module
+iqoption-api.http.buyback module
 --------------------------------
 
-.. automodule:: iqoption_api.http.buyback
+.. automodule:: iqoption-api.http.buyback
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.changebalance module
+iqoption-api.http.changebalance module
 --------------------------------------
 
-.. automodule:: iqoption_api.http.changebalance
+.. automodule:: iqoption-api.http.changebalance
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.getprofile module
+iqoption-api.http.getprofile module
 -----------------------------------
 
-.. automodule:: iqoption_api.http.getprofile
+.. automodule:: iqoption-api.http.getprofile
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.getregdata module
+iqoption-api.http.getregdata module
 -----------------------------------
 
-.. automodule:: iqoption_api.http.getregdata
+.. automodule:: iqoption-api.http.getregdata
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.login module
+iqoption-api.http.login module
 ------------------------------
 
-.. automodule:: iqoption_api.http.login
+.. automodule:: iqoption-api.http.login
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.loginv2 module
+iqoption-api.http.loginv2 module
 --------------------------------
 
-.. automodule:: iqoption_api.http.loginv2
+.. automodule:: iqoption-api.http.loginv2
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.profile module
+iqoption-api.http.profile module
 --------------------------------
 
-.. automodule:: iqoption_api.http.profile
+.. automodule:: iqoption-api.http.profile
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.register module
+iqoption-api.http.register module
 ---------------------------------
 
-.. automodule:: iqoption_api.http.register
+.. automodule:: iqoption-api.http.register
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.resource module
+iqoption-api.http.resource module
 ---------------------------------
 
-.. automodule:: iqoption_api.http.resource
+.. automodule:: iqoption-api.http.resource
     :members:
     :undoc-members:
     :show-inheritance:
 
-iqoption_api.http.token module
+iqoption-api.http.token module
 ------------------------------
 
-.. automodule:: iqoption_api.http.token
+.. automodule:: iqoption-api.http.token
     :members:
     :undoc-members:
     :show-inheritance:
@@ -112,7 +112,7 @@ iqoption_api.http.token module
 Module contents
 ---------------
 
-.. automodule:: iqoption_api.http
+.. automodule:: iqoption-api.http
     :members:
     :undoc-members:
     :show-inheritance:
