@@ -5,17 +5,6 @@
 
 A friendly python wrapper around the [IQ Option API](https://iqoption.com).
 
+Information about basic usage you can finf on [Wiki](https://github.com/n1nj4z33/iqoptionapi/wiki)
+
 Auto generated Sphinx documentation you can  find [here](http://iqoptionapi.readthedocs.io/).
-
-###Installation
-```
-python setup.py install
-```
-
-###Basic usage:
-```
-from iqoptionapi.api import IQOptionAPI
-
-api = IQOptionAPI("iqoption.com", "username", "password")
-api.connect()
-```
