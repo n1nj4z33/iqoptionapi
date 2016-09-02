@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option setactives websocket chanel."""
 
-from .base import Base
+from iqoptionapi.ws.chanels.base import Base
 
 
 class SetActives(Base):

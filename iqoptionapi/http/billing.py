@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module for IQ option billing resource."""
 
-from .resource import Resource
+from iqoptionapi.http.resource import Resource
 
 
 class Billing(Resource):

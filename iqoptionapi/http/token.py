@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Module for IQ Option http token resource."""
 
-from .resource import Resource
-from .auth import Auth
+from iqoptionapi.http.resource import Resource
+from iqoptionapi.http.auth import Auth
 
 
 class Token(Resource):

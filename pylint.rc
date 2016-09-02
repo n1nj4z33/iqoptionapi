@@ -1,3 +1,6 @@
+[MASTER]
+disable=locally-disabled, duplicate-code
+
 [DESIGN]
 min-public-methods=0
 
