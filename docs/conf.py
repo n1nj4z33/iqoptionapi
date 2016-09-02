@@ -13,9 +13,9 @@ master_doc = "index"
 
 autoclass_content = "both"
 
-html_static_path = ["_static"]
+html_static_path = []
 
-templates_path = ['_templates']
+templates_path = []
 
 project = "iqoptionapi"
 
