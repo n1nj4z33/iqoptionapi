@@ -37,7 +37,7 @@ ACTIVES = {
     "AIG": 41,
     "BOA": 42,
 
-    "CITI": 45
+    "CITI": 45,
     "COKE": 46,
 
     "GM": 49,
