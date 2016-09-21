@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for base IQ Option base websocket chanel."""
 
 
@@ -8,8 +7,8 @@ class Base(object):
 
     def __init__(self, api):
         """
-        :param api: The instance of
-            :class:`IQOptionAPI <iqapi.api.IQOptionAPI>`.
+        :param api: The instance of :class:`IQOptionAPI
+            <iqoptionapi.api.IQOptionAPI>`.
         """
         self.api = api
 
@@ -19,7 +18,6 @@ class Base(object):
         :param str name: The websocket chanel name.
         :param dict msg: The websocket chanel msg.
 
-        :returns: The instance of
-            :class:`requests.Response`.
+        :returns: The instance of :class:`requests.Response`.
         """
         return self.api.send_websocket_request(name, msg)

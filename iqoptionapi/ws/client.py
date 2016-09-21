@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ option websocket."""
 
 import json
@@ -11,7 +10,8 @@ class WebsocketClient(object):
 
     def __init__(self, api):
         """
-        :param api: The instance of :class:`IQOptionAPI <iqapi.api.IQOptionAPI>`.
+        :param api: The instance of :class:`IQOptionAPI
+            <iqoptionapi.api.IQOptionAPI>`.
         """
         self.api = api
         self.wss = websocket.WebSocketApp(
@@ -19,9 +19,8 @@ class WebsocketClient(object):
             on_error=self.on_error, on_close=self.on_close,
             on_open=self.on_open)
 
-    def on_message(self, wss, message):
+    def on_message(self, wss, message): # pylint: disable=unused-argument
         """Method to process websocket messages."""
-        # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)
         logger.debug(message)
 
@@ -37,22 +36,19 @@ class WebsocketClient(object):
             self.api.candles.candles_data = message["msg"]["data"]
 
     @staticmethod
-    def on_error(wss, error):
+    def on_error(wss, error): # pylint: disable=unused-argument
         """Method to process websocket errors."""
-        # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)
         logger.error(error)
 
     @staticmethod
-    def on_open(wss):
+    def on_open(wss): # pylint: disable=unused-argument
         """Method to process websocket open."""
-        # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)
         logger.debug("Websocket client connected.")
 
     @staticmethod
-    def on_close(wss):
+    def on_close(wss): # pylint: disable=unused-argument
         """Method to process websocket close."""
-        # pylint: disable=unused-argument
         logger = logging.getLogger(__name__)
         logger.debug("Websocket connection closed.")

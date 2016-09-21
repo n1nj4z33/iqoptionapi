@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option http auth resource."""
 
 from iqoptionapi.http.resource import Resource

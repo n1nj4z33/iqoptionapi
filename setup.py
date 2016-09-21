@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The IQ Option API package setup."""
 from setuptools import (setup, find_packages)
 

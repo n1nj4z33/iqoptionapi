@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option Candles websocket object."""
 
 from iqoptionapi.ws.objects.base import Base
@@ -90,7 +89,8 @@ class Candles(Base):
     def first_candle(self):
         """Method to get first candle.
 
-        :returns: The instance of :class:`Candle <iqapi.ws.objects.candles.Candle>`.
+        :returns: The instance of :class:`Candle
+            <iqoptionapi.ws.objects.candles.Candle>`.
         """
         return Candle(self.candles_data[0])
 
@@ -98,7 +98,8 @@ class Candles(Base):
     def second_candle(self):
         """Method to get second candle.
 
-        :returns: The instance of :class:`Candle <iqapi.ws.objects.candles.Candle>`.
+        :returns: The instance of :class:`Candle
+            <iqoptionapi.ws.objects.candles.Candle>`.
         """
         return Candle(self.candles_data[1])
 
@@ -106,6 +107,7 @@ class Candles(Base):
     def current_candle(self):
         """Method to get current candle.
 
-        :returns: The instance of :class:`Candle <iqapi.ws.objects.candles.Candle>`.
+        :returns: The instance of :class:`Candle
+            <iqoptionapi.ws.objects.candles.Candle>`.
         """
         return Candle(self.candles_data[-1])

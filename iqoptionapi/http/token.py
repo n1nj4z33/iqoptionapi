@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option http token resource."""
 
 from iqoptionapi.http.resource import Resource
@@ -17,7 +16,7 @@ class Token(Resource):
     def _get(self):
         """Send get request for IQ Option API token http resource.
 
-        :returns: The instace of :class:`requests.Response`.
+        :returns: The instance of :class:`requests.Response`.
         """
         return self.send_http_request("GET")
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option http getregdata resource."""
 
 from iqoptionapi.http.resource import Resource
@@ -14,7 +13,7 @@ class Getprofile(Resource):
     def _get(self):
         """Send get request for IQ Option API getregdata http resource.
 
-        :returns: The instace of :class:`requests.Response`.
+        :returns: The instance of :class:`requests.Response`.
         """
         return self.send_http_request("GET")
 

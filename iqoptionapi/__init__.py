@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """A python wrapper for IQ Option API."""
 
 import logging

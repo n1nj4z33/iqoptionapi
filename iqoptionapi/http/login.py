@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option http login resource."""
 
 from iqoptionapi.http.resource import Resource
@@ -13,7 +12,7 @@ class Login(Resource):
     def _post(self, data=None, headers=None):
         """Send get request for IQ Option API login http resource.
 
-        :returns: The instace of :class:`requests.Response`.
+        :returns: The instance of :class:`requests.Response`.
         """
         return self.send_http_request("POST", data=data, headers=headers)
 

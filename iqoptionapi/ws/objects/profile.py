@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option Profile websocket object."""
 
 from iqoptionapi.ws.objects.base import Base

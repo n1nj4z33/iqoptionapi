@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for base IQ Option http base resource."""
 
 
@@ -8,8 +7,8 @@ class Resource(object):
 
     def __init__(self, api):
         """
-        :param api: The instance of
-            :class:`IQOptionAPI <iqapi.api.IQOptionAPI>`.
+        :param api: The instance of :class:`IQOptionAPI
+            <iqoptionapi.api.IQOptionAPI>`.
         """
         self.api = api
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ option changebalance resource."""
 
 from iqoptionapi.http.resource import Resource
@@ -14,7 +13,7 @@ class Changebalance(Resource):
     def _post(self, data=None, headers=None):
         """Send get request for IQ Option API changebalance http resource.
 
-        :returns: The instace of :class:`requests.Response`.
+        :returns: The instance of :class:`requests.Response`.
         """
         return self.send_http_request("POST", data=data, headers=headers)
 

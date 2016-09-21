@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Module for IQ Option buyback websocket chanel."""
 
 from iqoptionapi.ws.chanels.base import Base
