@@ -3,7 +3,7 @@ from setuptools import (setup, find_packages)
 
 setup(
     name="iqoptionapi",
-    version="0.3",
+    version="0.5",
     packages=find_packages(),
     include_package_data = True,
     description="The python wrapper for IQ Option API.",
