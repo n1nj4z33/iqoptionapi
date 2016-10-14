@@ -3,7 +3,7 @@ from setuptools import (setup, find_packages)
 
 setup(
     name="iqoptionapi",
-    version="0.1",
+    version="0.3",
     packages=find_packages(),
     include_package_data = True,
     license="BSD License",
