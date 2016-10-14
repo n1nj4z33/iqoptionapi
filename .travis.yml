@@ -1,11 +1,17 @@
 language:
-    - "python"
-
+- python
 python:
-    - "2.7"
-
+- '2.7'
 install:
-    - "pip install -r requirements.txt"
-
+- pip install -r requirements.txt
 script:
-    - "pylint iqoptionapi --rcfile=./pylint.rc"
+- pylint iqoptionapi --rcfile=./pylint.rc
+deploy:
+  provider: pypi
+  user: n1nj4z33
+  password:
+    secure: ezaS+n4Hxl54EgWypr0tBI03Yu1uQsm7imbAcIZK01rjWraLh9Yhv8t75RrBPorvuxh28TS5Z/My8rOvTljxobjAZEnFh43Zl1x58RTaH5+MJL71jPg6n97jh9tnedhlglJBccATca04Xkh7tGBav4jIR7hJTU2E5EpV5OFCTseqQMsvVd1FnWl8vOyK/IWP0d3BZZ1Y9VBzimBnTQPrqeRZQIkRcBQKffL/XW7U0lIUOhxcEq8ye+ap2vxT7Y4LnI9eYMYvrKJeuCrSZW0RDs2ZtCYZdhMb0c9yMzIrE+U8RDRK7z4lLKKHFqbcOXMjXeLCaWtZ2SM58L8zz2XfnaL+z9+fzu8zy8btRc3tGZU/kj1CZdbM5f0cw683IR+8gHma+QmUqNVbNqAT4l/dMwjaX+Dh8dJHZ6vqhDw5jq+pN89HTOCfm9k27MNu6Fl1yGC71TA/0LhtXz42hsFd8A1gY04LAjXeAqkEIjKVwONfQvsswaK71NOsS8uL094SOgFKiCEdaS6NYwkBAP9UbarN3twg19cfM3Gg+lc0lyU4wYxP58fOj/SdWTCi2WG4NW5zlCAqFtV9BMSw3lOH9gR7F8BQpIwmqWr5ozl+fXPSW8JIjxTe1WfzlLusZarTiagWssKAphtnvsb2i4zpe4mVYp+MlrcIXDUTf+Yu3ec=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: n1nj4z33/iqoptionapi
