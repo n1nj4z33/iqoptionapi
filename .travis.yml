@@ -3,7 +3,7 @@ language:
 python:
 - '2.7'
 install:
-- python setup.py install
+- pip install pylint
 script:
 - pylint iqoptionapi --rcfile=./pylint.rc
 deploy:
