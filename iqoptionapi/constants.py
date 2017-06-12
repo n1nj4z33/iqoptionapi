@@ -112,4 +112,8 @@ ACTIVES = {
     "NTDOY": 218,
     "USDSEK": 219,
     "USDTRY": 220,
+
+    "SNAPCHAT": 756,
+    "DFMGI": 757,
+    "TELAVIV:": 758,
 }
