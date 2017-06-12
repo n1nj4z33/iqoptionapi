@@ -32,7 +32,7 @@ from iqoptionapi.ws.objects.candles import Candles
 # InsecureRequestWarning: Unverified HTTPS request is being made.
 # Adding certificate verification is strongly advised.
 # See: https://urllib3.readthedocs.org/en/latest/security.html
-requests.packages.urllib3.disable_warnings()
+requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member
 
 
 class IQOptionAPI(object):

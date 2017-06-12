@@ -1,5 +1,5 @@
 [MASTER]
-disable=locally-disabled, duplicate-code
+disable=locally-disabled, duplicate-code, useless-super-delegation
 
 [DESIGN]
 min-public-methods=0
