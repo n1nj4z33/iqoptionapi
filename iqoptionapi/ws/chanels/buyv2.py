@@ -2,7 +2,6 @@
 
 from iqoptionapi.ws.chanels.base import Base
 
-
 class Buyv2(Base):
     """Class for IQ option buy websocket chanel."""
     # pylint: disable=too-few-public-methods
@@ -17,9 +16,13 @@ class Buyv2(Base):
         :param option: The buying option.
         :param direction: The buying direction.
         """
+        exp = self.api.timesync.expiration_timestamp
+        #Round to next full minute
+        exp = exp + (60 - (exp % 60))
         data = {"price": price,
                 "act": active,
-                "exp": self.api.timesync.expiration_timestamp,
+                #"exp": self.api.timesync.expiration_timestamp,
+		"exp": exp
                 "type": option,
                 "direction": direction,
                 "time": self.api.timesync.server_timestamp
