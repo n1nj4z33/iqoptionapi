@@ -18,7 +18,8 @@ class Buyv2(Base):
         """
         exp = self.api.timesync.expiration_timestamp
         #Round to next full minute
-        exp = exp + (60 - (exp % 60))
+        exp = exp - (exp % 60)
+	
         data = {"price": price,
                 "act": active,
                 #"exp": self.api.timesync.expiration_timestamp,
