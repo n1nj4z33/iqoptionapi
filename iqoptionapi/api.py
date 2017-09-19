@@ -27,6 +27,7 @@ from iqoptionapi.ws.chanels.buyv2 import Buyv2
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
 from iqoptionapi.ws.objects.candles import Candles
+from iqoptionapi.ws.objects.listinfodata import ListInfoData
 
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
@@ -42,6 +43,7 @@ class IQOptionAPI(object):
     timesync = TimeSync()
     profile = Profile()
     candles = Candles()
+    listinfodata = ListInfoData()
 
     def __init__(self, host, username, password, proxies=None):
         """
