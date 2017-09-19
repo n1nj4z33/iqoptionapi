@@ -35,6 +35,11 @@ class WebsocketClient(object):
         if message["name"] == "candles":
             self.api.candles.candles_data = message["msg"]["data"]
 
+	if message["name"] == "listInfoData":
+	    listinfodata = lambda: None
+            listinfodata.__dict__ = message["msg"][0]
+            self.api.listinfodata.add_listinfodata(listinfodata)
+
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument
         """Method to process websocket errors."""

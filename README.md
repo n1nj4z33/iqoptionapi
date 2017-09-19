@@ -59,3 +59,16 @@ pip install iqoptionapi
     time.sleep(0.5)
 
 
+Check if a trade has been won or lost:
+ou can give the result by using the 'win' variable which returns either 'equal' (if the trade is ongoing or a draw), 'win' (if the trade was a win), or 'loose' (if the trade was a loss)
+
+    self.api.listinfodata.current_listinfodata.win
+
+or
+
+    self.api.listinfodata.get_listinfodata(foo)
+
+For more information on what you can actually get, you can use this JSON data that I've extracted myself while testing.
+
+    "name":"listInfoData","msg":[{"amount":1000000,"id":2095724656,"refund":0,"currency":"USD","currency_char":"$","active_id":1,"active":"EURUSD","value":1.07736,"exp_value":1077360,"dir":"call","created":1489706346,"expired":1489706400,"type_name":"turbo","type":"front.TU","profit":100,"profit_amount":1,"win_amount":1.74,"loose_amount":0,"sum":1,"win":"equal","now":1489706346,"user_id":0,"game_state":0,"profit_income":174,"profit_return":0,"option_type_id":3,"site_id":1,"is_demo":false,"user_balance_id":0,"client_platform_id":9,"re_track":"null","params":null}]}
+
