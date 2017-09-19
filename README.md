@@ -76,6 +76,8 @@ Here is a piece of code in order to check if the buy order went through and to c
     
     api.buy(1, 816, "turbo", "call")    
     time.sleep(0.5)
+
     while api.buySuccessful in [None, False]:
-	#Could do another buy order, or something else!
+    ....#Could do another buy order, or something else!
+
     print api.listinfodata.current_listinfodata.win
