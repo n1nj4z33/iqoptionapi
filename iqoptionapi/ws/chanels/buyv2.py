@@ -23,7 +23,7 @@ class Buyv2(Base):
         data = {"price": price,
                 "act": active,
                 #"exp": self.api.timesync.expiration_timestamp,
-		"exp": exp
+		"exp": exp,
                 "type": option,
                 "direction": direction,
                 "time": self.api.timesync.server_timestamp
