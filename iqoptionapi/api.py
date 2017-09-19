@@ -61,6 +61,12 @@ class IQOptionAPI(object):
         self.username = username
         self.password = password
         self.proxies = proxies
+        #is used to determine if a buyOrder was set  or failed. If
+        #it is None, there had been no buy order yet or just send.
+        #If it is false, the last failed
+        #If it is true, the last buy order was successful
+        self.buySuccessful = None
+
 
     def prepare_http_url(self, resource):
         """Construct http url from resource url.
@@ -266,6 +272,7 @@ class IQOptionAPI(object):
         :returns: The instance of :class:`Buyv2
             <iqoptionapi.ws.chanels.buyv2.Buyv2>`.
         """
+	self.buySuccessful = None
         return Buyv2(self)
 
     def set_session_cookies(self):

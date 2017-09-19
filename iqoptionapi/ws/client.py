@@ -26,17 +26,20 @@ class WebsocketClient(object):
 
         message = json.loads(str(message))
 
-        if message["name"] == "timeSync":
+	if message["name"] == "timeSync":
             self.api.timesync.server_timestamp = message["msg"]
 
-        if message["name"] == "profile":
+        elif message["name"] == "profile":
             self.api.profile.balance = message["msg"]["balance"]
 
-        if message["name"] == "candles":
+        elif message["name"] == "candles":
             self.api.candles.candles_data = message["msg"]["data"]
 
-	if message["name"] == "listInfoData":
-	    listinfodata = lambda: None
+        elif message["name"] == "buyComplete":
+            self.api.buySuccessful =  message["msg"]["isSuccessful"]
+
+        elif message["name"] == "listInfoData":
+            listinfodata = lambda: None
             listinfodata.__dict__ = message["msg"][0]
             self.api.listinfodata.add_listinfodata(listinfodata)
 
