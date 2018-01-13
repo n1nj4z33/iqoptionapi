@@ -1,12 +1,11 @@
 """Module for IQ Option Candles websocket object."""
-import json
-
 from collections import OrderedDict
 
 from iqoptionapi.ws.objects.base import Base
 
 
 class ListInfoData(Base):
+    """Class for ListInfoData object."""
     def __init__(self):
         super(ListInfoData, self).__init__()
         self.__name = "listInfoData"
@@ -33,12 +32,12 @@ class ListInfoData(Base):
          """
         return self.listinfodata_list[next(reversed(self.listinfodata_list))]
 
-    def get_listinfodata(self, id):
+    def get_listinfodata(self, _id):
         """Method to get iteminfodata item.
 
          :returns: The object of listinfodata.
          """
-        return self.listinfodata_list[id]
+        return self.listinfodata_list[_id]
 
     def add_listinfodata(self, new_listinfodata):
         """Method to add listinfodata."""
