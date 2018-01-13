@@ -22,7 +22,7 @@ class Buyv2(Base):
         #Round to next full minute
         if datetime.datetime.now().second > 30:
             exp = exp - (exp % 60) + 60
-	else:
+        else:
             exp = exp - (exp % 60)
 
         data = {
