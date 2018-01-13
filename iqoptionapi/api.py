@@ -36,7 +36,7 @@ from iqoptionapi.ws.objects.listinfodata import ListInfoData
 requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member
 
 
-class IQOptionAPI(object):
+class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     """Class for communication with IQ Option API."""
     # pylint: disable=too-many-public-methods
 
@@ -272,7 +272,7 @@ class IQOptionAPI(object):
         :returns: The instance of :class:`Buyv2
             <iqoptionapi.ws.chanels.buyv2.Buyv2>`.
         """
-	self.buySuccessful = None
+	    self.buySuccessful = None
         return Buyv2(self)
 
     def set_session_cookies(self):
