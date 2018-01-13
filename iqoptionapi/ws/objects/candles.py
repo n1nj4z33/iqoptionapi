@@ -53,7 +53,7 @@ class Candle(object):
         return self.__candle_data[4]
 
     @property
-    def candle_type(self):
+    def candle_type(self):  # pylint: disable=inconsistent-return-statements
         """Property to get candle type value.
 
         :returns: The candle type value.
