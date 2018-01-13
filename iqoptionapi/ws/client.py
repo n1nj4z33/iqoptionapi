@@ -26,7 +26,7 @@ class WebsocketClient(object):
 
         message = json.loads(str(message))
 
-	if message["name"] == "timeSync":
+	    if message["name"] == "timeSync":
             self.api.timesync.server_timestamp = message["msg"]
 
         elif message["name"] == "profile":
@@ -36,7 +36,7 @@ class WebsocketClient(object):
             self.api.candles.candles_data = message["msg"]["data"]
 
         elif message["name"] == "buyComplete":
-            self.api.buySuccessful =  message["msg"]["isSuccessful"]
+            self.api.buySuccessful = message["msg"]["isSuccessful"]
 
         elif message["name"] == "listInfoData":
             listinfodata = lambda: None
