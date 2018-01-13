@@ -65,7 +65,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         #it is None, there had been no buy order yet or just send.
         #If it is false, the last failed
         #If it is true, the last buy order was successful
-        self.buySuccessful = None
+        self.buy_successful = None
 
 
     def prepare_http_url(self, resource):
@@ -272,7 +272,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         :returns: The instance of :class:`Buyv2
             <iqoptionapi.ws.chanels.buyv2.Buyv2>`.
         """
-        self.buySuccessful = None
+        self.buy_successful = None
         return Buyv2(self)
 
     def set_session_cookies(self):
