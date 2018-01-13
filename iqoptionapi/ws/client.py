@@ -26,7 +26,7 @@ class WebsocketClient(object):
 
         message = json.loads(str(message))
 
-	    if message["name"] == "timeSync":
+        if message["name"] == "timeSync":
             self.api.timesync.server_timestamp = message["msg"]
 
         elif message["name"] == "profile":
