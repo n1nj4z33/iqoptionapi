@@ -22,13 +22,13 @@ class Buyv2(Base):
         #Round to next full minute
         if datetime.datetime.now().second > 30:
             exp = exp - (exp % 60) + 60
-	    else:
+	else:
             exp = exp - (exp % 60)
 
         data = {
-		    "price": price,
+            "price": price,
             "act": active,
-		    "exp": exp,
+            "exp": exp,
             "type": option,
             "direction": direction,
             "time": self.api.timesync.server_timestamp
