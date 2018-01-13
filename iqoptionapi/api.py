@@ -272,7 +272,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         :returns: The instance of :class:`Buyv2
             <iqoptionapi.ws.chanels.buyv2.Buyv2>`.
         """
-	    self.buySuccessful = None
+        self.buySuccessful = None
         return Buyv2(self)
 
     def set_session_cookies(self):
