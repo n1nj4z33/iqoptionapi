@@ -18,7 +18,7 @@ class Buyv2(Base):
         :param option: The buying option.
         :param direction: The buying direction.
         """
-        exp = self.api.timesync.expiration_timestamp
+        exp=int(self.api.timesync.expiration_timestamp)
         #Round to next full minute
         if datetime.datetime.now().second > 30:
             exp = exp - (exp % 60) + 60
@@ -28,7 +28,7 @@ class Buyv2(Base):
         data = {
             "price": price,
             "act": active,
-            "exp": exp,
+            "exp":exp,
             "type": option,
             "direction": direction,
             "time": self.api.timesync.server_timestamp

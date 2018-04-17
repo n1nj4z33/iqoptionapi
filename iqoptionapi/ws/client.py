@@ -42,6 +42,8 @@ class WebsocketClient(object):
             listinfodata = lambda: None
             listinfodata.__dict__ = message["msg"][0]
             self.api.listinfodata.add_listinfodata(listinfodata)
+        elif message["name"] == "api_option_init_all_result":
+            self.api.api_option_init_all_result = message["msg"]
 
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument

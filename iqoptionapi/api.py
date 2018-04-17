@@ -44,7 +44,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     profile = Profile()
     candles = Candles()
     listinfodata = ListInfoData()
-
+    api_option_init_all_result = []
     def __init__(self, host, username, password, proxies=None):
         """
         :param str host: The hostname or ip address of a IQ Option server.
@@ -264,7 +264,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.candles.GetCandles>`.
         """
         return GetCandles(self)
+    def get_api_option_init_all(self):
 
+        data = json.dumps(dict(name="api_option_init_all",
+                               msg=""))
+        self.websocket.send(data)
     @property
     def buy(self):
         """Property for get IQ Option websocket buyv2 request.
