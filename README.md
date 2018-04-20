@@ -5,8 +5,8 @@ git clone https://github.com/Lu-Yi-Hsun/iqoptionapi.git
 cd iqoptionapi
 sudo python3 setup.py install
 ```
-
-### A small example
+sucess on python3.6.4
+### get candles
     from iqoptionapi.api import IQOptionAPI
     import datetime
     import time
@@ -25,3 +25,5 @@ sudo python3 setup.py install
     time.sleep(2)
     data = api.candles.candles_data
     print(data)
+    
+ ### buy
