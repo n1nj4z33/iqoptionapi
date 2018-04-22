@@ -1,11 +1,17 @@
 # IQ Option API(Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
+fix some thing...
+
+sucess on python3.6.4
+
+---
+
 ### Installation
 ```
 git clone https://github.com/Lu-Yi-Hsun/iqoptionapi.git
 cd iqoptionapi
 sudo python3 setup.py install
 ```
-sucess on python3.6.4
+---
 
 
 ### More stable Libary base on iqoptionapi for Robot
@@ -62,7 +68,7 @@ class Binary_Option:
             pass
         return self.api.candles.candles_data
     def check_win(self):
-        #'win'：贏  'equal'：沒輸沒贏   'loose':輸
+        #return 'win'：win money  'equal':your bet money get back   'loose':loose your money
         self.api.listinfodata.__init__()
         while True:
             try:
@@ -142,4 +148,12 @@ I_want_money.get_balance()
 ```
 I_want_money.check_win()
 #this function will do loop check your bet until if win/equal/loose
+```
+## Will Add new option........
+
+### Change real/practice Account
+```
+```
+### sell
+```
 ```
