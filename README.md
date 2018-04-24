@@ -19,8 +19,9 @@ sudo python3 setup.py install
 from iqoptionapi.api import IQOptionAPI
 import iqoptionapi.constants as OP_code
 import time
+import numpy as np
 import logging
-logging.basicConfig(format='%(asctime)s %(message)s')
+
 class Binary_Option:
     def __init__(self,email,password):
         self.email=email
@@ -35,6 +36,7 @@ class Binary_Option:
                 time.sleep(self.suspend)
                 break
             except:
+                logging.error('fail connect()')
                 pass
     def get_all_init(self):
         self.api.api_option_init_all_result = None
@@ -60,15 +62,33 @@ class Binary_Option:
             try:
                 return self.api.profile.balance
             except:
+                logging.error('fail get_balance()')
                 pass
-    def get_candles(self,count,ACTIVES):
-#{'id': 10357768, 'from': 1523969349, 'to': 1523969350, 'open': 1.23524, 'close': 1.235245, 'min': 1.23524, 'max': 1.23527, 'volume': 0}
-        self.api.getcandles(OP_code.ACTIVES[ACTIVES], 1, count)
+    def get_candles(self,ACTIVES,interval,count):
+        while True:
+            try:
+                self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval, count)
+                break
+            except:
+                logging.error('fail get_candles need reconnect')
+                self.connect()
+                #print("get_candles error")
+                pass
         while self.api.candles.candles_data==None:
             pass
         return self.api.candles.candles_data
+
+    def get_candles_as_array(self,ACTIVES,interval,count):
+        candles=self.get_candles(count,ACTIVES,interval)
+        ans = np.empty(shape=(len(candles), 4))
+        for idx, candle in enumerate(candles):
+            ans[idx][0] = candle["open"]
+            ans[idx][1] = candle["close"]
+            ans[idx][2] = candle["min"]
+            ans[idx][3] = candle["max"]
+        return ans
     def check_win(self):
-        #return 'win'：win money  'equal':your bet money get back   'loose':loose your money
+        #'win'：win the money  'equal'：no win no loose   'loose':loose the money
         self.api.listinfodata.__init__()
         while True:
             try:
@@ -76,11 +96,11 @@ class Binary_Option:
                 if state==1:
                     break
             except:
+                #print("connect error")
                 pass
         return self.api.listinfodata.current_listinfodata.win
     def buy(self,price,ACTIVES,ACTION):
-       # self.connect()
-        old_balance=self.get_balance()
+       # ACTION:"put"/"call"
         while True:
             #print("try buy")
             while True:
@@ -88,6 +108,7 @@ class Binary_Option:
                     self.api.buy(price, OP_code.ACTIVES[ACTIVES], "turbo", ACTION)
                     break
                 except:
+                    logging.error('buy error')
                     pass
             while self.api.buy_successful==None:
                 pass
@@ -95,8 +116,9 @@ class Binary_Option:
                 break
             else:
                 #print("reconnect")#if fail to buy we need to reconnect
+                #print("buy return fail")
+                logging.error('fail buy need reconnect')
                 self.connect()
-
         #print("buy ok")
     def call(self,price,ACTIVES):
         while True:
@@ -110,8 +132,6 @@ class Binary_Option:
                 self.api.buy(price,OP_code.ACTIVES[ACTIVES], "turbo", "put")
             except:
                 pass
-
-
 
 ```
 
@@ -130,8 +150,9 @@ I_want_money.buy(Money,ACTIVES,ACTION)
 
 ### get candles
 ```
-I_want_money.get_candles(count,ACTIVES)
+I_want_money.get_candles(ACTIVES,interval,count)
             #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
+            #interval:duration of candles
             #count:how many candles you want to get from now to past
 ```
 ### get all profit
