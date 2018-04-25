@@ -58,19 +58,27 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
 ### get  realtime candles
 you will get ""latest"" DATA
 ```
-I_want_money.get_realtime_candles("EURUSD")
+I_want_money.start_candles_stream("EURUSD")
+print(I_want_money.get_realtime_candles("EURUSD"))
+I_want_money.stop_candles_stream("EURUSD")
 ```
 ### get all realtime candles
 ```
-I_want_money.get_all_realtime_candles()
+I_want_money.start_all_candles_stream()
+print(I_want_money.get_all_realtime_candles())
+I_want_money.stop_all_candles_stream()
 ```
 
 ### collect realtime candles
-
+i will do for loop untill collect time out
 ```
-data=I_want_money.collect_realtime_candles("EURUSD",10.5)
-#I_want_money.collect_realtime_candles(ACTIVES,collect_time)
-#collect_time:you want to collect time sec
+I_want_money.start_candles_stream("EURUSD")
+print(I_want_money.collect_realtime_candles("EURUSD",10.5))
+
+#I_want_money.collect_realtime_candles("EURUSD",time)
+#time:collect time(sec) can use float :11.2              
+
+I_want_money.stop_candles_stream("EURUSD")
 
 ```
 ---
@@ -98,7 +106,8 @@ I_want_money.change_balance(MODE)
                         #MODE: "PRACTICE"/"REAL"
 ```
 
-Will Add new option........
+# Will Add new option........
+
 ### sell
 ```
 ```

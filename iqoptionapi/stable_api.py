@@ -11,7 +11,7 @@ class IQ_Option:
         self.password=password
         self.suspend = 0.6
         self.connect()
-        self.start_all_candles_stream()
+        
     def connect(self):
         while True:
             try:
@@ -90,20 +90,32 @@ class IQ_Option:
                 self.api.subscribe_candle(OP_code.ACTIVES[ACTIVES_name])
     def get_all_realtime_candles(self):
         return self.api.real_time_candles
-    def stop_all_realtime_candles_stream(self):
+    def stop_all_candles_stream(self):
         while self.api.real_time_candles != {}:
-            self.api.real_time_candles != {}
+            self.api.real_time_candles = {}
             time.sleep(1)
             for ACTIVES_name in OP_code.ACTIVES:
                 self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES_name])
     
                     ##one
+    def start_candles_stream(self,ACTIVES):
+        while self.api.real_time_candles == {}:
+            self.api.subscribe_candle(OP_code.ACTIVES[ACTIVES])
+
     def get_realtime_candles(self,ACTIVES):
         while True:
             try:
-                return self.get_all_realtime_candles()[ACTIVES]
+                return self.api.real_time_candles[ACTIVES]
             except:
                 pass
+    def stop_candles_stream(self,ACTIVES):
+        while self.api.real_time_candles != {}:
+            self.api.real_time_candles = {}
+            time.sleep(3)
+            self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES])
+
+
+
     def collect_realtime_candles(self,ACTIVES,collect_time):
         collect={}
         start=time.time()
@@ -113,7 +125,7 @@ class IQ_Option:
         return collect
 ##############################################################################################
     def get_candles_as_array(self,ACTIVES,interval,count,endtime):
-        candles=self.get_candles(count,ACTIVES,interval,endtime)
+        candles=self.get_candles(ACTIVES,interval,count,endtime)
         ans = np.empty(shape=(len(candles), 4))
         for idx, candle in enumerate(candles):
             ans[idx][0] = candle["open"]
