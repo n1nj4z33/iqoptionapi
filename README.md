@@ -1,6 +1,8 @@
 # IQ Option API(Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
 fix some thing...
+
 update:2018/4/25
+
 sucess on python3.6.4
 
 ---
@@ -28,13 +30,18 @@ I_want_money.buy(Money,ACTIVES,ACTION)
 
 ### get candles
 !!!pay attention!!! get_candles can not get "real time data" ,it will late about 30sec
-if you very care about real time you need use "get  realtime candles"
+
+if you very care about real time you need use 
+
+"get  realtime candles"
+
 sample 
+now time 1:30:45sec
+1.  you want to get  candles 1:30:45sec now
+    you may get 1:30:15sec data have been late approximately 30sec
 
-you want to get  candles 1:30:45sec now
-
-you may get 1:30:15sec data have been late approximately 30sec
-
+2.  you want to get  candles 1:00:33sec 
+    you will get the right data
 
 ```
 I_want_money.get_candles(ACTIVES,interval,count,endtime)
@@ -43,11 +50,27 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
             #count:how many candles you want to get from now to past
             #endtime:get candles from past to "endtime"
 ```
+
 ### get  realtime candles
 you will get ""latest"" DATA
 ```
 I_want_money.get_realtime_candles("EURUSD")
 ```
+### get all realtime candles
+```
+I_want_money.get_all_realtime_candles()
+```
+
+### collect realtime candles
+
+```
+data=I_want_money.collect_realtime_candles("EURUSD",10.5)
+#I_want_money.collect_realtime_candles(ACTIVES,collect_time)
+#collect_time:you want to collect time sec
+
+```
+---
+
 ### get all profit
 ```
 I_want_money.get_all_profit()

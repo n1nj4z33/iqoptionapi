@@ -11,6 +11,7 @@ class IQ_Option:
         self.password=password
         self.suspend = 0.6
         self.connect()
+        self.start_all_candles_stream()
     def connect(self):
         while True:
             try:
@@ -61,19 +62,40 @@ class IQ_Option:
         while self.api.candles.candles_data==None:
             pass
         return self.api.candles.candles_data
+#######################################################
+##########             real time            ############        
+######################################################
 
-    def get_all_realtime_candles(self):
-        self.api.real_time_candles={}
+
+                    #all
+    def start_all_candles_stream(self):
         while self.api.real_time_candles == {}:
             for ACTIVES_name in OP_code.ACTIVES:
                 self.api.subscribe_candle(OP_code.ACTIVES[ACTIVES_name])
+    def get_all_realtime_candles(self):
         return self.api.real_time_candles
+    def stop_all_realtime_candles_stream(self):
+        while self.api.real_time_candles != {}:
+            self.api.real_time_candles != {}
+            time.sleep(1)
+            for ACTIVES_name in OP_code.ACTIVES:
+                self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES_name])
+    
+                    ##one
     def get_realtime_candles(self,ACTIVES):
         while True:
             try:
                 return self.get_all_realtime_candles()[ACTIVES]
             except:
                 pass
+    def collect_realtime_candles(self,ACTIVES,collect_time):
+        collect={}
+        start=time.time()
+        while time.time()<start+collect_time:
+            candles=self.get_realtime_candles(ACTIVES) 
+            collect[candles["at"]]=candles
+        return collect
+##############################################################################################
     def get_candles_as_array(self,ACTIVES,interval,count):
         candles=self.get_candles(count,ACTIVES,interval)
         ans = np.empty(shape=(len(candles), 4))

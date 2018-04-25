@@ -272,6 +272,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def subscribe_candle(self):
         return subscribeMessage_candle_generated(self)
+    @property
     def unsubscribe_candle(self):
         return unsubscribeMessage_candle_generated(self)
 
