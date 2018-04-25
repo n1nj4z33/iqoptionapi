@@ -33,14 +33,18 @@ I_want_money.buy(Money,ACTIVES,ACTION)
 
 if you very care about real time you need use 
 
-"get  realtime candles"
+"get realtime candles" OR "collect realtime candles"
 
 sample 
-now time 1:30:45sec
+
+""now"" time 1:30:45sec
+
 1.  you want to get  candles 1:30:45sec now
+    
     you may get 1:30:15sec data have been late approximately 30sec
 
 2.  you want to get  candles 1:00:33sec 
+
     you will get the right data
 
 ```
@@ -86,11 +90,15 @@ I_want_money.get_balance()
 I_want_money.check_win()
 #this function will do loop check your bet until if win/equal/loose
 ```
-## Will Add new option........
+ 
 
 ### Change real/practice Account
 ```
+I_want_money.change_balance(MODE)
+                        #MODE: "PRACTICE"/"REAL"
 ```
+
+Will Add new option........
 ### sell
 ```
 ```

@@ -48,6 +48,22 @@ class IQ_Option:
             except:
                 logging.error('fail get_balance()')
                 pass
+    def change_balance(self,Balance_MODE):
+        real_id=None
+        practice_id=None
+        for accunt in self.api.balances:
+            if accunt["type"]==1:
+                real_id=accunt["id"]
+            if accunt["type"]==4:
+                practice_id=accunt["id"]
+        while self.get_balance_mode()!=Balance_MODE:
+            if Balance_MODE=="REAL":
+                self.api.changebalance(real_id)
+            elif Balance_MODE=="PRACTICE":
+                self.api.changebalance(practice_id)
+            else:
+                print("ERROR doesn't have this mode")
+                exit(1)
     def get_candles(self,ACTIVES,interval,count,endtime):
 #{'id': 10357768, 'from': 1523969349, 'to': 1523969350, 'open': 1.23524, 'close': 1.235245, 'min': 1.23524, 'max': 1.23527, 'volume': 0}
         while True:
@@ -96,8 +112,8 @@ class IQ_Option:
             collect[candles["at"]]=candles
         return collect
 ##############################################################################################
-    def get_candles_as_array(self,ACTIVES,interval,count):
-        candles=self.get_candles(count,ACTIVES,interval)
+    def get_candles_as_array(self,ACTIVES,interval,count,endtime):
+        candles=self.get_candles(count,ACTIVES,interval,endtime)
         ans = np.empty(shape=(len(candles), 4))
         for idx, candle in enumerate(candles):
             ans[idx][0] = candle["open"]
@@ -105,6 +121,13 @@ class IQ_Option:
             ans[idx][2] = candle["min"]
             ans[idx][3] = candle["max"]
         return ans
+
+    def get_balance_mode(self):
+        time.sleep(self.suspend)
+        if self.api.balance_type==1:
+            return "REAL"
+        elif self.api.balance_type==4:
+            return "PRACTICE"
     def check_win(self):
         #'win'：win money 'equal'：no win no loose   'loose':loose money
         self.api.listinfodata.__init__()

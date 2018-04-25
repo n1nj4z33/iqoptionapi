@@ -15,7 +15,9 @@ from iqoptionapi.http.appinit import Appinit
 # from iqoptionapi.http.profile import Profile
 from iqoptionapi.http.billing import Billing
 from iqoptionapi.http.buyback import Buyback
+
 from iqoptionapi.http.changebalance import Changebalance
+
 from iqoptionapi.ws.client import WebsocketClient
 from iqoptionapi.ws.chanels.ssid import Ssid
 from iqoptionapi.ws.chanels.subscribe import Subscribe
@@ -50,6 +52,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     listinfodata = ListInfoData()
     api_option_init_all_result = []
     real_time_candles={}
+    balance_type=None
+    balance_id=None
+    balances=None
+
     def __init__(self, host, username, password, proxies=None):
         """
         :param str host: The hostname or ip address of a IQ Option server.

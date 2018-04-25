@@ -31,7 +31,17 @@ class WebsocketClient(object):
 
         elif message["name"] == "profile":
             self.api.profile.balance = message["msg"]["balance"]
+            self.api.balance_id=message["msg"]["balance_id"]
+            
+            try:
+                self.api.balance_type=message["msg"]["balance_type"]
+            except:
+                pass
 
+            try:
+                self.api.balances=message["msg"]["balances"]
+            except:
+                pass
         elif message["name"] == "candles":
             self.api.candles.candles_data = message["msg"]["candles"]
         #Make sure ""self.api.buySuccessful"" more stable
