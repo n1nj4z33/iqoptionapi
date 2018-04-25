@@ -3,7 +3,7 @@
 import json
 import logging
 import websocket
-
+import iqoptionapi.constants as OP_code
 
 class WebsocketClient(object):
     """Class for work with IQ option websocket."""
@@ -50,6 +50,12 @@ class WebsocketClient(object):
             self.api.listinfodata.add_listinfodata(listinfodata)
         elif message["name"] == "api_option_init_all_result":
             self.api.api_option_init_all_result = message["msg"]
+        elif message["name"] == "candle-generated":
+          
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]
+   
+            
+            self.api.real_time_candles[Active_name]= message["msg"]
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument
         """Method to process websocket errors."""

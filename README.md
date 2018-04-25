@@ -22,7 +22,7 @@ import time
 import numpy as np
 import logging
 
-class Binary_Option:
+class IQ_Option:
     def __init__(self,email,password):
         self.email=email
         self.password=password
@@ -64,10 +64,11 @@ class Binary_Option:
             except:
                 logging.error('fail get_balance()')
                 pass
-    def get_candles(self,ACTIVES,interval,count):
+    def get_candles(self,ACTIVES,interval,count,endtime):
+#{'id': 10357768, 'from': 1523969349, 'to': 1523969350, 'open': 1.23524, 'close': 1.235245, 'min': 1.23524, 'max': 1.23527, 'volume': 0}
         while True:
             try:
-                self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval, count)
+                self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval,count,endtime)
                 break
             except:
                 logging.error('fail get_candles need reconnect')
@@ -78,6 +79,18 @@ class Binary_Option:
             pass
         return self.api.candles.candles_data
 
+    def get_all_realtime_candles(self):
+        self.api.real_time_candles={}
+        while self.api.real_time_candles == {}:
+            for ACTIVES_name in OP_code.ACTIVES:
+                self.api.subscribe_candle(OP_code.ACTIVES[ACTIVES_name])
+        return self.api.real_time_candles
+    def get_realtime_candles(self,ACTIVES):
+        while True:
+            try:
+                return self.get_all_realtime_candles()[ACTIVES]
+            except:
+                pass
     def get_candles_as_array(self,ACTIVES,interval,count):
         candles=self.get_candles(count,ACTIVES,interval)
         ans = np.empty(shape=(len(candles), 4))
@@ -88,7 +101,7 @@ class Binary_Option:
             ans[idx][3] = candle["max"]
         return ans
     def check_win(self):
-        #'win'：win the money  'equal'：no win no loose   'loose':loose the money
+        #'win'：win money 'equal'：no win no loose   'loose':loose money
         self.api.listinfodata.__init__()
         while True:
             try:
@@ -149,11 +162,26 @@ I_want_money.buy(Money,ACTIVES,ACTION)
 ```
 
 ### get candles
+!!!pay attention!!! get_candles can not get "real time data" ,it will late about 30sec
+if you very care about real time you need use "get  realtime candles"
+sample 
+
+you want to get  candles 1:30:45sec now
+
+you may get 1:30:15sec data have been late approximately 30sec
+
+
 ```
-I_want_money.get_candles(ACTIVES,interval,count)
+I_want_money.get_candles(ACTIVES,interval,count,endtime)
             #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
             #interval:duration of candles
             #count:how many candles you want to get from now to past
+            #endtime:get candles from past to "endtime"
+```
+### get  realtime candles
+you will get ""latest"" DATA
+```
+I_want_money.get_realtime_candles("EURUSD")
 ```
 ### get all profit
 ```

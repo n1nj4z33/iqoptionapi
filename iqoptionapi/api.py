@@ -19,9 +19,13 @@ from iqoptionapi.http.changebalance import Changebalance
 from iqoptionapi.ws.client import WebsocketClient
 from iqoptionapi.ws.chanels.ssid import Ssid
 from iqoptionapi.ws.chanels.subscribe import Subscribe
+from iqoptionapi.ws.chanels.subscribe import subscribeMessage_candle_generated
+
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe
+from iqoptionapi.ws.chanels.unsubscribe import unsubscribeMessage_candle_generated
 from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
+ 
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
 
 from iqoptionapi.ws.objects.timesync import TimeSync
@@ -45,6 +49,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     candles = Candles()
     listinfodata = ListInfoData()
     api_option_init_all_result = []
+    real_time_candles={}
     def __init__(self, host, username, password, proxies=None):
         """
         :param str host: The hostname or ip address of a IQ Option server.
@@ -264,6 +269,12 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.candles.GetCandles>`.
         """
         return GetCandles(self)
+    @property
+    def subscribe_candle(self):
+        return subscribeMessage_candle_generated(self)
+    def unsubscribe_candle(self):
+        return unsubscribeMessage_candle_generated(self)
+
     def get_api_option_init_all(self):
 
         data = json.dumps(dict(name="api_option_init_all",
