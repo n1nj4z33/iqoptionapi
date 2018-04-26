@@ -89,7 +89,8 @@ I_want_money.start_candles_stream("EURUSD")
 thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
 #I_want_money.collect_realtime_candles_thread_start("EURUSD",maxdict)
 #maxdict:Set the maximum candles you want collect to prevent memory overflow
-
+#maxdict :because dict doing del and add len(maxdict) will change
+#sample maxdict set 100 maxdict will get 100~101 for Guarantee max at less have 100
 ######do some thing#######
 time.sleep(3)
 ######do some thing#######

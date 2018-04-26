@@ -116,7 +116,7 @@ class IQ_Option:
                 #####dict controler####
     def dict_queue_add(self,dict,maxdict,key,value):
         while True:
-            if len(dict)<maxdict:
+            if len(dict)<=maxdict:
                 dict[key]=value
                 break
             else:
