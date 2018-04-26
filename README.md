@@ -81,6 +81,23 @@ print(I_want_money.collect_realtime_candles("EURUSD",10.5))
 I_want_money.stop_candles_stream("EURUSD")
 
 ```
+
+### collect realtime candles on thread
+collect data in thread with out wait
+```
+I_want_money.start_candles_stream("EURUSD")
+thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
+#I_want_money.collect_realtime_candles_thread_start("EURUSD",maxdict)
+#maxdict:Set the maximum candles you want collect to prevent memory overflow
+
+######do some thing#######
+time.sleep(3)
+######do some thing#######
+
+print(I_want_money.thread_collect_realtime)
+I_want_money.collect_realtime_candles_thread_stop(thread) 
+
+```
 ---
 
 ### get all profit

@@ -1,6 +1,7 @@
 #python
 from iqoptionapi.api import IQOptionAPI
 import iqoptionapi.constants as OP_code
+import threading
 import time
 import numpy as np
 import logging
@@ -11,6 +12,7 @@ class IQ_Option:
         self.password=password
         self.suspend = 0.6
         self.connect()
+        self.thread_collect_realtime={}
         
     def connect(self):
         while True:
@@ -64,8 +66,8 @@ class IQ_Option:
             else:
                 print("ERROR doesn't have this mode")
                 exit(1)
+ #######################**********candles***********#######################
     def get_candles(self,ACTIVES,interval,count,endtime):
-#{'id': 10357768, 'from': 1523969349, 'to': 1523969350, 'open': 1.23524, 'close': 1.235245, 'min': 1.23524, 'max': 1.23527, 'volume': 0}
         while True:
             try:
                 self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval,count,endtime)
@@ -73,16 +75,13 @@ class IQ_Option:
             except:
                 logging.error('fail get_candles need reconnect')
                 self.connect()
-                #print("get_candles error")
                 pass
         while self.api.candles.candles_data==None:
             pass
         return self.api.candles.candles_data
-#######################################################
-##########             real time            ############        
-######################################################
-
-
+################################################################################
+###################             real time            ###########################    
+################################################################################
                     #all
     def start_all_candles_stream(self):
         while self.api.real_time_candles == {}:
@@ -113,16 +112,46 @@ class IQ_Option:
             self.api.real_time_candles = {}
             time.sleep(3)
             self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES])
+###################################collect realtime###################################
+                #####dict controler####
+    def dict_queue_add(self,dict,maxdict,key,value):
+        while True:
+            if len(dict)<maxdict:
+                dict[key]=value
+                break
+            else:
+                #del mini key
+                del dict[sorted(dict.keys(), reverse=False)[0]]
+
+
+
+    def thread_realtime(self,ACTIVES,maxdict):
+        t = threading.currentThread()
+        while getattr(t,"do_run",True):
+            candles=self.get_realtime_candles(ACTIVES)
+            self.dict_queue_add(self.thread_collect_realtime,maxdict,candles["at"],candles)
+        self.thread_collect_realtime={}
+
+    def collect_realtime_candles_thread_start(self,ACTIVES,maxdict):
+        t = threading.Thread(target=self.thread_realtime, args=(ACTIVES,maxdict))
+        t.start()
+        return t
+    def collect_realtime_candles_thread_stop(self,thread): 
+        thread.do_run = False
+        thread.join() 
 
 
 
     def collect_realtime_candles(self,ACTIVES,collect_time):
+        #doing while untill time stop
         collect={}
         start=time.time()
         while time.time()<start+collect_time:
             candles=self.get_realtime_candles(ACTIVES) 
             collect[candles["at"]]=candles
         return collect
+    
+
 ##############################################################################################
     def get_candles_as_array(self,ACTIVES,interval,count,endtime):
         candles=self.get_candles(ACTIVES,interval,count,endtime)
