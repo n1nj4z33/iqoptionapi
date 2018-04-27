@@ -1,5 +1,8 @@
-# IQ Option API(Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
-fix some thing...
+# IQ Option API
+
+(Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
+
+fix many thing...........
 
 update:2018/4/25
 
@@ -9,7 +12,7 @@ sucess on python3.6.4
 
 ### Installation & GET new version
 ```
-sudo pip3 install git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
+sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ```
 ---
 ### Import 
