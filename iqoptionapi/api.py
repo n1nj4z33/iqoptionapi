@@ -5,7 +5,7 @@ import json
 import logging
 import threading
 import requests
-
+import ssl
 from iqoptionapi.http.login import Login
 from iqoptionapi.http.loginv2 import Loginv2
 from iqoptionapi.http.getprofile import Getprofile
@@ -35,6 +35,7 @@ from iqoptionapi.ws.objects.profile import Profile
 from iqoptionapi.ws.objects.candles import Candles
 from iqoptionapi.ws.objects.listinfodata import ListInfoData
 
+import iqoptionapi.global_value as global_value
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
 # Adding certificate verification is strongly advised.
@@ -309,11 +310,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         ssid = response.cookies["ssid"]
         self.set_session_cookies()
         self.websocket_client = WebsocketClient(self)
-
-        websocket_thread = threading.Thread(target=self.websocket.run_forever)
+ 
+        websocket_thread = threading.Thread(target=self.websocket.run_forever,kwargs={'sslopt':{"check_hostname": False, "cert_reqs": ssl.CERT_NONE, "ca_certs": "cacert.pem"}})
+                                                                                    #for fix pyinstall error: cafile, capath and cadata cannot be all omitted
         websocket_thread.daemon = True
         websocket_thread.start()
 
-        time.sleep(5)
+        while global_value.check_websocket_if_connect<=0:
+            pass
 
         self.ssid(ssid) # pylint: disable=not-callable

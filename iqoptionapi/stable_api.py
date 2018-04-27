@@ -10,7 +10,7 @@ class IQ_Option:
     def __init__(self,email,password):
         self.email=email
         self.password=password
-        self.suspend = 0.6
+        self.suspend = 0.5
         self.connect()
         self.thread_collect_realtime={}
         
@@ -53,11 +53,17 @@ class IQ_Option:
     def change_balance(self,Balance_MODE):
         real_id=None
         practice_id=None
-        for accunt in self.api.balances:
-            if accunt["type"]==1:
-                real_id=accunt["id"]
-            if accunt["type"]==4:
-                practice_id=accunt["id"]
+        while True:
+            try:
+                for accunt in self.api.balances:
+                    if accunt["type"]==1:
+                        real_id=accunt["id"]
+                    if accunt["type"]==4:
+                        practice_id=accunt["id"]
+                break
+            except:
+                pass
+
         while self.get_balance_mode()!=Balance_MODE:
             if Balance_MODE=="REAL":
                 self.api.changebalance(real_id)
@@ -110,7 +116,7 @@ class IQ_Option:
     def stop_candles_stream(self,ACTIVES):
         while self.api.real_time_candles != {}:
             self.api.real_time_candles = {}
-            time.sleep(3)
+            time.sleep(self.suspend)
             self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES])
 ###################################collect realtime###################################
                 #####dict controler####
