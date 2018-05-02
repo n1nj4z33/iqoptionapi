@@ -34,13 +34,23 @@ logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 ```
 I_want_money=IQ_Option("email","password")
 ```
-### buy
+### Buy 
+
+#### For Options&Digital
+
 ```
 I_want_money.buy(Money,ACTIVES,ACTION)
                 #Money:How many you want to buy type(number)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
                 #ACTION:"call"/"put" type(str)
 ```
+#### For Forex&CFD&Crypto
+```
+will add ......
+
+```
+
+---
 
 ### get candles
 !!!pay attention!!! get_candles can not get "real time data" ,it will late about 30sec
@@ -143,3 +153,12 @@ I_want_money.change_balance(MODE)
 ### sell
 ```
 ```
+
+### for CRYPTO
+
+
+### for CFD
+
+### for FOREX
+
+### for Digital
