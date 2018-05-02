@@ -156,12 +156,13 @@ class IQ_Option:
         while self.api.real_time_candles == {}:
             for ACTIVES_name in OP_code.ACTIVES:
                 self.api.subscribe(OP_code.ACTIVES[ACTIVES_name])
+            time.sleep(self.suspend)
     def get_all_realtime_candles(self):
         return self.api.real_time_candles
     def stop_all_candles_stream(self):
         while self.api.real_time_candles != {}:
             self.api.real_time_candles = {}
-            time.sleep(1)
+            time.sleep(self.suspend)
             for ACTIVES_name in OP_code.ACTIVES:
                 self.api.unsubscribe(OP_code.ACTIVES[ACTIVES_name])
     

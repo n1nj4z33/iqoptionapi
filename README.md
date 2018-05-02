@@ -4,7 +4,9 @@
 
 fix many thing...........
 
-This API is Diligent development!! Many thing may change,Please read sample code,some api do not test for long time..... 
+This API is Diligent development!! 
+
+Many thing may change,Please read sample code
 
 update:2018/5/2
 
@@ -21,6 +23,13 @@ sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ```
 from iqoptionapi.stable_api import IQ_Option
 ```
+### Debug mode on
+
+```
+import logging
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+```
+
 ### login
 ```
 I_want_money=IQ_Option("email","password")
