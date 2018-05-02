@@ -13,7 +13,7 @@ class IQ_Option:
         self.suspend = 0.5
         self.connect()
         self.thread_collect_realtime={}
-        
+    #***  
     def connect(self):
         while True:
             try:
@@ -24,12 +24,28 @@ class IQ_Option:
             except:
                 logging.error('fail connect()')
                 pass
+##################################################################################
+
     def get_all_init(self):
         self.api.api_option_init_all_result = None
-        self.api.get_api_option_init_all()
-        while self.api.api_option_init_all_result == None:
-            pass
+        while True :
+            try:
+                self.api.get_api_option_init_all()
+                time.sleep(self.suspend)
+                try: 
+                    if self.api.api_option_init_all_result["isSuccessful"] == True:
+                        break
+                except:
+                    pass
+            except:
+                logging.error('fail get_all_init need reconnect')
+                self.connect()
         return self.api.api_option_init_all_result
+    def get_ALL_ACTIVES_OPCODE(self):
+        init_info=self.get_all_init()
+        for i in init_info["result"]["binary"]["actives"]:
+            OP_code.ACTIVES[(init_info["result"]["binary"]["actives"][i]["name"]).split(".")[1]]=i
+        return OP_code.ACTIVES
     def get_profit(self,ACTIVES):
         init_info=self.get_all_init()
         return (100.0-init_info["result"]["turbo"]["actives"][str(OP_code.ACTIVES[ACTIVES])]["option"]["profit"]["commission"])/100.0
@@ -43,6 +59,7 @@ class IQ_Option:
             except:
                 pass
         return all_profit
+##################################################################################################
     def get_balance(self):
         while True:
             try:
@@ -55,15 +72,15 @@ class IQ_Option:
         practice_id=None
         while True:
             try:
-                for accunt in self.api.balances:
+                for accunt in self.api.profile.balances:
                     if accunt["type"]==1:
                         real_id=accunt["id"]
                     if accunt["type"]==4:
                         practice_id=accunt["id"]
                 break
             except:
+                logging.error('fail change_balance()')
                 pass
-
         while self.get_balance_mode()!=Balance_MODE:
             if Balance_MODE=="REAL":
                 self.api.changebalance(real_id)
@@ -92,7 +109,7 @@ class IQ_Option:
     def start_all_candles_stream(self):
         while self.api.real_time_candles == {}:
             for ACTIVES_name in OP_code.ACTIVES:
-                self.api.subscribe_candle(OP_code.ACTIVES[ACTIVES_name])
+                self.api.subscribe(OP_code.ACTIVES[ACTIVES_name])
     def get_all_realtime_candles(self):
         return self.api.real_time_candles
     def stop_all_candles_stream(self):
@@ -100,30 +117,32 @@ class IQ_Option:
             self.api.real_time_candles = {}
             time.sleep(1)
             for ACTIVES_name in OP_code.ACTIVES:
-                self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES_name])
+                self.api.unsubscribe(OP_code.ACTIVES[ACTIVES_name])
     
                     ##one
     def start_candles_stream(self,ACTIVES):
         while self.api.real_time_candles == {}:
-            self.api.subscribe_candle(OP_code.ACTIVES[ACTIVES])
+            time.sleep(self.suspend)
+            self.api.subscribe(OP_code.ACTIVES[ACTIVES])
 
     def get_realtime_candles(self,ACTIVES):
         while True:
             try:
                 return self.api.real_time_candles[ACTIVES]
             except:
+                logging.error('fail get_realtime_candles()')
                 pass
     def stop_candles_stream(self,ACTIVES):
         while self.api.real_time_candles != {}:
             self.api.real_time_candles = {}
             time.sleep(self.suspend)
-            self.api.unsubscribe_candle(OP_code.ACTIVES[ACTIVES])
+            self.api.unsubscribe(OP_code.ACTIVES[ACTIVES])
 ###################################collect realtime###################################
                 #####dict controler####
-    def dict_queue_add(self,dict,maxdict,key,value):
+    def dict_queue_add(self,dict,ACTIVES,maxdict,key,value):
         while True:
             if len(dict)<=maxdict:
-                dict[key]=value
+                dict[(ACTIVES,key)]=value
                 break
             else:
                 #del mini key
@@ -135,8 +154,8 @@ class IQ_Option:
         t = threading.currentThread()
         while getattr(t,"do_run",True):
             candles=self.get_realtime_candles(ACTIVES)
-            self.dict_queue_add(self.thread_collect_realtime,maxdict,candles["at"],candles)
-        self.thread_collect_realtime={}
+            self.dict_queue_add(dict=self.thread_collect_realtime,ACTIVES=ACTIVES,maxdict=maxdict,key=candles["at"],value=candles)
+        #self.thread_collect_realtime={}
 
     def collect_realtime_candles_thread_start(self,ACTIVES,maxdict):
         t = threading.Thread(target=self.thread_realtime, args=(ACTIVES,maxdict))
@@ -170,41 +189,45 @@ class IQ_Option:
         return ans
 
     def get_balance_mode(self):
-        time.sleep(self.suspend)
-        if self.api.balance_type==1:
+        #self.api.profile.balance_type=None
+        while self.api.profile.balance_type==None:
+            pass
+        if self.api.profile.balance_type==1:
             return "REAL"
-        elif self.api.balance_type==4:
+        elif self.api.profile.balance_type==4:
             return "PRACTICE"
     def check_win(self):
         #'win'：win money 'equal'：no win no loose   'loose':loose money
         self.api.listinfodata.__init__()
+        start=time.time()
         while True:
             try:
                 state=self.api.listinfodata.current_listinfodata.game_state
                 if state==1:
                     break
             except:
-                #print("connect error")
-                pass
+                if time.time()-start>180:
+                    logging.error('check_win time late 120sec')
         return self.api.listinfodata.current_listinfodata.win
     def buy(self,price,ACTIVES,ACTION):
-       # ACTION:"put"/"call"
+        self.api.buy_successful==None
         while True:
-            #print("try buy")
             while True:
                 try:
                     self.api.buy(price, OP_code.ACTIVES[ACTIVES], "turbo", ACTION)
                     break
                 except:
-                    logging.error('buy error')
+                    logging.error('self.api.buy error')
                     pass
+            start=time.time()
             while self.api.buy_successful==None:
-                pass
+                if time.time()-start>60:
+                    logging.error('check buy_successful time late 60sec')
+                    break
+            
             if self.api.buy_successful:
                 break
             else:
-                #print("reconnect")#if fail to buy we need to reconnect
-                #print("buy return fail")
                 logging.error('fail buy need reconnect')
                 self.connect()
         #print("buy ok")

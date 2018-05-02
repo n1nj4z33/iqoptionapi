@@ -30,16 +30,26 @@ class WebsocketClient(object):
             self.api.timesync.server_timestamp = message["msg"]
 
         elif message["name"] == "profile":
-            self.api.profile.balance = message["msg"]["balance"]
-            self.api.balance_id=message["msg"]["balance_id"]
+            #--------------all-------------
+            self.api.profile.msg=message["msg"]
+            #---------------------------
+            try:
+                self.api.profile.balance = message["msg"]["balance"]
+            except:
+                pass
             
             try:
-                self.api.balance_type=message["msg"]["balance_type"]
+                self.api.profile.balance_id=message["msg"]["balance_id"]
+            except:
+                pass
+            
+            try:
+                self.api.profile.balance_type=message["msg"]["balance_type"]
             except:
                 pass
 
             try:
-                self.api.balances=message["msg"]["balances"]
+                self.api.profile.balances=message["msg"]["balances"]
             except:
                 pass
         elif message["name"] == "candles":
@@ -61,11 +71,9 @@ class WebsocketClient(object):
         elif message["name"] == "api_option_init_all_result":
             self.api.api_option_init_all_result = message["msg"]
         elif message["name"] == "candle-generated":
-          
-            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]
-   
-            
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]            
             self.api.real_time_candles[Active_name]= message["msg"]
+    
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument
         """Method to process websocket errors."""

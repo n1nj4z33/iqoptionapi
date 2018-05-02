@@ -4,6 +4,14 @@
 
 fix many thing...........
 
+This API is Diligent development!! 
+
+Many thing may change
+
+Please read sample code
+
+some api do not test for long time..... 
+
 update:2018/4/25
 
 sucess on python3.6.4

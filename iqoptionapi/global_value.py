@@ -1,2 +1,2 @@
 #python
-check_websocket_if_connect=0
+check_websocket_if_connect=None
