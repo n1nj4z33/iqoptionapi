@@ -36,7 +36,7 @@ I_want_money=IQ_Option("email","password")
 ```
 ### Buy 
 
-#### For Options&Digital
+#### For Options
 
 ```
 I_want_money.buy(Money,ACTIVES,ACTION)
@@ -44,7 +44,7 @@ I_want_money.buy(Money,ACTIVES,ACTION)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
                 #ACTION:"call"/"put" type(str)
 ```
-#### For Forex&CFD&Crypto
+#### For Forex&CFD&Crypto&Digital
 ```
 will add ......
 

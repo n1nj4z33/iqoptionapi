@@ -41,7 +41,7 @@ class IQ_Option:
                 logging.error('**error** get_all_init need reconnect')
                 self.connect()
         return self.api.api_option_init_all_result
-    def get_ALL_ACTIVES_OPCODE(self):
+    def get_ALL_Binary_ACTIVES_OPCODE(self):
         init_info=self.get_all_init()
         for i in init_info["result"]["binary"]["actives"]:
             OP_code.ACTIVES[(init_info["result"]["binary"]["actives"][i]["name"]).split(".")[1]]=i
