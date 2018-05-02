@@ -252,7 +252,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.buyback.Buyback>`.
         """
         return Buyback(self)
-
+#------------------------------------------------------------------------
     @property
     def getprofile(self):
         """Property for get IQ Option http getprofile resource.
@@ -261,7 +261,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.getprofile.Getprofile>`.
         """
         return Getprofile(self)
-
+ 
+#----------------------------------------------------------------------------     
     @property
     def ssid(self):
         """Property for get IQ Option websocket ssid chanel.

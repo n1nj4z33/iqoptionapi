@@ -22,7 +22,7 @@ class IQ_Option:
                 time.sleep(self.suspend)
                 break
             except:
-                logging.error('fail connect()')
+                logging.error('**error** connect()')
                 pass
 ##################################################################################
 
@@ -38,7 +38,7 @@ class IQ_Option:
                 except:
                     pass
             except:
-                logging.error('fail get_all_init need reconnect')
+                logging.error('**error** get_all_init need reconnect')
                 self.connect()
         return self.api.api_option_init_all_result
     def get_ALL_ACTIVES_OPCODE(self):
@@ -60,18 +60,64 @@ class IQ_Option:
                 pass
         return all_profit
 ##################################################################################################
+    def get_profile(self):
+        while True:
+            try :
+                respon=self.api.getprofile().json()
+                time.sleep(self.suspend)
+                if respon["isSuccessful"]==True:
+                    return respon
+            except:
+                logging.error('**error** get_profile')
+#------------------------https profile------------------------
     def get_balance(self):
+        #self.api.profile.balance=None
         while True:
             try:
-                return self.api.profile.balance
+                respon=self.get_profile()
+                self.api.profile.balance=respon["result"]["balance"]
+                break
             except:
-                logging.error('fail get_balance()')
+                logging.error('**error** get_balance()')
                 pass
+            time.sleep(self.suspend)
+        return self.api.profile.balance
+
+    def get_balances(self):
+        #self.api.profile.balance=None
+        while True:
+            try:
+                respon=self.get_profile()
+                self.api.profile.balances=respon["result"]["balances"]
+                break
+            except:
+                logging.error('**error** get_balances()')
+                pass
+            time.sleep(self.suspend)
+        return self.api.profile.balances
+
+    def get_balance_mode(self):
+        #self.api.profile.balance_type=None
+        while True:
+            try:
+                respon=self.get_profile()
+                self.api.profile.balance_type=respon["result"]["balance_type"]
+                break
+            except:
+                logging.error('**error** get_balance_mode()')
+                pass
+            time.sleep(self.suspend)   
+        if self.api.profile.balance_type==1:
+            return "REAL"
+        elif self.api.profile.balance_type==4:
+            return "PRACTICE"
+#------------------------------------------------
     def change_balance(self,Balance_MODE):
         real_id=None
         practice_id=None
         while True:
             try:
+                self.get_balances()
                 for accunt in self.api.profile.balances:
                     if accunt["type"]==1:
                         real_id=accunt["id"]
@@ -79,7 +125,7 @@ class IQ_Option:
                         practice_id=accunt["id"]
                 break
             except:
-                logging.error('fail change_balance()')
+                logging.error('**error** change_balance()')
                 pass
         while self.get_balance_mode()!=Balance_MODE:
             if Balance_MODE=="REAL":
@@ -96,7 +142,7 @@ class IQ_Option:
                 self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval,count,endtime)
                 break
             except:
-                logging.error('fail get_candles need reconnect')
+                logging.error('**error** get_candles need reconnect')
                 self.connect()
                 pass
         while self.api.candles.candles_data==None:
@@ -130,7 +176,7 @@ class IQ_Option:
             try:
                 return self.api.real_time_candles[ACTIVES]
             except:
-                logging.error('fail get_realtime_candles()')
+                logging.error('**error** get_realtime_candles()')
                 pass
     def stop_candles_stream(self,ACTIVES):
         while self.api.real_time_candles != {}:
@@ -188,14 +234,7 @@ class IQ_Option:
             ans[idx][3] = candle["max"]
         return ans
 
-    def get_balance_mode(self):
-        #self.api.profile.balance_type=None
-        while self.api.profile.balance_type==None:
-            pass
-        if self.api.profile.balance_type==1:
-            return "REAL"
-        elif self.api.profile.balance_type==4:
-            return "PRACTICE"
+
     def check_win(self):
         #'win'：win money 'equal'：no win no loose   'loose':loose money
         self.api.listinfodata.__init__()
@@ -228,7 +267,7 @@ class IQ_Option:
             if self.api.buy_successful:
                 break
             else:
-                logging.error('fail buy need reconnect')
+                logging.error('**error** buy need reconnect')
                 self.connect()
         #print("buy ok")
     def call(self,price,ACTIVES):
