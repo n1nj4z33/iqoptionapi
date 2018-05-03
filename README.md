@@ -14,11 +14,23 @@ sucess on python3.6.4
 
 ---
 
-### Installation & GET new version
+## Installation & GET new version
 ```
 sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ```
+
 ---
+## Littile sample
+```
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+goal="EURUSD"
+print("get candles")
+print(I_want_money.get_candles(goal,60,111,time.time()))
+```
+---
+## Document
+
 ### Import 
 ```
 from iqoptionapi.stable_api import IQ_Option
@@ -30,7 +42,15 @@ import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 ```
 
-### login
+### Login
+!!!
+
+Login NOT support SMS Authorization yet
+
+I suggest close it because your robot will stop to wait you to check sms code (on phone)....
+
+!!!
+
 ```
 I_want_money=IQ_Option("email","password")
 ```
