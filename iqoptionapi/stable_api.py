@@ -13,6 +13,7 @@ class IQ_Option:
         self.suspend = 0.5
         self.connect()
         self.thread_collect_realtime={}
+        self.get_ALL_Binary_ACTIVES_OPCODE()
     #***  
     def connect(self):
         while True:

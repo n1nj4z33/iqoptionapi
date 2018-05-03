@@ -12,30 +12,21 @@ from iqoptionapi.http.getprofile import Getprofile
 from iqoptionapi.http.auth import Auth
 from iqoptionapi.http.token import Token
 from iqoptionapi.http.appinit import Appinit
-
-
 from iqoptionapi.http.billing import Billing
 from iqoptionapi.http.buyback import Buyback
-
 from iqoptionapi.http.changebalance import Changebalance
-
 from iqoptionapi.ws.client import WebsocketClient
 from iqoptionapi.ws.chanels.ssid import Ssid
 from iqoptionapi.ws.chanels.subscribe import Subscribe
- 
-
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe
- 
 from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
- 
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
-
+from iqoptionapi.ws.chanels.instruments import Get_instruments
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
 from iqoptionapi.ws.objects.candles import Candles
 from iqoptionapi.ws.objects.listinfodata import ListInfoData
-
 import iqoptionapi.global_value as global_value
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
@@ -261,7 +252,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.getprofile.Getprofile>`.
         """
         return Getprofile(self)
- 
+    @property   
+    def get_instruments(self):
+        return Get_instruments(self)
 #----------------------------------------------------------------------------     
     @property
     def ssid(self):

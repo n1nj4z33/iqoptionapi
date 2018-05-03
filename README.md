@@ -34,6 +34,10 @@ logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 ```
 I_want_money=IQ_Option("email","password")
 ```
+### View all ACTIVES Name
+```
+
+```
 ### Buy 
 
 #### For Options
@@ -41,7 +45,7 @@ I_want_money=IQ_Option("email","password")
 ```
 I_want_money.buy(Money,ACTIVES,ACTION)
                 #Money:How many you want to buy type(number)
-                #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
+                #ACTIVES:sample input "EURUSD" OR "EURGBP"....
                 #ACTION:"call"/"put" type(str)
 ```
 #### For Forex&CFD&Crypto&Digital

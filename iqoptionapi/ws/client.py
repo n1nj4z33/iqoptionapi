@@ -53,7 +53,10 @@ class WebsocketClient(object):
             except:
                 pass
         elif message["name"] == "candles":
-            self.api.candles.candles_data = message["msg"]["candles"]
+            try:
+                self.api.candles.candles_data = message["msg"]["candles"]
+            except:
+                pass
         #Make sure ""self.api.buySuccessful"" more stable
         #check buySuccessful have two fail action
         #if "user not authorized" we get buyV2_result !!!need to reconnect!!!
