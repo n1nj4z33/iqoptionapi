@@ -6,7 +6,7 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/5/3
+update:2018/5/4
 
 sucess on python3.6.4
 
