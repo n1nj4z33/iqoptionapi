@@ -11,33 +11,60 @@ class IQ_Option:
         self.email=email
         self.password=password
         self.suspend = 0.5
+        self.thread=None
         self.connect()
         self.thread_collect_realtime={}
         self.get_ALL_Binary_ACTIVES_OPCODE()
+ 
+        #time.sleep(self.suspend)
     #***  
     def connect(self):
         while True:
             try:
+                try:
+                    self.api.close()
+                except:
+                    pass
+                    #logging.error('**warning** self.api.close() it can ignore')
                 self.api = IQOptionAPI("iqoption.com", self.email, self.password)
+                self.api.timesync.server_timestamp=None
                 self.api.connect()
-                time.sleep(self.suspend)
+                
                 break
             except:
                 logging.error('**error** connect()')
                 pass
+        #wait for timestamp getting
+        while True:
+            try:
+                if self.api.timesync.server_timestamp!=None:
+                    break
+            except:
+                pass
+        
+
 ##################################################################################
 
     def get_all_init(self):
         self.api.api_option_init_all_result = None
         while True :
             try:
-                self.api.get_api_option_init_all()
-                time.sleep(self.suspend)
-                try: 
-                    if self.api.api_option_init_all_result["isSuccessful"] == True:
+                self.api.get_api_option_init_all()      
+                start=time.time()
+                while True:
+                    if time.time()-start>10:
+                        logging.error('**warning** get_all_init late 10 sec')
                         break
-                except:
-                    pass
+                    try:
+                        if self.api.api_option_init_all_result != None:
+                            break
+                    except:
+                        pass
+                if self.api.api_option_init_all_result["isSuccessful"]==True:
+                    break
+                else:
+                    logging.error('**error** self.api.api_option_init_all_result["isSuccessful"] ==False need reconnect')
+                    self.connect() 
             except:
                 logging.error('**error** get_all_init need reconnect')
                 self.connect()
@@ -45,8 +72,9 @@ class IQ_Option:
     def get_ALL_Binary_ACTIVES_OPCODE(self):
         init_info=self.get_all_init()
         for i in init_info["result"]["binary"]["actives"]:
-            OP_code.ACTIVES[(init_info["result"]["binary"]["actives"][i]["name"]).split(".")[1]]=i
-        return OP_code.ACTIVES
+            OP_code.ACTIVES[(init_info["result"]["binary"]["actives"][i]["name"]).split(".")[1]]=int(i)
+            
+        #return OP_code.ACTIVES
     def get_profit(self,ACTIVES):
         init_info=self.get_all_init()
         return (100.0-init_info["result"]["turbo"]["actives"][str(OP_code.ACTIVES[ACTIVES])]["option"]["profit"]["commission"])/100.0
@@ -247,30 +275,36 @@ class IQ_Option:
                 if state==1:
                     break
             except:
-                if time.time()-start>180:
-                    logging.error('check_win time late 120sec')
+                pass
         return self.api.listinfodata.current_listinfodata.win
-    def buy(self,price,ACTIVES,ACTION):
+    def buy(self,price,ACTIVES,ACTION,expirations_mode,force_buy=True):
+         
         self.api.buy_successful==None
         while True:
             while True:
                 try:
-                    self.api.buy(price, OP_code.ACTIVES[ACTIVES], "turbo", ACTION)
+                    self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION,expirations_mode)
                     break
                 except:
+                    if force_buy==False:
+                        return False 
                     logging.error('self.api.buy error')
+                    self.connect()
                     pass
             start=time.time()
             while self.api.buy_successful==None:
                 if time.time()-start>60:
                     logging.error('check buy_successful time late 60sec')
                     break
-            
             if self.api.buy_successful:
-                break
+                return True 
             else:
-                logging.error('**error** buy need reconnect')
+                if force_buy==False:
+                    return False  
+                logging.error('**error** buy error...')
                 self.connect()
+        
+                 
         #print("buy ok")
     def call(self,price,ACTIVES):
         while True:

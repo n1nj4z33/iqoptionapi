@@ -2,13 +2,11 @@
 
 (Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
 
-fix many thing...........
-
 This API is Diligent development!! 
 
-Many thing may change,Please read sample code
+Please Read Document
 
-update:2018/5/2
+update:2018/5/3
 
 sucess on python3.6.4
 
@@ -35,13 +33,14 @@ print(I_want_money.get_candles(goal,60,111,time.time()))
 ```
 from iqoptionapi.stable_api import IQ_Option
 ```
+---
 ### Debug mode on
 
 ```
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 ```
-
+---
 ### Login
 !!!
 
@@ -54,20 +53,28 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 ```
 I_want_money=IQ_Option("email","password")
 ```
+---
 ### View all ACTIVES Name
 ```
-
+will add..
 ```
+---
 ### Buy 
 
 #### For Options
 
 ```
-I_want_money.buy(Money,ACTIVES,ACTION)
+I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
                 #Money:How many you want to buy type(number)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP"....
                 #ACTION:"call"/"put" type(str)
+                #expirations_mode:1~9
+                #force_buy= True: if fail try buy untill sucess 
+                            False:if fail break
+                #return:True/False if sucess or not
 ```
+___
+
 #### For Forex&CFD&Crypto&Digital
 ```
 will add ......
