@@ -2,6 +2,8 @@
 
 (Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
 
+!Rolling release!
+
 This API is Diligent development!! 
 
 Please Read Document
