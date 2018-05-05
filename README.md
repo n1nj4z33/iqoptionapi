@@ -15,10 +15,14 @@ sucess on python3.6.4
 ---
 
 ## Installation & GET new version
+For Python3
 ```
 sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ```
-
+For Python2
+```
+sudo pip2 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
+```
 ---
 ## Littile sample
 ```
@@ -70,11 +74,13 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
                 #Money:How many you want to buy type(number)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP"....
                 #ACTION:"call"/"put" type(str)
-                #expirations_mode:1~9
+                #expirations_mode: OTC(1~9) OPTION(>1) you need to try
                 #force_buy= True: if fail try buy untill sucess 
                             False:if fail break
                 #return:True/False if sucess or not
 ```
+#### expirations_mode
+![ss](/image/exp.png)
 ___
 
 #### For Forex&CFD&Crypto&Digital

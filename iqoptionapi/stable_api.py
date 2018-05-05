@@ -278,7 +278,6 @@ class IQ_Option:
                 pass
         return self.api.listinfodata.current_listinfodata.win
     def buy(self,price,ACTIVES,ACTION,expirations_mode,force_buy=True):
-         
         self.api.buy_successful==None
         while True:
             while True:

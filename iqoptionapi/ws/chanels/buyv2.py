@@ -15,36 +15,29 @@ class Buyv2(Base):
 
         :param price: The buying price.
         :param active: The buying active.
-        :param option: The buying option.
         :param direction: The buying direction.
         """
-        exp=int(self.api.timesync.expiration_timestamp)
-      
+        exp=int(self.api.timesync.server_timestamp)
+     
         #exp=int(time.time())
         i=int(expiration_mode)
         if i>=1 and i<=5:
             option="turbo"
             #Round to next full minute
             if datetime.datetime.now().second > 30:
-                exp = exp - (exp % 60) + 60*i
+                exp = exp - (exp % 60) + 60*(i+1)
             else:
-                exp = exp - (exp % 60)+60*(i-1)
-        elif i>=6 and i<=9:
+                exp = exp - (exp % 60)+60*(i)
+        elif i>=6 :
             option="binary"
-            mode=[]
-            for j in range(4):
-                tmp_exp=exp - (exp % 60)
-                tmp_exp=tmp_exp-(tmp_exp%3600)+(j)*15*60
-                if exp>tmp_exp:
-                    mode.append(tmp_exp+3600)
-                else:
-                    mode.append(tmp_exp)
-            mode.sort()
-            exp=mode[i-6]
-        else:
-            print("ERROR class Buyv2(Base) expiration_mode need 1~9")
-            exit(1)
-            
+            tmp_exp=exp - (exp % 60)
+            tmp_exp=tmp_exp-(tmp_exp%3600)#+(j)*15*60  
+            j=0
+            while exp>tmp_exp+(j)*15*60:#find header
+                j=j+1
+            header=tmp_exp+(j)*15*60
+            exp=header+(i-6)*15*60
+           
 
         
        # exp=int(self.api.timesync.expiration_timestamp)
