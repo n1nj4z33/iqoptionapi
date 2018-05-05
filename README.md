@@ -16,16 +16,16 @@ sucess on python3.6.4
 
 ## Installation & GET new version
 For Python3
-```
+```bash
 sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ```
 For Python2
-```
+```bash
 sudo pip2 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ```
 ---
 ## Littile sample
-```
+```python
 from iqoptionapi.stable_api import IQ_Option
 I_want_money=IQ_Option("email","password")
 goal="EURUSD"
@@ -36,13 +36,13 @@ print(I_want_money.get_candles(goal,60,111,time.time()))
 ## Document
 
 ### Import 
-```
+```python
 from iqoptionapi.stable_api import IQ_Option
 ```
 ---
 ### Debug mode on
 
-```
+```python
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 ```
@@ -56,7 +56,7 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 
 !!!
 
-```
+```python
 I_want_money=IQ_Option("email","password")
 ```
 ---
@@ -69,14 +69,14 @@ will add..
 
 #### For Options
 
-```
+```python
 I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
                 #Money:How many you want to buy type(number)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP"....
                 #ACTION:"call"/"put" type(str)
                 #expirations_mode: OTC(1~9) OPTION(>1) you need to try
                 #force_buy= True: if fail try buy untill sucess 
-                            False:if fail break
+                            #False:if fail break
                 #return:True/False if sucess or not
 ```
 #### expirations_mode
@@ -84,7 +84,7 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
 ___
 
 #### For Forex&CFD&Crypto&Digital
-```
+```python
 will add ......
 
 ```
@@ -110,7 +110,7 @@ sample
 
     you will get the right data
 
-```
+```python
 I_want_money.get_candles(ACTIVES,interval,count,endtime)
             #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
             #interval:duration of candles
@@ -120,13 +120,13 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
 
 ### get  realtime candles
 you will get ""latest"" DATA
-```
+```python
 I_want_money.start_candles_stream("EURUSD")
 print(I_want_money.get_realtime_candles("EURUSD"))
 I_want_money.stop_candles_stream("EURUSD")
 ```
 ### get all realtime candles
-```
+```python
 I_want_money.start_all_candles_stream()
 print(I_want_money.get_all_realtime_candles())
 I_want_money.stop_all_candles_stream()
@@ -134,20 +134,18 @@ I_want_money.stop_all_candles_stream()
 
 ### collect realtime candles
 i will do for loop untill collect time out
-```
+```python
 I_want_money.start_candles_stream("EURUSD")
 print(I_want_money.collect_realtime_candles("EURUSD",10.5))
-
 #I_want_money.collect_realtime_candles("EURUSD",time)
-#time:collect time(sec) can use float :11.2              
-
+#time:collect time(sec) can use float :11.2       
 I_want_money.stop_candles_stream("EURUSD")
 
 ```
 
 ### collect realtime candles on thread
 collect data in thread with out wait
-```
+```python
 I_want_money.start_candles_stream("EURUSD")
 thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
 #I_want_money.collect_realtime_candles_thread_start("EURUSD",maxdict)
@@ -165,24 +163,24 @@ I_want_money.collect_realtime_candles_thread_stop(thread)
 ---
 
 ### get all profit
-```
+```python
 I_want_money.get_all_profit()
 #return type(dict) sample:dict["EURUSD"]=0.85 
 ```
 ### get balance
-```
+```python
 I_want_money.get_balance()
 ```
 
 ### check win
-```
+```python
 I_want_money.check_win()
 #this function will do loop check your bet until if win/equal/loose
 ```
  
 
 ### Change real/practice Account
-```
+```python
 I_want_money.change_balance(MODE)
                         #MODE: "PRACTICE"/"REAL"
 ```
