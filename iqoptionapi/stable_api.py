@@ -29,7 +29,7 @@ class IQ_Option:
                 self.api = IQOptionAPI("iqoption.com", self.email, self.password)
                 self.api.timesync.server_timestamp=None
                 self.api.connect()
-                
+                time.sleep(self.suspend)
                 break
             except:
                 logging.error('**error** connect()')
