@@ -5,7 +5,7 @@ import threading
 import time
 import numpy as np
 import logging
-
+import operator
 class IQ_Option:
     def __init__(self,email,password):
         self.email=email
@@ -14,7 +14,7 @@ class IQ_Option:
         self.thread=None
         self.connect()
         self.thread_collect_realtime={}
-        self.get_ALL_Binary_ACTIVES_OPCODE()
+        self.update_ACTIVES_OPCODE()
  
         #time.sleep(self.suspend)
     #***  
@@ -32,7 +32,7 @@ class IQ_Option:
                 time.sleep(self.suspend)
                 break
             except:
-                logging.error('**error** connect()')
+                logging.error('**error** connect():DO you install right version?')
                 pass
         #wait for timestamp getting
         while True:
@@ -41,10 +41,41 @@ class IQ_Option:
                     break
             except:
                 pass
-        
+#_________________________UPDATE ACTIVES OPCODE_____________________
+    def get_all_ACTIVES_OPCODE(self):
+        return OP_code.ACTIVES
+    def update_ACTIVES_OPCODE(self):
+        #update from binary option
+        self.get_ALL_Binary_ACTIVES_OPCODE()
+        #crypto /dorex/cfd
+        self.get_all_instruments()
+        dicc={}
+        for lis in  sorted(OP_code.ACTIVES.items(), key=operator.itemgetter(1)):
+            dicc[lis[0]]=lis[1]
+        OP_code.ACTIVES=dicc
+        return OP_code.ACTIVES
+    def instruments_input(self,types):
+        time.sleep(self.suspend)
+        self.api.instruments=None
+        while self.api.instruments==None:
+            self.api.get_instruments(types)
+            start=time.time()
+            while self.api.instruments==None and time.time()-start<10:
+                pass
+        for ins in self.api.instruments["instruments"]:
+            OP_code.ACTIVES[ins["id"]]=ins["active_id"]
 
-##################################################################################
+    def get_all_instruments(self):
+        self.instruments_input("crypto")
+        self.instruments_input("forex")
+        self.instruments_input("cfd")
 
+    def get_ALL_Binary_ACTIVES_OPCODE(self):
+        init_info=self.get_all_init()
+        for i in init_info["result"]["binary"]["actives"]:
+            OP_code.ACTIVES[(init_info["result"]["binary"]["actives"][i]["name"]).split(".")[1]]=int(i)
+            
+#_________________________self.api.get_api_option_init_all() wss______________________
     def get_all_init(self):
         self.api.api_option_init_all_result = None
         while True :
@@ -62,18 +93,11 @@ class IQ_Option:
                         pass
                 if self.api.api_option_init_all_result["isSuccessful"]==True:
                     break
-                else:
-                    logging.error('**error** self.api.api_option_init_all_result["isSuccessful"] ==False need reconnect')
-                    self.connect() 
             except:
                 logging.error('**error** get_all_init need reconnect')
                 self.connect()
         return self.api.api_option_init_all_result
-    def get_ALL_Binary_ACTIVES_OPCODE(self):
-        init_info=self.get_all_init()
-        for i in init_info["result"]["binary"]["actives"]:
-            OP_code.ACTIVES[(init_info["result"]["binary"]["actives"][i]["name"]).split(".")[1]]=int(i)
-            
+   
         #return OP_code.ACTIVES
     def get_profit(self,ACTIVES):
         init_info=self.get_all_init()
@@ -88,7 +112,7 @@ class IQ_Option:
             except:
                 pass
         return all_profit
-##################################################################################################
+#______________________________________self.api.getprofile() https________________________________
     def get_profile(self):
         while True:
             try :
@@ -98,7 +122,7 @@ class IQ_Option:
                     return respon
             except:
                 logging.error('**error** get_profile')
-#------------------------https profile------------------------
+
     def get_balance(self):
         #self.api.profile.balance=None
         while True:
@@ -140,7 +164,6 @@ class IQ_Option:
             return "REAL"
         elif self.api.profile.balance_type==4:
             return "PRACTICE"
-#------------------------------------------------
     def change_balance(self,Balance_MODE):
         real_id=None
         practice_id=None
@@ -164,7 +187,9 @@ class IQ_Option:
             else:
                 print("ERROR doesn't have this mode")
                 exit(1)
- #######################**********candles***********#######################
+#________________________________________________________________________
+#_______________________        CANDLE      _____________________________                
+#________________________self.api.getcandles() wss________________________
     def get_candles(self,ACTIVES,interval,count,endtime):
         while True:
             try:
@@ -177,14 +202,15 @@ class IQ_Option:
         while self.api.candles.candles_data==None:
             pass
         return self.api.candles.candles_data
-################################################################################
-###################             real time            ###########################    
-################################################################################
-                    #all
+#______________________________________________________________
+#_____________________________REAL TIME CANDLE_________________   
+#______________________________________________________________
+                    #all need to fixxxxxxxxxxxxxxxxxxxxxxx
     def start_all_candles_stream(self):
         while self.api.real_time_candles == {}:
             for ACTIVES_name in OP_code.ACTIVES:
                 self.api.subscribe(OP_code.ACTIVES[ACTIVES_name])
+                time.sleep(self.suspend)
             time.sleep(self.suspend)
     def get_all_realtime_candles(self):
         return self.api.real_time_candles
@@ -194,27 +220,49 @@ class IQ_Option:
             time.sleep(self.suspend)
             for ACTIVES_name in OP_code.ACTIVES:
                 self.api.unsubscribe(OP_code.ACTIVES[ACTIVES_name])
-    
+##############################################
                     ##one
     def start_candles_stream(self,ACTIVES):
-        while self.api.real_time_candles == {}:
-            time.sleep(self.suspend)
+        try:
             self.api.subscribe(OP_code.ACTIVES[ACTIVES])
+            start=time.time()
+            while True:
+                if time.time()-start>20:
+                    logging.error('**error** fail '+ACTIVES+' start_candles_stream late for 10 sec')
+                    return False
+                try:
+                    if self.api.real_time_candles[ACTIVES] != {}:
+                        break
+                except:
+                    time.sleep(1)
+                    self.api.subscribe(OP_code.ACTIVES[ACTIVES])
+            if self.api.real_time_candles[ACTIVES] != {}:
+                return True
+        except:
+            logging.error('**error** start_candles_stream reconnect')
+            self.connect()
+        
 
     def get_realtime_candles(self,ACTIVES):
+        try:
+            return self.api.real_time_candles[ACTIVES]
+        except:
+            logging.error('**error** get_realtime_candles()')
+            return False
+
+    def stop_candles_stream(self,ACTIVES):
         while True:
             try:
-                return self.api.real_time_candles[ACTIVES]
+                if self.api.real_time_candles[ACTIVES] == {}:
+                    break
             except:
-                logging.error('**error** get_realtime_candles()')
                 pass
-    def stop_candles_stream(self,ACTIVES):
-        while self.api.real_time_candles != {}:
-            self.api.real_time_candles = {}
-            time.sleep(self.suspend)
+            self.api.real_time_candles[ACTIVES] = {}
+            time.sleep(1)
             self.api.unsubscribe(OP_code.ACTIVES[ACTIVES])
-###################################collect realtime###################################
-                #####dict controler####
+#__________________________Collect realtime_____________________________
+                        
+                        #______thread_____
     def dict_queue_add(self,dict,ACTIVES,maxdict,key,value):
         while True:
             if len(dict)<=maxdict:
@@ -223,9 +271,6 @@ class IQ_Option:
             else:
                 #del mini key
                 del dict[sorted(dict.keys(), reverse=False)[0]]
-
-
-
     def thread_realtime(self,ACTIVES,maxdict):
         t = threading.currentThread()
         while getattr(t,"do_run",True):
@@ -241,8 +286,7 @@ class IQ_Option:
         thread.do_run = False
         thread.join() 
 
-
-
+#       ___None thread___
     def collect_realtime_candles(self,ACTIVES,collect_time):
         #doing while untill time stop
         collect={}
@@ -277,6 +321,9 @@ class IQ_Option:
             except:
                 pass
         return self.api.listinfodata.current_listinfodata.win
+#__________________________BUY__________________________
+
+#__________________FOR OPTION____________________________
     def buy(self,price,ACTIVES,ACTION,expirations_mode,force_buy=True):
         self.api.buy_successful==None
         while True:
@@ -302,20 +349,5 @@ class IQ_Option:
                     return False  
                 logging.error('**error** buy error...')
                 self.connect()
-        
-                 
-        #print("buy ok")
-    def call(self,price,ACTIVES):
-        while True:
-            try:
-                self.api.buy(price,OP_code.ACTIVES[ACTIVES], "turbo", "call")
-            except:
-                pass
-    def put(self,price,ACTIVES):
-        while True:
-            try:
-                self.api.buy(price,OP_code.ACTIVES[ACTIVES], "turbo", "put")
-            except:
-                pass
 
 

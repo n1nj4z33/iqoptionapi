@@ -61,9 +61,13 @@ I_want_money=IQ_Option("email","password")
 ```
 ---
 ### View all ACTIVES Name
+you will get right all ACTIVES and code
+
+
+```python
+print(I_want_money.get_all_ACTIVES_OPCODE())
 ```
-will add..
-```
+[OUTPUT](ACTIVE_CODE.txt)
 ---
 ### Buy 
 
@@ -155,9 +159,9 @@ thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
 ######do some thing#######
 time.sleep(3)
 ######do some thing#######
-
 print(I_want_money.thread_collect_realtime)
 I_want_money.collect_realtime_candles_thread_stop(thread) 
+I_want_money.stop_candles_stream("EURUSD")
 
 ```
 ---

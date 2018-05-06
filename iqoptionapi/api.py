@@ -45,6 +45,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     listinfodata = ListInfoData()
     api_option_init_all_result = []
     real_time_candles={}
+    instruments=None
   
    
 
@@ -252,6 +253,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.getprofile.Getprofile>`.
         """
         return Getprofile(self)
+#for active code ...
     @property   
     def get_instruments(self):
         return Get_instruments(self)
@@ -305,6 +307,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         data = json.dumps(dict(name="api_option_init_all",
                                msg=""))
         self.websocket.send(data)
+
+
+
     @property
     def buy(self):
         """Property for get IQ Option websocket buyv2 request.

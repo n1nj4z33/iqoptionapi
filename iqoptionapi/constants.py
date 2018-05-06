@@ -1,5 +1,19 @@
 """Module for IQ Option API constants."""
+#~~~need to update~~~
+ACTIVES ={}
 
+
+
+
+
+
+
+
+
+
+
+#old version
+'''
 ACTIVES = {
     "EURUSD": 1,
     "EURGBP": 2,
@@ -117,3 +131,4 @@ ACTIVES = {
     "DFMGI": 757,
     "TELAVIV:": 758,
 }
+'''

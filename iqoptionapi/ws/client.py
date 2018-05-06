@@ -76,6 +76,10 @@ class WebsocketClient(object):
         elif message["name"] == "candle-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]            
             self.api.real_time_candles[Active_name]= message["msg"]
+        elif message["name"] == "instruments":
+            self.api.instruments=message["msg"]
+           
+
     
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument
