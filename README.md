@@ -8,7 +8,7 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/5/4
+update:2018/5/7
 
 sucess on python3.6.4
 
@@ -63,11 +63,12 @@ I_want_money=IQ_Option("email","password")
 ### View all ACTIVES Name
 you will get right all ACTIVES and code
 
+[ACTIVE_CODE.txt](ACTIVE_CODE.txt)
 
 ```python
 print(I_want_money.get_all_ACTIVES_OPCODE())
 ```
-[OUTPUT](ACTIVE_CODE.txt)
+
 ---
 ### Buy 
 
