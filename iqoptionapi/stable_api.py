@@ -27,7 +27,6 @@ class IQ_Option:
                     pass
                     #logging.error('**warning** self.api.close() it can ignore')
                 self.api = IQOptionAPI("iqoption.com", self.email, self.password)
-                self.api.timesync.server_timestamp=None
                 self.api.connect()
                 time.sleep(self.suspend)
                 break
@@ -35,12 +34,7 @@ class IQ_Option:
                 logging.error('**error** connect():DO you install right version?')
                 pass
         #wait for timestamp getting
-        while True:
-            try:
-                if self.api.timesync.server_timestamp!=None:
-                    break
-            except:
-                pass
+    
 #_________________________UPDATE ACTIVES OPCODE_____________________
     def get_all_ACTIVES_OPCODE(self):
         return OP_code.ACTIVES
@@ -53,7 +47,6 @@ class IQ_Option:
         for lis in  sorted(OP_code.ACTIVES.items(), key=operator.itemgetter(1)):
             dicc[lis[0]]=lis[1]
         OP_code.ACTIVES=dicc
-        return OP_code.ACTIVES
     def instruments_input(self,types):
         time.sleep(self.suspend)
         self.api.instruments=None
@@ -83,14 +76,15 @@ class IQ_Option:
                 self.api.get_api_option_init_all()      
                 start=time.time()
                 while True:
-                    if time.time()-start>10:
-                        logging.error('**warning** get_all_init late 10 sec')
+                    if time.time()-start>30:
+                        logging.error('**warning** get_all_init late 30 sec')
                         break
                     try:
                         if self.api.api_option_init_all_result != None:
                             break
                     except:
-                        pass
+                        self.api.get_api_option_init_all() 
+                        time.sleep(self.suspend*2)
                 if self.api.api_option_init_all_result["isSuccessful"]==True:
                     break
             except:

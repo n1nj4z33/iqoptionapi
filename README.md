@@ -77,7 +77,7 @@ print(I_want_money.get_all_ACTIVES_OPCODE())
 ```python
 I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
                 #Money:How many you want to buy type(number)
-                #ACTIVES:sample input "EURUSD" OR "EURGBP"....
+                #ACTIVES:sample input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
                 #ACTION:"call"/"put" type(str)
                 #expirations_mode: OTC(1~9) OPTION(>1) you need to try
                 #force_buy= True: if fail try buy untill sucess 
@@ -117,7 +117,7 @@ sample
 
 ```python
 I_want_money.get_candles(ACTIVES,interval,count,endtime)
-            #ACTIVES:sample input "EURUSD" OR "EURGBP".... you need to look constants.py file type(str)
+            #ACTIVES:sample input "EURUSD" OR "EURGBP".... youcan
             #interval:duration of candles
             #count:how many candles you want to get from now to past
             #endtime:get candles from past to "endtime"

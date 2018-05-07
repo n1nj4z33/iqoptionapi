@@ -343,6 +343,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             pass
 
         self.ssid(ssid) # pylint: disable=not-callable
+        self.timesync.server_timestamp=None
+        while True:
+            try:
+                if self.timesync.server_timestamp!=None:
+                    break
+            except:
+                pass
         
     def close(self):
         self.websocket.close()
