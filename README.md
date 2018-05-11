@@ -79,10 +79,7 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
                 #Money:How many you want to buy type(number)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
                 #ACTION:"call"/"put" type(str)
-                #expirations:input minute 1,2,3,4,5,15,30,45,60,75 
-                #thank Darth-Carrotpie's code
-                #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-                
+                #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
                 #force_buy= True: if fail try buy untill sucess 
                             #False:if fail break
                 #return:True/False if sucess or not
