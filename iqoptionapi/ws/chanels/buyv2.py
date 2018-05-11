@@ -10,45 +10,50 @@ class Buyv2(Base):
 
     name = "buyV2"
 
-    def __call__(self, price, active, direction,expiration_mode=1):
+    def __call__(self, price, active, direction,duration):
         """Method to send message to buyv2 websocket chanel.
 
         :param price: The buying price.
         :param active: The buying active.
         :param direction: The buying direction.
         """
-        exp=int(self.api.timesync.server_timestamp)
-     
-        #exp=int(time.time())
-        i=int(expiration_mode)
-        if i>=1 and i<=5:
-            option="turbo"
-            #Round to next full minute
-            if datetime.datetime.now().second > 30:
-                exp = exp - (exp % 60) + 60*(i+1)
-            else:
-                exp = exp - (exp % 60)+60*(i)
-        elif i>=6 :
-            option="binary"
-            tmp_exp=exp - (exp % 60)
-            tmp_exp=tmp_exp-(tmp_exp%3600)#+(j)*15*60  
-            j=0
-            while exp>tmp_exp+(j)*15*60:#find header
-                j=j+1
-            header=tmp_exp+(j)*15*60
-            exp=header+(i-6)*15*60
-           
-
-        
-       # exp=int(self.api.timesync.expiration_timestamp)
-       
+        # thank Darth-Carrotpie's code 
+        #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
+        exp, option = self.get_expiration_time(duration)   
         data = {
             "price": price,
             "act": active,
             "exp":exp,
             "type": option,
-            "direction": direction,
+            "direction": direction.lower(),
             "time": self.api.timesync.server_timestamp
         }
 
         self.send_websocket_request(self.name, data)
+
+    # thank Darth-Carrotpie's code 
+    #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
+    def get_expiration_time(self, duration):
+        exp=int(self.api.timesync.server_timestamp)
+        if duration>=1 and duration<=5:
+            option="turbo"
+            #Round to next full minute
+            if datetime.datetime.now().second > 30:
+                exp = exp - (exp % 60) + 60*(duration+1)
+            else:
+                exp = exp - (exp % 60)+60*(duration)
+        elif duration > 5:
+            option = "binary"
+            period = int(round(duration / 15))
+            tmp_exp = exp - (exp % 60)#nuima sekundes
+            tmp_exp = tmp_exp - (tmp_exp%3600)#nuimam minutes
+            j=0
+            while exp > tmp_exp + (j)*15*60:#find quarter
+                j = j+1
+            if exp - tmp_exp > 5 * 60:
+                quarter = tmp_exp + (j)*15*60
+                exp = quarter + period*15*60
+            else:
+                quarter = tmp_exp + (j+1)*15*60
+                exp = quarter + period*15*60
+        return exp, option
