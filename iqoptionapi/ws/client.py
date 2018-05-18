@@ -64,13 +64,14 @@ class WebsocketClient(object):
         #I Suggest if you get selget_balancef.api.buy_successful==False you need to reconnect iqoption server
         elif message["name"] == "buyComplete":
             self.api.buy_successful = message["msg"]["isSuccessful"]
+            self.api.buy_id= message["msg"]["result"]["id"]
         elif message["name"] == "buyV2_result":
             self.api.buy_successful = message["msg"]["isSuccessful"]
         #**********************************************************   
         elif message["name"] == "listInfoData":
-            listinfodata = lambda: None
-            listinfodata.__dict__ = message["msg"][0]
-            self.api.listinfodata.add_listinfodata(listinfodata)
+           for get_m in message["msg"]:
+               self.api.listinfodata.set(get_m["win"],get_m["game_state"],get_m["id"])
+
         elif message["name"] == "api_option_init_all_result":
             self.api.api_option_init_all_result = message["msg"]
         elif message["name"] == "candle-generated":

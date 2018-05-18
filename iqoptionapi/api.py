@@ -46,7 +46,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     api_option_init_all_result = []
     real_time_candles={}
     instruments=None
-  
+    buy_id=None
    
 
     def __init__(self, host, username, password, proxies=None):

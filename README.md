@@ -82,7 +82,7 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
                 #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
                 #force_buy= True: if fail try buy untill sucess 
                             #False:if fail break
-                #return:True/False if sucess or not
+                #return:(True/False,id):if sucess return (True,id_number) esle return(False,None)
 ```
  
 ___
@@ -178,7 +178,9 @@ I_want_money.get_balance()
 
 ### check win
 ```python
-I_want_money.check_win()
+I_want_money.check_win(23243221)
+#""you need to get id_number from buy function""
+#I_want_money.check_win(id_number)
 #this function will do loop check your bet until if win/equal/loose
 ```
  

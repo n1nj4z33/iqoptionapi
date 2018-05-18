@@ -3,43 +3,18 @@ from collections import OrderedDict
 
 from iqoptionapi.ws.objects.base import Base
 
-
 class ListInfoData(Base):
-    """Class for ListInfoData object."""
+    """Class for IQ Option Candles websocket object."""
+
     def __init__(self):
         super(ListInfoData, self).__init__()
         self.__name = "listInfoData"
-        self.__listinfodata_list = OrderedDict()
+        self.listinfodata_dict = {}
+#--------------------
+    def set(self,win,game_state,id_number):
+        self.listinfodata_dict[id_number]={"win":win,"game_state":game_state}
+    def delete(self,id_number):
+        del self.listinfodata_dict[id_number]
+    def get(self, id_number):
+        return self.listinfodata_dict[id_number]
 
-    @property
-    def listinfodata_list(self):
-        """Property to get listinfodata list.
-
-        :returns: The list of listinfodata.
-        """
-        return self.__listinfodata_list
-
-    @listinfodata_list.setter
-    def listinfodata_list(self, listinfodata_list):
-        """Method to set listinfodata list."""
-        self.__listinfodata_list = listinfodata_list
-
-    @property
-    def current_listinfodata(self):
-        """Method to get current iteminfodata item.
-
-         :returns: The object of listinfodata.
-         """
-        return self.listinfodata_list[next(reversed(self.listinfodata_list))]
-
-    def get_listinfodata(self, _id):
-        """Method to get iteminfodata item.
-
-         :returns: The object of listinfodata.
-         """
-        return self.listinfodata_list[_id]
-
-    def add_listinfodata(self, new_listinfodata):
-        """Method to add listinfodata."""
-        #if new_listinfodata.id not in self.listinfodata_list:
-        self.listinfodata_list[new_listinfodata.id] = new_listinfodata

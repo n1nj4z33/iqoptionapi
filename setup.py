@@ -5,7 +5,7 @@ setup(
     name="iqoptionapi",
     version="0.5",
     packages=find_packages(),
-    install_requires=["pylint","requests","websocket-client",],
+    install_requires=["pylint","requests","websocket-client"],
     include_package_data = True,
     description="The python wrapper for IQ Option API.more stable",
     long_description="The python wrapper IQ Option API.more stable",

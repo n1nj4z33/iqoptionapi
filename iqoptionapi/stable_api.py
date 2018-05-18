@@ -3,7 +3,6 @@ from iqoptionapi.api import IQOptionAPI
 import iqoptionapi.constants as OP_code
 import threading
 import time
-import numpy as np
 import logging
 import operator
 class IQ_Option:
@@ -303,31 +302,30 @@ class IQ_Option:
         return ans
 
 
-    def check_win(self):
+    def check_win(self,id_number):
         #'win'：win money 'equal'：no win no loose   'loose':loose money
-        self.api.listinfodata.__init__()
-        start=time.time()
         while True:
             try:
-                state=self.api.listinfodata.current_listinfodata.game_state
-                if state==1:
+                listinfodata_dict=self.api.listinfodata.get(id_number)
+                if listinfodata_dict["game_state"]==1:
                     break
             except:
                 pass
-        return self.api.listinfodata.current_listinfodata.win
+        self.api.listinfodata.delete(id_number)    
+        return listinfodata_dict["win"]
 #__________________________BUY__________________________
 
 #__________________FOR OPTION____________________________
-    def buy(self,price,ACTIVES,ACTION,expirations_mode,force_buy=True):
+    def buy(self,price,ACTIVES,ACTION,expirations,force_buy=True):
         self.api.buy_successful==None
         while True:
             while True:
                 try:
-                    self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION,expirations_mode)
+                    self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION,expirations)
                     break
                 except:
                     if force_buy==False:
-                        return False 
+                        return (False,None) 
                     logging.error('self.api.buy error')
                     self.connect()
                     pass
@@ -337,10 +335,10 @@ class IQ_Option:
                     logging.error('check buy_successful time late 60sec')
                     break
             if self.api.buy_successful:
-                return True 
+                return (True,self.api.buy_id)
             else:
                 if force_buy==False:
-                    return False  
+                    return (False,None) 
                 logging.error('**error** buy error...')
                 self.connect()
 
