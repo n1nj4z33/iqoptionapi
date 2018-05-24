@@ -38,7 +38,8 @@ class Buyv2(Base):
         if duration>=1 and duration<=5:
             option="turbo"
             #Round to next full minute
-            if datetime.datetime.now().second > 30:
+            #datetime.datetime.now().second>30
+            if (exp % 60) > 30:
                 exp = exp - (exp % 60) + 60*(duration+1)
             else:
                 exp = exp - (exp % 60)+60*(duration)
@@ -56,4 +57,7 @@ class Buyv2(Base):
             else:
                 quarter = tmp_exp + (j+1)*15*60
                 exp = quarter + period*15*60
+        else:
+            print("ERROR get_expiration_time DO NOT LESS 1")
+            exit(1)
         return exp, option

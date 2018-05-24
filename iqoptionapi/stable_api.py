@@ -341,5 +341,25 @@ class IQ_Option:
                     return (False,None) 
                 logging.error('**error** buy error...')
                 self.connect()
+#__________________for digit_____________
+    def get_strike_list_data(self,ACTIVES,expirations):
+        try:
+            self.api.strike_list.del_data(ACTIVES,expirations)
+        except:
+            pass
+
+        while True:
+            self.api.get_strike_list(ACTIVES,expirations)
+            all_strike_list_data=self.api.strike_list.get_All_data()
+            try:
+                return all_strike_list_data[str(ACTIVES),str(expirations)]
+            except:
+                pass
+            time.sleep(self.suspend*3)
+
+    def buy_digit(self,price,direction,instrument_id):
+        self.api.digit_buy(price,direction,instrument_id)
+ 
+
 
 

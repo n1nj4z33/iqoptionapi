@@ -70,9 +70,9 @@ print(I_want_money.get_all_ACTIVES_OPCODE())
 ```
 
 ---
-### Buy 
+ 
 
-#### For Options
+### For Options
 
 ```python
 I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
@@ -87,15 +87,43 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
  
 ___
 
-#### For Forex&CFD&Crypto&Digital
-```python
-will add ......
+### For Digital
+#### Sample
 
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+strike_list=I_want_money.get_strike_list_data("EURUSD",1)
+print("Strike List")
+for i in strike_list:
+    print("key",i,"value",strike_list[i])
+#Choose first Strike List
+instrument_id=strike_list[list(strike_list)[0]]
+I_want_money.buy_digit(3,"put",instrument_id)
+```
+#### Get strike list 
+```python
+strike_list=I_want_money.get_strike_list_data("EURUSD",1)
+#strike_list=I_want_money.get_strike_list_data(ACTIVE,expirations)
+#ACTIVE:"EURUSD"....
+#expirations: it seem only 1 and 5 for choose
+#return:dict{strike data,instrument_id}
+```
+#### Buy digit
+```python
+I_want_money.buy_digit(3,"put",instrument_id)
+#I_want_money.buy_digit(price,direction,instrument_id)
+#price:how many you want to buy
+#direction:"call"/"put"
+#instrument_id:you need get from strike list
 ```
 
 ---
+### Candle
 
-### get candles
+#### get candles
 !!!pay attention!!! get_candles can not get "real time data" ,it will late about 30sec
 
 if you very care about real time you need use 
@@ -122,21 +150,21 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
             #endtime:get candles from past to "endtime"
 ```
 
-### get  realtime candles
+#### get  realtime candles
 you will get ""latest"" DATA
 ```python
 I_want_money.start_candles_stream("EURUSD")
 print(I_want_money.get_realtime_candles("EURUSD"))
 I_want_money.stop_candles_stream("EURUSD")
 ```
-### get all realtime candles
+#### get all realtime candles
 ```python
 I_want_money.start_all_candles_stream()
 print(I_want_money.get_all_realtime_candles())
 I_want_money.stop_all_candles_stream()
 ```
 
-### collect realtime candles
+#### collect realtime candles
 i will do for loop untill collect time out
 ```python
 I_want_money.start_candles_stream("EURUSD")
@@ -147,7 +175,7 @@ I_want_money.stop_candles_stream("EURUSD")
 
 ```
 
-### collect realtime candles on thread
+#### collect realtime candles on thread
 collect data in thread with out wait
 ```python
 I_want_money.start_candles_stream("EURUSD")
@@ -165,15 +193,20 @@ I_want_money.stop_candles_stream("EURUSD")
 
 ```
 ---
-
-### get all profit
+### Account
+#### get all profit
 ```python
 I_want_money.get_all_profit()
 #return type(dict) sample:dict["EURUSD"]=0.85 
 ```
-### get balance
+#### get balance
 ```python
 I_want_money.get_balance()
+```
+#### Change real/practice Account
+```python
+I_want_money.change_balance(MODE)
+                        #MODE: "PRACTICE"/"REAL"
 ```
 
 ### check win
@@ -185,23 +218,8 @@ I_want_money.check_win(23243221)
 ```
  
 
-### Change real/practice Account
-```python
-I_want_money.change_balance(MODE)
-                        #MODE: "PRACTICE"/"REAL"
-```
-
-# Will Add new option........
-
-### sell
-```
-```
-
-### for CRYPTO
 
 
-### for CFD
-
-### for FOREX
-
-### for Digital
+ 
+ 
+    

@@ -16,6 +16,7 @@ from iqoptionapi.http.billing import Billing
 from iqoptionapi.http.buyback import Buyback
 from iqoptionapi.http.changebalance import Changebalance
 from iqoptionapi.ws.client import WebsocketClient
+
 from iqoptionapi.ws.chanels.ssid import Ssid
 from iqoptionapi.ws.chanels.subscribe import Subscribe
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe
@@ -23,10 +24,15 @@ from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
 from iqoptionapi.ws.chanels.instruments import Get_instruments
+from iqoptionapi.ws.chanels.strike_list import Strike_list
+from iqoptionapi.ws.chanels.digit_buy import Digit_buy
+
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
 from iqoptionapi.ws.objects.candles import Candles
 from iqoptionapi.ws.objects.listinfodata import ListInfoData
+from iqoptionapi.ws.objects.strike_list_data import Strike_list_data
+
 import iqoptionapi.global_value as global_value
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
@@ -45,6 +51,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     listinfodata = ListInfoData()
     api_option_init_all_result = []
     real_time_candles={}
+    strike_list=Strike_list_data()
     instruments=None
     buy_id=None
    
@@ -319,6 +326,21 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         self.buy_successful = None
         return Buyv2(self)
+
+#___________________________digital____________________
+    @property
+    def get_strike_list(self):
+        return Strike_list(self)
+    @property
+    def digit_buy(self):
+        return Digit_buy(self)
+#-------------------------------------------------------
+
+
+
+
+
+
 
     def set_session_cookies(self):
         """Method to set session cookies."""

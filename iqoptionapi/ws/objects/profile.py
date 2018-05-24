@@ -11,7 +11,6 @@ class Profile(Base):
         self.__skey = None
         self.__balance = None
         self.__balance_id=None
-        self.__balance_id=None
         self.__balances=None
         self.__msg=None
  

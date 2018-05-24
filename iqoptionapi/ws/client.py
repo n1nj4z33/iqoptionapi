@@ -79,8 +79,18 @@ class WebsocketClient(object):
             self.api.real_time_candles[Active_name]= message["msg"]
         elif message["name"] == "instruments":
             self.api.instruments=message["msg"]
-           
-
+        
+        elif message["name"]=="strike-list":
+            try:
+                time_key={}
+                for i in message["msg"]["strike"]:
+                    dd=i["call"]["id"].split("MC")
+                    time_key[int(dd[1])/100000]=i["call"]["id"]
+                expiration=message["msg"]["strike"][0]["call"]["id"].split("PT")[1].split("MC")[0]
+                self.api.strike_list.put_All_data(message["msg"]["underlying"],expiration,time_key)
+                #todo
+            except:
+                pass
     
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument
