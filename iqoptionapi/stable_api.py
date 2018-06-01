@@ -184,6 +184,7 @@ class IQ_Option:
 #_______________________        CANDLE      _____________________________                
 #________________________self.api.getcandles() wss________________________
     def get_candles(self,ACTIVES,interval,count,endtime):
+        self.api.candles.candles_data=None
         while True:
             try:
                 self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval,count,endtime)
