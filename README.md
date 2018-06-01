@@ -176,6 +176,41 @@ I_want_money.stop_candles_stream("EURUSD")
 ```
 
 #### collect realtime candles on thread
+
+##### Sample 
+```
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+
+I_want_money.start_candles_stream("EURUSD")
+thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
+
+
+I_want_money.start_candles_stream("USDTRY")
+thread2=I_want_money.collect_realtime_candles_thread_start("USDTRY",100)
+
+
+
+time.sleep(3)
+#Do some thing
+ans=I_want_money.thread_collect_realtime.items()
+
+for k, v in ans:
+    print (k, v)
+
+
+
+
+I_want_money.collect_realtime_candles_thread_stop(thread)
+I_want_money.stop_candles_stream("EURUSD")
+
+
+I_want_money.collect_realtime_candles_thread_stop(thread2)
+I_want_money.stop_candles_stream("USDTRY")
+```
 collect data in thread with out wait
 ```python
 I_want_money.start_candles_stream("EURUSD")
