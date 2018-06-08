@@ -8,7 +8,7 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/5/24
+update:2018/6/8
 
 sucess on python3.6.4
 
@@ -73,13 +73,30 @@ print(I_want_money.get_all_ACTIVES_OPCODE())
  
 
 ### For Options
+Sample call or put
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","pass")
+goal="EURUSD"
+print("get candles")
+print(I_want_money.get_candles(goal,60,111,time.time()))
+Money=1
+ACTIVES="EURUSD"
+ACTION="call"#or "put"
+expirations_mode=1
+force_buy= "True"
+I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
+```
 
 ```python
 I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
-                #Money:How many you want to buy type(number)
+                #Money:How many you want to buy type(int)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
                 #ACTION:"call"/"put" type(str)
-                #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
+                #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code (int)https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
                 #force_buy= True: if fail try buy untill sucess 
                             #False:if fail break
                 #return:(True/False,id):if sucess return (True,id_number) esle return(False,None)

@@ -117,7 +117,7 @@ class IQ_Option:
                 logging.error('**error** get_profile')
 
     def get_balance(self):
-        #self.api.profile.balance=None
+        self.api.profile.balance=None
         while True:
             try:
                 respon=self.get_profile()

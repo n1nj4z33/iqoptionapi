@@ -63,8 +63,11 @@ class WebsocketClient(object):
         #elif "we have user authoget_balancerized" we get buyComplete
         #I Suggest if you get selget_balancef.api.buy_successful==False you need to reconnect iqoption server
         elif message["name"] == "buyComplete":
-            self.api.buy_successful = message["msg"]["isSuccessful"]
-            self.api.buy_id= message["msg"]["result"]["id"]
+            try:
+                self.api.buy_successful = message["msg"]["isSuccessful"]
+                self.api.buy_id= message["msg"]["result"]["id"]
+            except:
+                pass
         elif message["name"] == "buyV2_result":
             self.api.buy_successful = message["msg"]["isSuccessful"]
         #**********************************************************   
