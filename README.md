@@ -37,8 +37,8 @@ Reference for the above modificatioon: [StackoverFlow](https://stackoverflow.com
     time.sleep(0.25)
     data = api.candles.candles_data
     for candles in data:
-        st = datetime.datetime.fromtimestamp(candles[0]+60).strftime('%Y-$
-       '''
+        st = datetime.datetime.fromtimestamp(candles[0]+60).strftime('%Y-$')
+        '''
         candles data
         0th entry: timestamp of candle
         1st entry: where candles starts in the interval
