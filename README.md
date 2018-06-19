@@ -8,7 +8,9 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/6/8
+update:2018/6/19
+news: 
+* set reconnect limit
 
 sucess on python3.6.4
 
@@ -27,7 +29,7 @@ sudo pip2 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ## Littile sample
 ```python
 from iqoptionapi.stable_api import IQ_Option
-I_want_money=IQ_Option("email","password")
+I_want_money=IQ_Option("email","password",reconnect_limit=11)
 goal="EURUSD"
 print("get candles")
 print(I_want_money.get_candles(goal,60,111,time.time()))
@@ -59,6 +61,16 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 ```python
 I_want_money=IQ_Option("email","password")
 ```
+
+#### set reconnect limit
+default reconnect limit is 10
+
+you can set you want
+```python
+I_want_money=IQ_Option("email","password",reconnect_limit=30)
+
+```
+
 ---
 ### View all ACTIVES Name
 you will get right all ACTIVES and code

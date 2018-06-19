@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    def __init__(self,email,password):
+    def __init__(self,email,password,reconnect_limit=10):
         self.email=email
         self.password=password
         self.suspend = 0.5
@@ -14,23 +14,33 @@ class IQ_Option:
         self.connect()
         self.thread_collect_realtime={}
         self.update_ACTIVES_OPCODE()
- 
+        self.reconnect_limit=reconnect_limit
+        self.reconnect_count=0
+
         #time.sleep(self.suspend)
     #***  
     def connect(self):
+        try:
+            if (self.api.reconnect_count>=self.api.reconnect_limit):
+                logging.error('reconnect to limit')
+                print("reconnect to limit")
+                exit(1)
+        except:
+            pass
         while True:
             try:
                 try:
                     self.api.close()
                 except:
                     pass
-                    #logging.error('**warning** self.api.close() it can ignore')
+                    #logging.error('**warning** self.api.close() fail')
                 self.api = IQOptionAPI("iqoption.com", self.email, self.password)
                 self.api.connect()
                 time.sleep(self.suspend)
+                self.api.reconnect_count=self.api.reconnect_count+1
                 break
             except:
-                logging.error('**error** connect():DO you install right version?')
+                logging.error('**error** connect(): connect fail ')
                 pass
         #wait for timestamp getting
     
