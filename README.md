@@ -10,7 +10,7 @@ Please Read Document
 
 update:2018/6/19
 news: 
-* set reconnect limit
+* fix reconnect problem
 
 sucess on python3.6.4
 
@@ -62,14 +62,7 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 I_want_money=IQ_Option("email","password")
 ```
 
-#### set reconnect limit
-default reconnect limit is 10
-
-you can set you want
-```python
-I_want_money=IQ_Option("email","password",reconnect_limit=30)
-
-```
+ 
 
 ---
 ### View all ACTIVES Name
