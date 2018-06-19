@@ -28,6 +28,7 @@ sudo pip2 install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 ---
 ## Littile sample
 ```python
+import time
 from iqoptionapi.stable_api import IQ_Option
 I_want_money=IQ_Option("email","password",reconnect_limit=11)
 goal="EURUSD"
