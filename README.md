@@ -201,7 +201,7 @@ I_want_money.stop_candles_stream("EURUSD")
 #### collect realtime candles on thread
 
 ##### Sample 
-```
+```python
 from iqoptionapi.stable_api import IQ_Option
 import logging
 import time
