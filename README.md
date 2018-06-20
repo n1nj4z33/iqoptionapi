@@ -8,9 +8,9 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/6/19
+update:2018/6/20
 news: 
-* fix reconnect problem
+* fix reconnect problem  (test for 3 hour ..)
 
 sucess on python3.6.4
 
