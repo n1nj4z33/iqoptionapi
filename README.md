@@ -174,11 +174,11 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
 ```
 
 #### get  realtime candles
-!!!pay attention!!! 
 
-!!! note
-    I_want_money.start_candles_stream("active") some time will be close
-    need to restart
+:exclamation:
+I_want_money.start_candles_stream("active") some time will be close
+need to restart
+:exclamation:
 
 you will get ""latest"" DATA
 ```python
