@@ -174,6 +174,12 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
 ```
 
 #### get  realtime candles
+!!!pay attention!!! 
+
+!!! note
+    I_want_money.start_candles_stream("active") some time will be close
+    need to restart
+
 you will get ""latest"" DATA
 ```python
 I_want_money.start_candles_stream("EURUSD")
