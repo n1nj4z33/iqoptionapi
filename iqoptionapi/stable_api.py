@@ -19,14 +19,17 @@ class IQ_Option:
         #time.sleep(self.suspend)
     #***  
     def connect(self):
-        try:
-            self.api.close()
-        except:
-            pass
-            #logging.error('**warning** self.api.close() fail')
-        self.api = IQOptionAPI("iqoption.com", self.email, self.password)
-        self.api.connect()
-        time.sleep(self.suspend)
+        while True:
+            try:
+                self.api.close()
+            except:
+                pass
+                #logging.error('**warning** self.api.close() fail')
+            self.api = IQOptionAPI("iqoption.com", self.email, self.password)
+            check=self.api.connect()
+            if check==True:
+                break
+            time.sleep(self.suspend)
           
         #wait for timestamp getting
     

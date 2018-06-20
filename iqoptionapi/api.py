@@ -361,7 +361,15 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         self.websocket_thread.daemon = True
         self.websocket_thread.start()
        
-        while global_value.check_websocket_if_connect==None:
+        while True:
+            try:
+                if global_value.check_websocket_if_connect==0 or global_value.check_websocket_if_connect==-1:
+                    return False
+                elif global_value.check_websocket_if_connect==1:
+                    break
+            except:
+                pass
+
             pass
 
         self.ssid(ssid) # pylint: disable=not-callable
@@ -372,6 +380,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
                     break
             except:
                 pass
+        return True
         
     def close(self):
         self.websocket.close()
