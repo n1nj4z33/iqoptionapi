@@ -147,7 +147,9 @@ I_want_money.buy_digit(3,"put",instrument_id)
 ### Candle
 
 #### get candles
-!!!pay attention!!! get_candles can not get "real time data" ,it will late about 30sec
+:exclamation:
+
+ get_candles can not get "real time data" ,it will late about 30sec
 
 if you very care about real time you need use 
 
@@ -176,8 +178,11 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
 #### get  realtime candles
 
 :exclamation:
+
 I_want_money.start_candles_stream("active") some time will be close
-need to restart
+
+need to recall the function
+
 :exclamation:
 
 you will get ""latest"" DATA
