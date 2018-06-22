@@ -309,7 +309,7 @@ an other way to fix that(implement by get_betinfo)
 ```python
 I_want_money.check_win_v2(23243221)
 #""you need to get id_number from buy function""
-#I_want_money.check_win(id_number)
+#I_want_money.check_win_v2(id_number)
 #this function will do loop check your bet until if win/equal/loose
 ```
 
