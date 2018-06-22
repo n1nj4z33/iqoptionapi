@@ -10,7 +10,7 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/6/20
+update:2018/6/22
 news: 
 * fix reconnect problem  
 * add get_betinfo function
