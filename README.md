@@ -11,6 +11,7 @@ This API is Diligent development!!
 Please Read Document
 
 update:2018/6/22
+
 news: 
 * fix reconnect problem  
 * add get_betinfo function
@@ -318,6 +319,7 @@ I_want_money.check_win_v2(23243221)
 it will get infomation about Bet by "id"
 
 :exclamation:
+
 if your bet(id) not have answer yet(game_state) or wrong id it will return False
 
 ```python
