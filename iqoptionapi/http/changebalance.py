@@ -17,7 +17,7 @@ class Changebalance(Resource):
         """
         return self.send_http_request("POST", data=data, headers=headers)
 
-    def __call__(self, balance_id):
+    def __call__(self,balance_id):
         """Method to get IQ Option API changebalance http request.
 
         :param str balance_id: The balance identifier.

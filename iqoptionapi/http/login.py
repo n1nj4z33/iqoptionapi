@@ -7,14 +7,14 @@ class Login(Resource):
     """Class for IQ option login resource."""
     # pylint: disable=too-few-public-methods
 
-    url = "login"
+    url = ""
 
     def _post(self, data=None, headers=None):
         """Send get request for IQ Option API login http resource.
 
         :returns: The instance of :class:`requests.Response`.
         """
-        return self.send_http_request("POST", data=data, headers=headers)
+        return self.api.send_http_request_v2(method="POST", url="https://auth.iqoption.com/api/v1.0/login",data=data, headers=headers)
 
     def __call__(self, username, password):
         """Method to get IQ Option API login http request.

@@ -5,30 +5,36 @@ import json
 import logging
 import threading
 import requests
-
+import ssl
 from iqoptionapi.http.login import Login
 from iqoptionapi.http.loginv2 import Loginv2
 from iqoptionapi.http.getprofile import Getprofile
 from iqoptionapi.http.auth import Auth
 from iqoptionapi.http.token import Token
 from iqoptionapi.http.appinit import Appinit
-# from iqoptionapi.http.profile import Profile
 from iqoptionapi.http.billing import Billing
 from iqoptionapi.http.buyback import Buyback
 from iqoptionapi.http.changebalance import Changebalance
 from iqoptionapi.ws.client import WebsocketClient
+
 from iqoptionapi.ws.chanels.ssid import Ssid
 from iqoptionapi.ws.chanels.subscribe import Subscribe
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe
 from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
+from iqoptionapi.ws.chanels.api_game_betinfo import Game_betinfo
+from iqoptionapi.ws.chanels.instruments import Get_instruments
+from iqoptionapi.ws.chanels.strike_list import Strike_list
+from iqoptionapi.ws.chanels.digit_buy import Digit_buy
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
 from iqoptionapi.ws.objects.candles import Candles
 from iqoptionapi.ws.objects.listinfodata import ListInfoData
-
+from iqoptionapi.ws.objects.strike_list_data import Strike_list_data
+from iqoptionapi.ws.objects.betinfo import Game_betinfo_data
+import iqoptionapi.global_value as global_value
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
 # Adding certificate verification is strongly advised.
@@ -44,6 +50,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     profile = Profile()
     candles = Candles()
     listinfodata = ListInfoData()
+    api_option_init_all_result = []
+    real_time_candles={}
+    strike_list=Strike_list_data()
+    game_betinfo=Game_betinfo_data()
+    instruments=None
+    buy_id=None
+   
 
     def __init__(self, host, username, password, proxies=None):
         """
@@ -92,6 +105,36 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         logger = logging.getLogger(__name__)
         url = self.prepare_http_url(resource)
+
+        logger.debug(url)
+
+        response = self.session.request(method=method,
+                                        url=url,
+                                        data=data,
+                                        params=params,
+                                        headers=headers,
+                                        proxies=self.proxies)
+        logger.debug(response)
+        logger.debug(response.text)
+        logger.debug(response.headers)
+        logger.debug(response.cookies)
+
+        response.raise_for_status()
+        return response
+    def send_http_request_v2(self, url, method, data=None, params=None, headers=None): # pylint: disable=too-many-arguments
+        """Send http request to IQ Option server.
+
+        :param resource: The instance of
+            :class:`Resource <iqoptionapi.http.resource.Resource>`.
+        :param str method: The http request method.
+        :param dict data: (optional) The http request data.
+        :param dict params: (optional) The http request params.
+        :param dict headers: (optional) The http request headers.
+
+        :returns: The instance of :class:`Response <requests.Response>`.
+        """
+        logger = logging.getLogger(__name__)
+         
 
         logger.debug(url)
 
@@ -210,7 +253,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.buyback.Buyback>`.
         """
         return Buyback(self)
-
+#------------------------------------------------------------------------
     @property
     def getprofile(self):
         """Property for get IQ Option http getprofile resource.
@@ -219,7 +262,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.getprofile.Getprofile>`.
         """
         return Getprofile(self)
-
+#for active code ...
+    @property   
+    def get_instruments(self):
+        return Get_instruments(self)
+#----------------------------------------------------------------------------     
     @property
     def ssid(self):
         """Property for get IQ Option websocket ssid chanel.
@@ -264,6 +311,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.candles.GetCandles>`.
         """
         return GetCandles(self)
+  
+    def get_api_option_init_all(self):
+        data = json.dumps(dict(name="api_option_init_all",
+                               msg=""))
+        self.websocket.send(data)
+
+
 
     @property
     def buy(self):
@@ -275,23 +329,69 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         self.buy_successful = None
         return Buyv2(self)
 
+    @property
+    def get_betinfo(self):
+        return Game_betinfo(self)
+#___________________________digital____________________
+    @property
+    def get_strike_list(self):
+        return Strike_list(self)
+    @property
+    def digit_buy(self):
+        return Digit_buy(self)
+#-------------------------------------------------------
+
+
+
+
+
+
+
     def set_session_cookies(self):
         """Method to set session cookies."""
-        cookies = dict(platform="9")
+        cookies = dict(platform="15")
+        self.session.headers["User-Agent"]="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
         requests.utils.add_dict_to_cookiejar(self.session.cookies, cookies)
         self.getprofile() # pylint: disable=not-callable
 
     def connect(self):
+        global_value.check_websocket_if_connect=None
         """Method for connection to IQ Option API."""
         response = self.login(self.username, self.password) # pylint: disable=not-callable
         ssid = response.cookies["ssid"]
         self.set_session_cookies()
         self.websocket_client = WebsocketClient(self)
+ 
+        self.websocket_thread = threading.Thread(target=self.websocket.run_forever,kwargs={'sslopt':{"check_hostname": False, "cert_reqs": ssl.CERT_NONE, "ca_certs": "cacert.pem"}})                                                                #for fix pyinstall error: cafile, capath and cadata cannot be all omitted
+        self.websocket_thread.daemon = True
+        self.websocket_thread.start()
+       
+        while True:
+            try:
+                if global_value.check_websocket_if_connect==0 or global_value.check_websocket_if_connect==-1:
+                    return False
+                elif global_value.check_websocket_if_connect==1:
+                    break
+            except:
+                pass
 
-        websocket_thread = threading.Thread(target=self.websocket.run_forever)
-        websocket_thread.daemon = True
-        websocket_thread.start()
-
-        time.sleep(5)
+            pass
 
         self.ssid(ssid) # pylint: disable=not-callable
+        self.timesync.server_timestamp=None
+        while True:
+            try:
+                if self.timesync.server_timestamp!=None:
+                    break
+            except:
+                pass
+        return True
+        
+    def close(self):
+        self.websocket.close()
+        self.websocket_thread.join()
+
+    def websocket_alive(self):
+        return self.websocket_thread.is_alive()
+    
+
