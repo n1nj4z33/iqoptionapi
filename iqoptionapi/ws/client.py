@@ -94,6 +94,12 @@ class WebsocketClient(object):
                 #todo
             except:
                 pass
+
+        elif message["name"]=="api_game_betinfo_result":
+            self.api.game_betinfo.isSuccessful=message["msg"]["isSuccessful"]
+            self.api.game_betinfo.dict=message["msg"]["result"]["data"] 
+
+            
     
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument

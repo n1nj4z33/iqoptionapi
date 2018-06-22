@@ -30,7 +30,10 @@ class IQ_Option:
             if check==True:
                 break
             time.sleep(self.suspend)
-          
+
+    def check_connect(self):
+        #True/False
+        return self.api.websocket_alive()
         #wait for timestamp getting
     
 #_________________________UPDATE ACTIVES OPCODE_____________________
@@ -113,8 +116,8 @@ class IQ_Option:
                 if respon["isSuccessful"]==True:
                     return respon
             except:
-                logging.error('**error** get_profile')
-
+                logging.error('**error** get_profile try reconnect')
+                self.connect()
     def get_balance(self):
         self.api.profile.balance=None
         while True:
@@ -124,7 +127,7 @@ class IQ_Option:
                 break
             except:
                 logging.error('**error** get_balance()')
-                pass
+      
             time.sleep(self.suspend)
         return self.api.profile.balance
 
@@ -313,6 +316,17 @@ class IQ_Option:
                 pass
         self.api.listinfodata.delete(id_number)    
         return listinfodata_dict["win"]
+
+    def get_betinfo(self,id_number):
+        #if the bet still 
+        self.api.game_betinfo.isSuccessful==None
+        self.api.get_betinfo(id_number)
+        while self.api.game_betinfo.isSuccessful==None:
+            pass
+        if self.api.game_betinfo.isSuccessful==True:
+            return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
+        else:
+            return self.api.game_betinfo.isSuccessful,None
 #__________________________BUY__________________________
 
 #__________________FOR OPTION____________________________
@@ -359,6 +373,8 @@ class IQ_Option:
 
     def buy_digit(self,price,direction,instrument_id):
         self.api.digit_buy(price,direction,instrument_id)
+    
+    
  
 
 

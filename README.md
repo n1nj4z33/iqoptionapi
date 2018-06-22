@@ -2,6 +2,8 @@
 
 (Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
 
+
+
 !Rolling release!
 
 This API is Diligent development!! 
@@ -10,11 +12,28 @@ Please Read Document
 
 update:2018/6/20
 news: 
-* fix reconnect problem  (test for 3 hour ..)
+* fix reconnect problem  
+* add get_betinfo function
 
 sucess on python3.6.4
 
 ---
+## About API
+```python
+#hight level api ,This api is write base on ""iqoptionapi.api" for more easy
+from iqoptionapi.stable_api import IQ_Option
+#low level api
+from iqoptionapi.api import IQOptionAPI
+```
+```bash
+.
+├── docs
+├── iqoptionapi(API code)
+    ├── http(doing http get/post)
+    └── ws
+        ├── chanels(Doing websocket action)
+        └── objects(Get back data from websocket action)
+```
 
 ## Installation & GET new version
 For Python3
@@ -35,7 +54,9 @@ goal="EURUSD"
 print("get candles")
 print(I_want_money.get_candles(goal,60,111,time.time()))
 ```
+
 ---
+
 ## Document
 
 ### Import 
@@ -177,14 +198,6 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
 
 #### get  realtime candles
 
-:exclamation:
-
-I_want_money.start_candles_stream("active") some time will be close
-
-need to recall the function
-
-:exclamation:
-
 you will get ""latest"" DATA
 ```python
 I_want_money.start_candles_stream("EURUSD")
@@ -218,33 +231,21 @@ import logging
 import time
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 I_want_money=IQ_Option("email","password")
-
 I_want_money.start_candles_stream("EURUSD")
 thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
-
-
 I_want_money.start_candles_stream("USDTRY")
 thread2=I_want_money.collect_realtime_candles_thread_start("USDTRY",100)
-
-
-
 time.sleep(3)
 #Do some thing
 ans=I_want_money.thread_collect_realtime.items()
-
 for k, v in ans:
     print (k, v)
-
-
-
-
 I_want_money.collect_realtime_candles_thread_stop(thread)
 I_want_money.stop_candles_stream("EURUSD")
-
-
 I_want_money.collect_realtime_candles_thread_stop(thread2)
 I_want_money.stop_candles_stream("USDTRY")
 ```
+
 collect data in thread with out wait
 ```python
 I_want_money.start_candles_stream("EURUSD")
@@ -261,7 +262,9 @@ I_want_money.collect_realtime_candles_thread_stop(thread)
 I_want_money.stop_candles_stream("EURUSD")
 
 ```
+
 ---
+
 ### Account
 #### get all profit
 ```python
@@ -278,14 +281,39 @@ I_want_money.change_balance(MODE)
                         #MODE: "PRACTICE"/"REAL"
 ```
 
-### check win
+---
+
+### Bet information
+
+#### check win
+
+It will do loop until get win or loose
+
 ```python
 I_want_money.check_win(23243221)
 #""you need to get id_number from buy function""
 #I_want_money.check_win(id_number)
 #this function will do loop check your bet until if win/equal/loose
 ```
- 
+#### get_betinfo
+
+it will get infomation about Bet by "id"
+
+:exclamation:
+if your bet(id) not have answer yet(game_state) or wrong id it will return False
+
+```python
+a=[]
+a.append(4452272449)#""you need to get id_number from buy function""
+a.append(4452404944)#""you need to get id_number from buy function""
+
+isSuccessful,dict=I_want_money.get_betinfo(a)
+#I_want_money.get_betinfo 
+#INPUT: list
+#OUTPUT:isSuccessful,dict
+
+```
+
 
 
 
