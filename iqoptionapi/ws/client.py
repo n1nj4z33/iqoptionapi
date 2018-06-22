@@ -96,9 +96,11 @@ class WebsocketClient(object):
                 pass
 
         elif message["name"]=="api_game_betinfo_result":
-            self.api.game_betinfo.isSuccessful=message["msg"]["isSuccessful"]
-            self.api.game_betinfo.dict=message["msg"]["result"]["data"] 
-
+            try:
+                self.api.game_betinfo.isSuccessful=message["msg"]["isSuccessful"]
+                self.api.game_betinfo.dict=message["msg"]["result"]["data"] 
+            except:
+                pass
             
     
     @staticmethod

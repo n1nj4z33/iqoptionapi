@@ -316,17 +316,31 @@ class IQ_Option:
                 pass
         self.api.listinfodata.delete(id_number)    
         return listinfodata_dict["win"]
+    def check_win_v2(self,id_number):
+        id_list=[]
+        id_list.append(id_number)
+        while True:
+            check,data=self.get_betinfo(id_list)
+            if check:
+                return data[str(id_number)]["win"]
+            time.sleep(self.suspend*10)
 
     def get_betinfo(self,id_number):
         #if the bet still 
         self.api.game_betinfo.isSuccessful==None
-        self.api.get_betinfo(id_number)
-        while self.api.game_betinfo.isSuccessful==None:
-            pass
-        if self.api.game_betinfo.isSuccessful==True:
-            return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
-        else:
-            return self.api.game_betinfo.isSuccessful,None
+        while True:
+            try:
+                self.api.get_betinfo(id_number)
+                while self.api.game_betinfo.isSuccessful==None:
+                    pass
+                if self.api.game_betinfo.isSuccessful==True:
+                    return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
+                else:
+                    return self.api.game_betinfo.isSuccessful,None
+            except:
+                logging.error('**error** get_betinfo reconnect')
+                self.connect()
+
 #__________________________BUY__________________________
 
 #__________________FOR OPTION____________________________
