@@ -1,11 +1,16 @@
 import datetime
 import time
 from iqoptionapi.ws.chanels.base import Base
-
+import logging
 class Game_betinfo(Base):
     name = "api_game_betinfo"
     def __call__(self, id_number_list):
         data = {"currency": "USD"}
-        for idx, val in enumerate(id_number_list):
-            data["id["+str(idx)+"]"]=int(val)
+        if type(id_number_list) is list:
+            for idx, val in enumerate(id_number_list):
+                data["id["+str(idx)+"]"]=int(val)
+        elif type(id_number_list) is None:
+            logging.error('**error** Game_betinfo can not input None type')
+        else :
+              data["id[0]"]=int(id_number_list)   
         self.send_websocket_request(self.name, data)

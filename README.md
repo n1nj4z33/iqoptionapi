@@ -10,13 +10,14 @@ This API is Diligent development!!
 
 Please Read Document
 
-update:2018/6/22
+update:2018/6/23
 
 news: 
 * fix reconnect problem  
 * add get_betinfo function
 * check_win (find some problem)
 * check_win_v2 (more stable than check_win)
+* fix check_win_v2
 
 sucess on python3.6.4
 
@@ -291,7 +292,9 @@ I_want_money.change_balance(MODE)
 #### check win
 
 It will do loop until get win or loose
+
 :exclamation:
+
 it have a little problem when network close and reconnect miss get "listInfoData"
 
 this function will doing Infinity loop
@@ -307,8 +310,22 @@ more better way
 
 an other way to fix that(implement by get_betinfo)
 
+input by int
+
 ```python
 I_want_money.check_win_v2(23243221)
+#""you need to get id_number from buy function""
+#I_want_money.check_win_v2(id_number)
+#this function will do loop check your bet until if win/equal/loose
+```
+
+intput by list
+
+```python
+a=[]
+a.append("23243221")
+a.append("99999999")
+I_want_money.check_win_v2(a)
 #""you need to get id_number from buy function""
 #I_want_money.check_win_v2(id_number)
 #this function will do loop check your bet until if win/equal/loose
