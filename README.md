@@ -17,7 +17,7 @@ news:
 * add get_betinfo function
 * check_win (find some problem)
 * check_win_v2 (more stable than check_win)
-* fix check_win_v2
+ 
 
 sucess on python3.6.4
 
@@ -319,17 +319,7 @@ I_want_money.check_win_v2(23243221)
 #this function will do loop check your bet until if win/equal/loose
 ```
 
-intput by list
-
-```python
-a=[]
-a.append("23243221")
-a.append("99999999")
-I_want_money.check_win_v2(a)
-#""you need to get id_number from buy function""
-#I_want_money.check_win_v2(id_number)
-#this function will do loop check your bet until if win/equal/loose
-```
+ 
 
 #### get_betinfo
 

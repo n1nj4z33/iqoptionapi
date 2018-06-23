@@ -317,6 +317,7 @@ class IQ_Option:
         self.api.listinfodata.delete(id_number)    
         return listinfodata_dict["win"]
     def check_win_v2(self,id_number):
+        check=False
         while True:
             check,data=self.get_betinfo(id_number)
             if check:
