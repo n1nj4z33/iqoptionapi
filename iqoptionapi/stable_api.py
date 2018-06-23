@@ -14,6 +14,7 @@ class IQ_Option:
         self.connect()
         self.thread_collect_realtime={}
         self.update_ACTIVES_OPCODE()
+        self.subscribe_table=[]
        
 
         #time.sleep(self.suspend)
@@ -26,10 +27,16 @@ class IQ_Option:
                 pass
                 #logging.error('**warning** self.api.close() fail')
             self.api = IQOptionAPI("iqoption.com", self.email, self.password)
-            check=self.api.connect()
+            check=None
+            try:
+                check=self.api.connect()
+                for ac in self.subscribe_table:
+                    self.start_candles_stream(ac)
+            except:
+                logging.error('**error** connect() fail')
             if check==True:
                 break
-            time.sleep(self.suspend)
+            time.sleep(self.suspend*2)
 
     def check_connect(self):
         #True/False
@@ -202,6 +209,7 @@ class IQ_Option:
 #_____________________________REAL TIME CANDLE_________________   
 #______________________________________________________________
                     #all need to fixxxxxxxxxxxxxxxxxxxxxxx
+                    #!!!!!!!!!!!undone!!!!!!!!!!!
     def start_all_candles_stream(self):
         while self.api.real_time_candles == {}:
             for ACTIVES_name in OP_code.ACTIVES:
@@ -219,6 +227,8 @@ class IQ_Option:
 ##############################################
                     ##one
     def start_candles_stream(self,ACTIVES):
+        if ACTIVES in self.subscribe_table==False:
+            self.subscribe_table.append(ACTIVES)
         try:
             self.api.subscribe(OP_code.ACTIVES[ACTIVES])
             start=time.time()
@@ -247,6 +257,8 @@ class IQ_Option:
             return False
 
     def stop_candles_stream(self,ACTIVES):
+        if ACTIVES in self.subscribe_table==True:
+            del self.subscribe_table[ACTIVES]
         while True:
             try:
                 if self.api.real_time_candles[ACTIVES] == {}:
@@ -325,13 +337,18 @@ class IQ_Option:
 
     def get_betinfo(self,id_number):
         #INPUT:list/int/string
-        
         while True:
             try:
                 self.api.game_betinfo.isSuccessful=None
+                start=time.time()
                 self.api.get_betinfo(id_number)
                 while self.api.game_betinfo.isSuccessful==None:
-                    pass
+                    if time.time()-start>10:
+                        logging.error('**error** get_betinfo time out need reconnect')
+                        self.connect()
+                        self.api.get_betinfo(id_number)
+                        time.sleep(self.suspend*10)
+
                 #check if id exist
                 check_id_exist=False
                 if type(id_number) is list:
@@ -346,7 +363,7 @@ class IQ_Option:
                         return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
                     else:
                         return self.api.game_betinfo.isSuccessful,None
-                time.sleep(5)
+                time.sleep(self.suspend*10)
             except:
                 logging.error('**error** get_betinfo reconnect')
                 self.connect()

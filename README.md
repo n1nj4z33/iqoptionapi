@@ -13,6 +13,7 @@ Please Read Document
 update:2018/6/23
 
 news: 
+* add reconnect stream table 
 * fix reconnect problem  
 * add get_betinfo function
 * check_win (find some problem)
