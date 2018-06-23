@@ -317,7 +317,6 @@ class IQ_Option:
         self.api.listinfodata.delete(id_number)    
         return listinfodata_dict["win"]
     def check_win_v2(self,id_number):
-        check=False
         while True:
             check,data=self.get_betinfo(id_number)
             if check:
@@ -326,16 +325,28 @@ class IQ_Option:
 
     def get_betinfo(self,id_number):
         #INPUT:list/int/string
-        self.api.game_betinfo.isSuccessful==None
+        
         while True:
             try:
+                self.api.game_betinfo.isSuccessful=None
                 self.api.get_betinfo(id_number)
                 while self.api.game_betinfo.isSuccessful==None:
                     pass
-                if self.api.game_betinfo.isSuccessful==True:
-                    return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
+                #check if id exist
+                check_id_exist=False
+                if type(id_number) is list:
+                    for id in id_number:
+                        if str(id) in self.api.game_betinfo.dict:
+                            check_id_exist=True
                 else:
-                    return self.api.game_betinfo.isSuccessful,None
+                    if str(id_number) in self.api.game_betinfo.dict:
+                        check_id_exist=True                     
+                if check_id_exist:
+                    if self.api.game_betinfo.isSuccessful==True:
+                        return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
+                    else:
+                        return self.api.game_betinfo.isSuccessful,None
+                time.sleep(5)
             except:
                 logging.error('**error** get_betinfo reconnect')
                 self.connect()

@@ -328,7 +328,19 @@ it will get infomation about Bet by "id"
 :exclamation:
 
 if your bet(id) not have answer yet(game_state) or wrong id it will return False
+input by int
 
+```python
+ 
+isSuccessful,dict=I_want_money.get_betinfo(4452272449)
+#I_want_money.get_betinfo 
+#INPUT: list/int
+#OUTPUT:isSuccessful,dict
+
+```
+
+
+input by list
 ```python
 a=[]
 a.append(4452272449)#""you need to get id_number from buy function""
@@ -336,7 +348,7 @@ a.append(4452404944)#""you need to get id_number from buy function""
 
 isSuccessful,dict=I_want_money.get_betinfo(a)
 #I_want_money.get_betinfo 
-#INPUT: list
+#INPUT: list/int
 #OUTPUT:isSuccessful,dict
 
 ```
