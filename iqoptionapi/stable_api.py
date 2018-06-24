@@ -338,35 +338,36 @@ class IQ_Option:
     def get_betinfo(self,id_number):
         #INPUT:list/int/string
         while True:
+            self.api.game_betinfo.isSuccessful=None
+            start=time.time()
             try:
-                self.api.game_betinfo.isSuccessful=None
-                start=time.time()
                 self.api.get_betinfo(id_number)
-                while self.api.game_betinfo.isSuccessful==None:
-                    if time.time()-start>10:
-                        logging.error('**error** get_betinfo time out need reconnect')
-                        self.connect()
-                        self.api.get_betinfo(id_number)
-                        time.sleep(self.suspend*10)
-
-                #check if id exist
-                check_id_exist=False
-                if type(id_number) is list:
-                    for id in id_number:
-                        if str(id) in self.api.game_betinfo.dict:
-                            check_id_exist=True
-                else:
-                    if str(id_number) in self.api.game_betinfo.dict:
-                        check_id_exist=True                     
-                if check_id_exist:
-                    if self.api.game_betinfo.isSuccessful==True:
-                        return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
-                    else:
-                        return self.api.game_betinfo.isSuccessful,None
-                time.sleep(self.suspend*10)
             except:
-                logging.error('**error** get_betinfo reconnect')
+                logging.error('**error** def get_betinfo  self.api.get_betinfo reconnect')
                 self.connect()
+            while self.api.game_betinfo.isSuccessful==None:
+                if time.time()-start>10:
+                    logging.error('**error** get_betinfo time out need reconnect')
+                    self.connect()
+                    self.api.get_betinfo(id_number)
+                    time.sleep(self.suspend*10)
+
+            #check if id exist
+            check_id_exist=False
+            if type(id_number) is list:
+                for id in id_number:
+                    if str(id) in self.api.game_betinfo.dict:
+                        check_id_exist=True
+            else:
+                if str(id_number) in self.api.game_betinfo.dict:
+                    check_id_exist=True                     
+            if check_id_exist:
+                if self.api.game_betinfo.isSuccessful==True:
+                    return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
+                else:
+                    return self.api.game_betinfo.isSuccessful,None
+            time.sleep(self.suspend*10)
+        
 
 #__________________________BUY__________________________
 
