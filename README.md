@@ -1,7 +1,5 @@
 # IQ Option API
 
-(Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
-
 Version:1.0 
 
 This API is Diligent development!! 
