@@ -2,15 +2,13 @@
 
 (Frok from [n1nj4z33/iqoptionapi](https://github.com/n1nj4z33/iqoptionapi))
 
-
-
-!Rolling release!
+Version:1.0 
 
 This API is Diligent development!! 
 
 Please Read Document
 
-update:2018/6/23
+last update:2018/6/23
 
 news: 
 * add reconnect stream table 
@@ -18,6 +16,7 @@ news:
 * add get_betinfo function
 * check_win (find some problem)
 * check_win_v2 (more stable than check_win)
+* version
  
 
 sucess on python3.6.4
@@ -89,7 +88,13 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 I_want_money=IQ_Option("email","password")
 ```
 
- 
+---
+### Check version
+
+```python
+I_want_money=IQ_Option("email","password")
+print(I_want_money.__version__)
+```
 
 ---
 ### View all ACTIVES Name

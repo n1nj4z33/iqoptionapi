@@ -6,6 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
+    __version__="1.0"
     def __init__(self,email,password):
         self.email=email
         self.password=password
@@ -15,8 +16,6 @@ class IQ_Option:
         self.thread_collect_realtime={}
         self.update_ACTIVES_OPCODE()
         self.subscribe_table=[]
-       
-
         #time.sleep(self.suspend)
     #***  
     def connect(self):
