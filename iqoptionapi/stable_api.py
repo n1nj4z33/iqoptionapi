@@ -30,11 +30,15 @@ class IQ_Option:
             check=None
             try:
                 check=self.api.connect()
-                for ac in self.subscribe_table:
-                    self.start_candles_stream(ac)
+                
             except:
                 logging.error('**error** connect() fail')
             if check==True:
+                try:
+                    for ac in self.subscribe_table:
+                        self.start_candles_stream(ac)
+                except:
+                    pass
                 break
             time.sleep(self.suspend*2)
 
@@ -59,10 +63,14 @@ class IQ_Option:
         time.sleep(self.suspend)
         self.api.instruments=None
         while self.api.instruments==None:
-            self.api.get_instruments(types)
-            start=time.time()
-            while self.api.instruments==None and time.time()-start<10:
-                pass
+            try:
+                self.api.get_instruments(types)
+                start=time.time()
+                while self.api.instruments==None and time.time()-start<10:
+                    pass
+            except:
+                logging.error('**error** api.get_instruments need reconnect')
+                self.connect()
         for ins in self.api.instruments["instruments"]:
             OP_code.ACTIVES[ins["id"]]=ins["active_id"]
 
