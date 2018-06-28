@@ -11,8 +11,9 @@ Auto generated Sphinx documentation you can  find [here](http://iqoptionapi.read
 
 ### Installation
 ```
-pip install iqoptionapi
+pip install --upgrade git+https://github.com/n1nj4z33/iqoptionapi.git@master
 ```
+Reference for the above modificatioon: [StackoverFlow](https://stackoverflow.com/questions/51039974/error-while-calling-function-in-python3-5)
 
 ### A small example
 
