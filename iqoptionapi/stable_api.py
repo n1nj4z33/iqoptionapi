@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="1.0"
+    __version__="1.1"
     def __init__(self,email,password):
         self.email=email
         self.password=password
@@ -15,7 +15,9 @@ class IQ_Option:
         self.connect()
         self.thread_collect_realtime={}
         self.update_ACTIVES_OPCODE()
-        self.subscribe_table=[]
+        self.subscribe_candle=[]
+        self.subscribe_mood=[]
+        
         #time.sleep(self.suspend)
     #***  
     def connect(self):
@@ -34,8 +36,13 @@ class IQ_Option:
                 logging.error('**error** connect() fail')
             if check==True:
                 try:
-                    for ac in self.subscribe_table:
+                    for ac in self.subscribe_candle:
                         self.start_candles_stream(ac)
+                except:
+                    pass
+                try:
+                    for ac in self.subscribe_mood:
+                        self.start_mood_stream(ac)
                 except:
                     pass
                 break
@@ -234,8 +241,8 @@ class IQ_Option:
 ##############################################
                     ##one
     def start_candles_stream(self,ACTIVES):
-        if ACTIVES in self.subscribe_table==False:
-            self.subscribe_table.append(ACTIVES)
+        if ACTIVES in self.subscribe_candle==False:
+            self.subscribe_candle.append(ACTIVES)
         try:
             self.api.subscribe(OP_code.ACTIVES[ACTIVES])
             start=time.time()
@@ -264,8 +271,8 @@ class IQ_Option:
             return False
 
     def stop_candles_stream(self,ACTIVES):
-        if ACTIVES in self.subscribe_table==True:
-            del self.subscribe_table[ACTIVES]
+        if ACTIVES in self.subscribe_candle==True:
+            del self.subscribe_candle[ACTIVES]
         while True:
             try:
                 if self.api.real_time_candles[ACTIVES] == {}:
@@ -273,7 +280,7 @@ class IQ_Option:
             except:
                 pass
             self.api.real_time_candles[ACTIVES] = {}
-            time.sleep(1)
+            time.sleep(self.suspend*10)
             self.api.unsubscribe(OP_code.ACTIVES[ACTIVES])
 #__________________________Collect realtime_____________________________
                         
@@ -311,7 +318,29 @@ class IQ_Option:
             collect[candles["at"]]=candles
         return collect
     
+#-----------------traders_mood----------------------
+    def start_mood_stream(self,ACTIVES):
+        if ACTIVES in self.subscribe_mood==False:
+            self.subscribe_mood.append(ACTIVES)
+        
+        while True:
+            self.api.subscribe_Traders_mood(OP_code.ACTIVES[ACTIVES])
+            try:
+                self.api.traders_mood[OP_code.ACTIVES[ACTIVES]]
+                break
+            except:
+                time.sleep(1) 
 
+    def stop_mood_stream(self,ACTIVES):
+        if ACTIVES in self.subscribe_mood==True:
+            del self.subscribe_mood[ACTIVES]     
+        self.api.unsubscribe_Traders_mood(OP_code.ACTIVES[ACTIVES])
+    def get_traders_mood(self,ACTIVES):
+        #return highter %
+        return self.api.traders_mood[OP_code.ACTIVES[ACTIVES]]
+    def get_all_traders_mood(self):
+        #return highter %
+        return self.api.traders_mood
 ##############################################################################################
     def get_candles_as_array(self,ACTIVES,interval,count,endtime):
         candles=self.get_candles(ACTIVES,interval,count,endtime)

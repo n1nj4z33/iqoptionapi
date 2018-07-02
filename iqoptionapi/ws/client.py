@@ -101,6 +101,8 @@ class WebsocketClient(object):
                 self.api.game_betinfo.dict=message["msg"]["result"]["data"] 
             except:
                 pass
+        elif message["name"]=="traders-mood-changed":
+            self.api.traders_mood[message["msg"]["asset_id"]]=message["msg"]["value"]
             
     
     @staticmethod

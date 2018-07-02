@@ -27,6 +27,8 @@ from iqoptionapi.ws.chanels.api_game_betinfo import Game_betinfo
 from iqoptionapi.ws.chanels.instruments import Get_instruments
 from iqoptionapi.ws.chanels.strike_list import Strike_list
 from iqoptionapi.ws.chanels.digit_buy import Digit_buy
+from iqoptionapi.ws.chanels.traders_mood import Traders_mood_subscribe
+from iqoptionapi.ws.chanels.traders_mood import Traders_mood_unsubscribe
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -56,6 +58,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     game_betinfo=Game_betinfo_data()
     instruments=None
     buy_id=None
+    traders_mood={}#get hight(put) %
+
+
    
 
     def __init__(self, host, username, password, proxies=None):
@@ -275,9 +280,18 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.ssid.Ssid>`.
         """
         return Ssid(self)
-
+#--------------------------------------------------------------------------------
+#trader mood 
+    @property
+    def subscribe_Traders_mood(self):
+        return Traders_mood_subscribe(self)
+    @property
+    def unsubscribe_Traders_mood(self):
+        return Traders_mood_unsubscribe(self)
+#--------------------------------------------------------------------------------
     @property
     def subscribe(self):
+        "candle-generated"
         """Property for get IQ Option websocket subscribe chanel.
 
         :returns: The instance of :class:`Subscribe
@@ -340,13 +354,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def digit_buy(self):
         return Digit_buy(self)
 #-------------------------------------------------------
-
-
-
-
-
-
-
     def set_session_cookies(self):
         """Method to set session cookies."""
         cookies = dict(platform="15")

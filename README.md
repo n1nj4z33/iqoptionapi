@@ -1,6 +1,6 @@
 # IQ Option API
 
-Version:1.0 
+Version:1.1 
 
 This API is Diligent development!! 
 
@@ -9,13 +9,8 @@ Please Read Document
 last update:2018/6/23
 
 news: 
-* add reconnect stream table 
-* fix reconnect problem  
-* add get_betinfo function
-* check_win (find some problem)
-* check_win_v2 (more stable than check_win)
-* version
- 
+* add Trader's Mood
+
 
 sucess on python3.6.4
 
@@ -108,7 +103,10 @@ print(I_want_money.get_all_ACTIVES_OPCODE())
  
 
 ### For Options
-Sample call or put
+
+#### BUY
+
+Sample
 ```python
 from iqoptionapi.stable_api import IQ_Option
 import logging
@@ -272,6 +270,31 @@ I_want_money.stop_candles_stream("EURUSD")
 ```
 
 ---
+### Get mood
+
+Sample
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+goal="EURUSD"
+I_want_money.start_mood_stream(goal)
+print(I_want_money.get_traders_mood(goal))
+I_want_money.stop_mood_stream(goal)
+```
+#### get_traders_mood
+
+get  percent of higher(call)
+
+if you want to know percent of lower(put) just 1-higher
+```python
+I_want_money.get_traders_mood(goal)
+#input:input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
+#output:(float) the higher(call)%
+#if you want to know lower(put)% try 1-I_want_money.get_traders_mood(goal)
+```
+
+
 
 ### Account
 #### get all profit
