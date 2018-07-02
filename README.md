@@ -6,7 +6,7 @@ This API is Diligent development!!
 
 Please Read Document
 
-last update:2018/6/23
+last update:2018/7/2
 
 news: 
 * add Trader's Mood
