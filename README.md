@@ -13,7 +13,7 @@ news:
 * Stock
 * Commodities
 * Crypto
-* ETF
+* ETFs
 
 
 sucess on python3.6.5
@@ -242,16 +242,16 @@ I_want_money.buy_digit(3,"put",instrument_id)
 ```
 
 ---
-### For Forex&Stock&Commodities&Crypto&ETF
+### For Forex&Stock&Commodities&Crypto&ETFs
 
 #### you need to check Asset is open or close!
 ![](image/asset_close.png)
 
 
 #### About instrument_type
-||Forex|Stock|Commodities|Crypto
---|--|--|--|--|
-instrument_type|"forex"|"cfd"|"cfd"|"crypto"|
+||Forex|Stock|Commodities|Crypto|ETFs
+--|--|--|--|--|--|
+instrument_type|"forex"|"cfd"|"cfd"|"crypto"|"cfd"
 
 #### About active
 if you want to buy ""Alphabet Inc.""
