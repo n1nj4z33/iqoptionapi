@@ -1,0 +1,31 @@
+{"name":"sendMessage","request_id":"1200","msg":{"name":"close-position","version":"1.0","body":{"position_id":346751127}}}
+{"name":"position-closed","request_id":"1200","msg":{"id":667219478},"status":2000}
+
+{"name":"sendMessage","request_id":"1190","msg":{"name":"cancel-order","version":"1.0","body":{"order_id":667075923}}}
+{"name":"order-canceled","request_id":"1190","msg":{"id":667075923},"status":2000}
+
+get-available-leverages
+拿到槓桿數字
+{"name":"sendMessage","request_id":"410","msg":{"name":"get-available-leverages","version":"2.0","body":{"instrument_type":"cfd","actives":[911]}}}
+
+#ok
+get-order
+可以拿到positions id
+{"name":"sendMessage","request_id":"140","msg":{"name":"get-order","version":"1.0","body":{"order_id":664130181}}}
+{"name":"order","request_id":"140","msg":{"instrument_id_escape":"BTCUSD","basic_stoplimit_amount":null,"take_profit_price":null,"stop_lose_price":null,"tpsl_extra":null,"instrument_strike_value":null,"instrument_type":"crypto","instrument_id":"BTCUSD","instrument_underlying":"BTCUSD","instrument_active_id":816,"instrument_expiration":null,"instrument_strike":null,"instrument_dir":null,"id":664130181,"user_id":32521344,"user_balance_id":76102291,"user_balance_type":4,"position_id":346063672,"create_at":1530880561151,"update_at":1530880661574,"execute_at":null,"side":"sell","type":"limit","status":"canceled","execute_status":"canceled","count":1.49784,"leverage":10,"underlying_price":null,"avg_price":null,"avg_price_enrolled":null,"client_platform_id":0,"limit_price":6689.626698,"stop_price":null,"currency":"USD","margin":null,"spread":null,"commission_amount":null,"commission_amount_enrolled":null,"extra_data":{"use_token_for_commission":false,"auto_margin_call":false},"time_in_force":"good_till_cancel","time_in_force_date":null},"status":2000}
+
+
+fee 過夜費用
+{"name":"sendMessage","request_id":"990","msg":{"name":"get-overnight-fee","version":"1.0","body":{"instrument_type":"crypto","user_group_id":1,"active_id":816}}}
+{"name":"overnight-fee","request_id":"990","msg":{"instrument_type":"crypto","user_group_id":1,"items":[{"active_id":816,"fee":{"fri":{"time":"21:00","short":-0.015,"long":0.065},"mon":{"time":"21:00","short":-0.015,"long":0.065},"sat":{"time":"21:00","short":-0.015,"long":0.065},"sun":{"time":"21:00","short":-0.015,"long":0.065},"thu":{"time":"21:00","short":-0.015,"long":0.065},"tue":{"time":"21:00","short":-0.015,"long":0.065},"wed":{"time":"21:00","short":-0.015,"long":0.065}}}]},"status":2000}
+
+
+pk
+
+get positions
+{"name":"sendMessage","request_id":"72","msg":{"name":"get-positions","version":"1.0","body":{"user_balance_id":76102291,"instrument_type":"forex","skip":0}}}
+ok
+get-position-history
+{"name":"sendMessage","request_id":"78","msg":{"name":"get-position-history","version":"1.0","body":{"user_balance_id":76102291,"instrument_type":"crypto"}}}
+
+

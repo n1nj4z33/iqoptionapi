@@ -29,6 +29,14 @@ from iqoptionapi.ws.chanels.strike_list import Strike_list
 from iqoptionapi.ws.chanels.digit_buy import Digit_buy
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_subscribe
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_unsubscribe
+from iqoptionapi.ws.chanels.buy_place_order_temp import Buy_place_order_temp
+from iqoptionapi.ws.chanels.get_order import Get_order
+from iqoptionapi.ws.chanels.get_positions import Get_positions
+from iqoptionapi.ws.chanels.get_positions import Get_position_history
+from iqoptionapi.ws.chanels.get_available_leverages import Get_available_leverages
+from iqoptionapi.ws.chanels.cancel_order import Cancel_order
+from iqoptionapi.ws.chanels.close_position import Close_position
+from iqoptionapi.ws.chanels.get_overnight_fee import Get_overnight_fee
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -58,11 +66,15 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     game_betinfo=Game_betinfo_data()
     instruments=None
     buy_id=None
+    buy_order_id=None
     traders_mood={}#get hight(put) %
-
-
-   
-
+    order_data=None
+    positions=None
+    position_history=None
+    available_leverages=None
+    order_canceled=None
+    close_position_data=None
+    overnight_fee=None
     def __init__(self, host, username, password, proxies=None):
         """
         :param str host: The hostname or ip address of a IQ Option server.
@@ -330,9 +342,12 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         data = json.dumps(dict(name="api_option_init_all",
                                msg=""))
         self.websocket.send(data)
+    
+    @property
+    def get_betinfo(self):
+        return Game_betinfo(self)
 
-
-
+#____________for_______binary_______option_____________
     @property
     def buy(self):
         """Property for get IQ Option websocket buyv2 request.
@@ -342,24 +357,46 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         self.buy_successful = None
         return Buyv2(self)
-
-    @property
-    def get_betinfo(self):
-        return Game_betinfo(self)
-#___________________________digital____________________
+#____________________for_______digital____________________
     @property
     def get_strike_list(self):
         return Strike_list(self)
     @property
     def digit_buy(self):
         return Digit_buy(self)
+#____BUY_for__Forex__&&__stock(cfd)__&&__ctrpto_____
+    @property
+    def buy_order(self):
+        return Buy_place_order_temp(self)
+    @property
+    def get_order(self):
+        return Get_order(self)
+    @property
+    def get_positions(self):
+        return Get_positions(self)
+    @property
+    def get_position_history(self):
+        return Get_position_history(self)
+    @property
+    def get_available_leverages(self):
+        return Get_available_leverages(self)
+    @property
+    def cancel_order(self):
+        return Cancel_order(self)
+    @property
+    def close_position(self):
+        return Close_position(self)
+    @property
+    def get_overnight_fee(self):
+        return Get_overnight_fee(self)
+#-------------------------------------------------------
 #-------------------------------------------------------
     def set_session_cookies(self):
         """Method to set session cookies."""
         cookies = dict(platform="15")
         self.session.headers["User-Agent"]="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
         requests.utils.add_dict_to_cookiejar(self.session.cookies, cookies)
-        self.getprofile() # pylint: disable=not-callable
+       
 
     def connect(self):
         global_value.check_websocket_if_connect=None

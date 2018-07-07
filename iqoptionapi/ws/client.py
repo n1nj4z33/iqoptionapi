@@ -52,6 +52,7 @@ class WebsocketClient(object):
                 self.api.profile.balances=message["msg"]["balances"]
             except:
                 pass
+
         elif message["name"] == "candles":
             try:
                 self.api.candles.candles_data = message["msg"]["candles"]
@@ -103,7 +104,26 @@ class WebsocketClient(object):
                 pass
         elif message["name"]=="traders-mood-changed":
             self.api.traders_mood[message["msg"]["asset_id"]]=message["msg"]["value"]
-            
+        #------for forex&cfd&crypto..
+        elif message["name"]=="order-placed-temp":
+            self.api.buy_order_id= message["msg"]["id"]
+        elif message["name"]=="order":
+            self.api.order_data=message
+        elif message["name"]=="positions":
+            self.api.positions=message
+        elif message["name"]=="position-history":
+            self.api.position_history=message
+        elif message["name"]=="available-leverages":
+            self.api.available_leverages=message
+        elif message["name"]=="order-canceled":
+            self.api.order_canceled=message
+        elif message["name"]=="position-closed":
+            self.api.close_position_data=message
+        elif message["name"]=="overnight-fee":
+            self.api.overnight_fee=message
+
+
+
     
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument

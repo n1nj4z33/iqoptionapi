@@ -14,7 +14,7 @@ class Get_instruments(Base):
     
         data = {
         "name":"get-instruments",
-        "version":"1.0",
+        "version":"2.0",
         "body":{"type":types}
         }
 

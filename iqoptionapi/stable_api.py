@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="1.1"
+    __version__="2.0"
     def __init__(self,email,password):
         self.email=email
         self.password=password
@@ -15,6 +15,7 @@ class IQ_Option:
         self.connect()
         self.thread_collect_realtime={}
         self.update_ACTIVES_OPCODE()
+        self.get_balance_id()
         self.subscribe_candle=[]
         self.subscribe_mood=[]
         
@@ -105,8 +106,8 @@ class IQ_Option:
                         if self.api.api_option_init_all_result != None:
                             break
                     except:
-                        self.api.get_api_option_init_all() 
-                        time.sleep(self.suspend*2)
+                        time.sleep(self.suspend*5)
+                        break
                 if self.api.api_option_init_all_result["isSuccessful"]==True:
                     break
             except:
@@ -139,6 +140,19 @@ class IQ_Option:
             except:
                 logging.error('**error** get_profile try reconnect')
                 self.connect()
+    def get_balance_id(self):
+        self.api.profile.balance_id=None
+        while True:
+            try:
+                respon=self.get_profile()
+                self.api.profile.balance_id=respon["result"]["balance_id"]
+                break
+            except:
+                logging.error('**error** get_balance()')
+      
+            time.sleep(self.suspend)
+        return self.api.profile.balance
+
     def get_balance(self):
         self.api.profile.balance=None
         while True:
@@ -372,7 +386,7 @@ class IQ_Option:
             time.sleep(self.suspend*10)
 
     def get_betinfo(self,id_number):
-        #INPUT:list/int/string
+        #INPUT:int
         while True:
             self.api.game_betinfo.isSuccessful=None
             start=time.time()
@@ -386,22 +400,11 @@ class IQ_Option:
                     logging.error('**error** get_betinfo time out need reconnect')
                     self.connect()
                     self.api.get_betinfo(id_number)
-                    time.sleep(self.suspend*10)
-
-            #check if id exist
-            check_id_exist=False
-            if type(id_number) is list:
-                for id in id_number:
-                    if str(id) in self.api.game_betinfo.dict:
-                        check_id_exist=True
+                    time.sleep(self.suspend*10)                       
+            if self.api.game_betinfo.isSuccessful==True:
+                return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
             else:
-                if str(id_number) in self.api.game_betinfo.dict:
-                    check_id_exist=True                     
-            if check_id_exist:
-                if self.api.game_betinfo.isSuccessful==True:
-                    return self.api.game_betinfo.isSuccessful,self.api.game_betinfo.dict
-                else:
-                    return self.api.game_betinfo.isSuccessful,None
+                return self.api.game_betinfo.isSuccessful,None
             time.sleep(self.suspend*10)
         
 
@@ -451,9 +454,106 @@ class IQ_Option:
 
     def buy_digit(self,price,direction,instrument_id):
         self.api.digit_buy(price,direction,instrument_id)
-    
-    
+
+#----------------------------------------------------------       
+#-----------------BUY_for__Forex__&&__stock(cfd)__&&__ctrpto
+    def buy_order(self,instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price):        
+        self.api.buy_order_id=None
+        self.api.buy_order(instrument_type=instrument_type,instrument_id=instrument_id,side=side,type=type,amount=amount,limit_price=limit_price,stop_price=0,leverage=leverage,stop_lose_price=stop_lose_price,take_profit_price=take_profit_price)
+        while self.api.buy_order_id==None:
+            pass
+        check,data=self.get_order(self.api.buy_order_id)
+        while data["status"]=="pending_new":
+            check,data=self.get_order(self.api.buy_order_id)
+            time.sleep(1)
  
+        if check:
+            if data["status"]!="rejected":
+                return True,self.api.buy_order_id
+            else:
+                return False,None
+        else:
+            
+            return False,None
+        
 
+    def get_order(self,buy_order_id):
+        #self.api.order_data["status"] 
+        #reject:you can not get this order
+        #pending_new:this order is working now
+        #filled:this order is ok now
+        #new
+        self.api.order_data=None
+        self.api.get_order(buy_order_id)
+        while self.api.order_data==None:
+            pass
+        if self.api.order_data["status"]==2000:
+            return True,self.api.order_data["msg"]
+        else:
+            return False,None
+    #this function is heavy
+    
+    def get_positions(self,instrument_type):
+        self.api.positions=None
+        self.api.get_positions(instrument_type)
+        while self.api.positions==None:
+            pass
+        if self.api.positions["status"]==2000:
+            return True,self.api.positions["msg"]
+        else:
+            return False,None
+    #this function is heavy 
+    def get_position_history(self,instrument_type):
+        self.api.position_history=None
+        self.api.get_position_history(instrument_type)
+        while self.api.position_history==None:
+            pass
+        
+        if self.api.position_history["status"]==2000:
+            return True,self.api.position_history["msg"]
+        else:
+            return False,None
+    
+    def get_available_leverages(self,instrument_type,actives):
+        self.api.available_leverages=None
+        self.api.get_available_leverages(instrument_type,OP_code.ACTIVES[actives])
+        while self.api.available_leverages==None:
+            pass
+        if self.api.available_leverages["status"]==2000:
+            return True,self.api.available_leverages["msg"]
+        else:
+            return False,None
 
+    def cancel_order(self,buy_order_id):
+        self.api.order_canceled=None
+        self.api.cancel_order(buy_order_id)
+        while self.api.order_canceled==None:
+            pass
+        if self.api.order_canceled["status"]==2000:
+            return True
+        else:
+            return False
+    def close_position(self,buy_order_id):
+        check,data=self.get_order(buy_order_id)
+        if data["position_id"]!=None:
+            self.api.close_position_data=None
+            self.api.close_position(data["position_id"])
+            while self.api.close_position_data==None:
+                pass
+            if self.api.close_position_data["status"]==2000:
+                return True
+            else:
+                return False
+        else:
+            return False
+    def get_overnight_fee(self,instrument_type,active):
+        self.api.overnight_fee=None
+        self.api.get_overnight_fee(instrument_type,OP_code.ACTIVES[active])
+        while self.api.overnight_fee==None:
+            pass
+        if self.api.overnight_fee["status"]==2000:
+            return True,self.api.overnight_fee["msg"]
+        else:
+            return False,None
+        
 

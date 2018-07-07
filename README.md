@@ -1,18 +1,21 @@
 # IQ Option API
 
-Version:1.1 
+Version:2.0
 
-This API is Diligent development!! 
+This API is Diligent development!!
 
 Please Read Document
 
-last update:2018/7/2
+last update:2018/7/7
 
 news: 
-* add Trader's Mood
+* Forex
+* Stock
+* Commodities
+* Crypto
 
 
-sucess on python3.6.4
+sucess on python3.6.5
 
 ---
 ## About API
@@ -51,6 +54,19 @@ goal="EURUSD"
 print("get candles")
 print(I_want_money.get_candles(goal,60,111,time.time()))
 ```
+---
+## Find ticker symbol
+when you buy some thing you need to know ""ticker"" symbol
+
+if you want to buy 
+""Alphabet Inc.""
+ticker symbol:""GOOGL""
+buysomeapi("GOOGL")
+
+you can find ticker symbol here 
+
+[https://iqoption.com/en/assets](https://iqoption.com/en/assets)
+
 
 ---
 
@@ -134,7 +150,61 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
                             #False:if fail break
                 #return:(True/False,id):if sucess return (True,id_number) esle return(False,None)
 ```
+
+#### check win
+
+(only for option)
+
+It will do loop until get win or loose
+
+:exclamation:
+
+it have a little problem when network close and reconnect miss get "listInfoData"
+
+this function will doing Infinity loop
+
+```python
+I_want_money.check_win(23243221)
+#""you need to get id_number from buy function""
+#I_want_money.check_win(id_number)
+#this function will do loop check your bet until if win/equal/loose
+```
+##### check_win_v2
+
+(only for option)
+
+more better way
+
+an other way to fix that(implement by get_betinfo)
+
+input by int
+
+```python
+I_want_money.check_win_v2(23243221)
+#""you need to get id_number from buy function""
+#I_want_money.check_win_v2(id_number)
+#this function will do loop check your bet until if win/equal/loose
+```
+#### get_betinfo
+
+(only for option)
+
+it will get infomation about Bet by "id"
+
+:exclamation:
+
+if your bet(id) not have answer yet(game_state) or wrong id it will return False
+input by int
+
+```python
  
+isSuccessful,dict=I_want_money.get_betinfo(4452272449)
+#I_want_money.get_betinfo 
+#INPUT: int
+#OUTPUT:isSuccessful,dict
+
+```
+
 ___
 
 ### For Digital
@@ -171,6 +241,153 @@ I_want_money.buy_digit(3,"put",instrument_id)
 ```
 
 ---
+### For Forex&Stock&Commodities&Crypto
+
+#### you need to check Asset is open or close!
+![](image/asset_close.png)
+
+
+#### About instrument_type
+||Forex|Stock|Commodities|Crypto
+--|--|--|--|--|
+instrument_type|"forex"|"cfd"|"cfd"|"crypto"|
+
+#### About active
+if you want to buy ""Alphabet Inc.""
+
+find ticker symbol
+
+[https://iqoption.com/en/assets](https://iqoption.com/en/assets)
+
+you can find "Alphabet Inc."'s ticker symbol is "GOOGLE"
+
+instrument_id="GOOGL"
+
+#### Sample
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+
+instrument_type="crypto"
+instrument_id="BTCUSD"
+side="buy"#sell
+type="market"#limit
+amount=11
+limit_price=2#for limit ,if you choose market this not work,
+leverage=3#you can get more information in get_available_leverages()
+stop_lose_price=1#
+take_profit_price=20000#
+
+check,order_id=I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
+print(I_want_money.get_order(order_id))
+print(I_want_money.get_positions("crypto"))
+print(I_want_money.get_position_history("crypto"))
+print(I_want_money.get_available_leverages("crypto","BTCUSD"))
+print(I_want_money.close_position(order_id))
+print(I_want_money.get_overnight_fee("crypto","BTCUSD"))
+```
+ 
+
+
+
+#### Buy
+
+return (True/False,buy_order_id/False)
+
+if Buy sucess return (True,buy_order_id)
+
+```python
+instrument_type="crypto"
+instrument_id="BTCUSD"
+side="buy"#sell
+type="market"#limit
+amount=11#How many money you want investment
+limit_price=2#for limit ,if you choose market this not work,
+leverage=3#you can get more information in get_available_leverages()
+stop_lose_price=1#stop lose price
+take_profit_price=20000#take profit price
+
+I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
+```
+#### get_order
+get infomation about buy_order_id
+
+return (True/False,get_order,None)
+
+```python
+I_want_money.get_order(buy_order_id)
+```
+#### get_positions
+
+you will get there data
+
+![](image/get_positions.png)
+
+return (True/False,get_positions,None)
+
+```python
+I_want_money.get_positions(instrument_type)
+```
+
+#### get_position_history
+
+you will get there data
+
+![](image/get_position_history.png)
+
+return (True/False,position_history,None)
+
+```python
+I_want_money.get_positions_history(instrument_type)
+```
+
+
+#### get_available_leverages
+
+get available leverages
+
+return (True/False,available_leverages,None)
+
+```python
+I_want_money.get_available_leverages(instrument_type,actives)
+```
+#### cancel_order
+
+you will do this
+
+![](image/cancel_order.png)
+
+return (True/False)
+
+```python
+I_want_money.cancel_order(buy_order_id)
+```
+
+#### close_position
+
+you will do this
+
+![](image/close_position.png)
+
+return (True/False)
+
+```python
+I_want_money.close_position(buy_order_id)
+```
+
+#### get_overnight_fee
+
+return (True/False,overnight_fee,None)
+
+```python
+I_want_money.get_overnight_fee(instrument_type,active)
+```
+---
+---
+
 ### Candle
 
 #### get candles
@@ -284,6 +501,7 @@ I_want_money.stop_mood_stream(goal)
 ```
 #### get_traders_mood
 
+
 get  percent of higher(call)
 
 if you want to know percent of lower(put) just 1-higher
@@ -313,74 +531,6 @@ I_want_money.change_balance(MODE)
 ```
 
 ---
-
-### Bet information
-
-#### check win
-
-It will do loop until get win or loose
-
-:exclamation:
-
-it have a little problem when network close and reconnect miss get "listInfoData"
-
-this function will doing Infinity loop
-
-```python
-I_want_money.check_win(23243221)
-#""you need to get id_number from buy function""
-#I_want_money.check_win(id_number)
-#this function will do loop check your bet until if win/equal/loose
-```
-##### check_win_v2
-more better way
-
-an other way to fix that(implement by get_betinfo)
-
-input by int
-
-```python
-I_want_money.check_win_v2(23243221)
-#""you need to get id_number from buy function""
-#I_want_money.check_win_v2(id_number)
-#this function will do loop check your bet until if win/equal/loose
-```
-
- 
-
-#### get_betinfo
-
-it will get infomation about Bet by "id"
-
-:exclamation:
-
-if your bet(id) not have answer yet(game_state) or wrong id it will return False
-input by int
-
-```python
- 
-isSuccessful,dict=I_want_money.get_betinfo(4452272449)
-#I_want_money.get_betinfo 
-#INPUT: list/int
-#OUTPUT:isSuccessful,dict
-
-```
-
-
-input by list
-```python
-a=[]
-a.append(4452272449)#""you need to get id_number from buy function""
-a.append(4452404944)#""you need to get id_number from buy function""
-
-isSuccessful,dict=I_want_money.get_betinfo(a)
-#I_want_money.get_betinfo 
-#INPUT: list/int
-#OUTPUT:isSuccessful,dict
-
-```
-
-
 
 
  
