@@ -13,6 +13,7 @@ news:
 * Stock
 * Commodities
 * Crypto
+* ETF
 
 
 sucess on python3.6.5
@@ -241,7 +242,7 @@ I_want_money.buy_digit(3,"put",instrument_id)
 ```
 
 ---
-### For Forex&Stock&Commodities&Crypto
+### For Forex&Stock&Commodities&Crypto&ETF
 
 #### you need to check Asset is open or close!
 ![](image/asset_close.png)
