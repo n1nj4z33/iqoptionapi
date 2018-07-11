@@ -37,6 +37,9 @@ from iqoptionapi.ws.chanels.get_available_leverages import Get_available_leverag
 from iqoptionapi.ws.chanels.cancel_order import Cancel_order
 from iqoptionapi.ws.chanels.close_position import Close_position
 from iqoptionapi.ws.chanels.get_overnight_fee import Get_overnight_fee
+from iqoptionapi.ws.chanels.heartbeat import Heartbeat
+from iqoptionapi.ws.chanels.subscribe import Subscribe_candles
+from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -45,6 +48,15 @@ from iqoptionapi.ws.objects.listinfodata import ListInfoData
 from iqoptionapi.ws.objects.strike_list_data import Strike_list_data
 from iqoptionapi.ws.objects.betinfo import Game_betinfo_data
 import iqoptionapi.global_value as global_value
+from collections import defaultdict
+
+def nested_dict(n, type):
+    if n == 1:
+        return defaultdict(type)
+    else:
+        return defaultdict(lambda: nested_dict(n-1, type))
+
+ 
 
 # InsecureRequestWarning: Unverified HTTPS request is being made.
 # Adding certificate verification is strongly advised.
@@ -61,7 +73,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     candles = Candles()
     listinfodata = ListInfoData()
     api_option_init_all_result = []
-    real_time_candles={}
+    
+
     strike_list=Strike_list_data()
     game_betinfo=Game_betinfo_data()
     instruments=None
@@ -75,6 +88,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     order_canceled=None
     close_position_data=None
     overnight_fee=None
+    #---for real time
+    real_time_candles=nested_dict(3,dict)
+    real_time_candles_maxdict_table=nested_dict(2,dict)
+    candle_generated_check=nested_dict(2,dict)
+    candle_generated_all_size_check=nested_dict(1,dict)
+    
+    #------------------
     def __init__(self, host, username, password, proxies=None):
         """
         :param str host: The hostname or ip address of a IQ Option server.
@@ -300,6 +320,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def unsubscribe_Traders_mood(self):
         return Traders_mood_unsubscribe(self)
+
+#--------------------------------------------------------------------------------
+#--------------------------subscribe&unsubscribe---------------------------------
 #--------------------------------------------------------------------------------
     @property
     def subscribe(self):
@@ -310,6 +333,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.subscribe.Subscribe>`.
         """
         return Subscribe(self)
+    @property  
+    def subscribe_all_size(self):
+        return Subscribe_candles(self)
 
     @property
     def unsubscribe(self):
@@ -319,7 +345,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.unsubscribe.Unsubscribe>`.
         """
         return Unsubscribe(self)
+    @property
+    def unsubscribe_all_size(self):
+        return Unsubscribe_candles(self)
 
+
+#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------
     @property
     def setactives(self):
         """Property for get IQ Option websocket setactives chanel.
@@ -390,6 +422,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def get_overnight_fee(self):
         return Get_overnight_fee(self)
 #-------------------------------------------------------
+    @property
+    def heartbeat(self):
+            return Heartbeat(self)
 #-------------------------------------------------------
     def set_session_cookies(self):
         """Method to set session cookies."""
@@ -397,7 +432,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         self.session.headers["User-Agent"]="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
         requests.utils.add_dict_to_cookiejar(self.session.cookies, cookies)
        
-
+    
     def connect(self):
         global_value.check_websocket_if_connect=None
         """Method for connection to IQ Option API."""

@@ -6,21 +6,26 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.0"
+    __version__="2.1"
     def __init__(self,email,password):
+        self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
         self.password=password
         self.suspend = 0.5
         self.thread=None
+        self.subscribe_candle=[]
+        self.subscribe_candle_all_size=[]
+        self.subscribe_mood=[]
+    
+        #--start
         self.connect()
-        self.thread_collect_realtime={}
         self.update_ACTIVES_OPCODE()
         self.get_balance_id()
-        self.subscribe_candle=[]
-        self.subscribe_mood=[]
+
         
         #time.sleep(self.suspend)
-    #***  
+    #*** 
+    
     def connect(self):
         while True:
             try:
@@ -36,11 +41,20 @@ class IQ_Option:
             except:
                 logging.error('**error** connect() fail')
             if check==True:
+                #-------------reconnect subscribe_candle
                 try:
                     for ac in self.subscribe_candle:
-                        self.start_candles_stream(ac)
+                        sp=ac.split(",")    
+                        self.start_candles_stream(sp[0],sp[1])
                 except:
                     pass
+                #-----------------
+                try:
+                    for ac in self.subscribe_candle_all_size:
+                        self.start_candles_all_size_stream(ac)
+                except:
+                    pass
+                #-------------reconnect subscribe_mood
                 try:
                     for ac in self.subscribe_mood:
                         self.start_mood_stream(ac)
@@ -225,113 +239,146 @@ class IQ_Option:
         while True:
             try:
                 self.api.getcandles(OP_code.ACTIVES[ACTIVES], interval,count,endtime)
-                break
+                while self.check_connect and self.api.candles.candles_data==None:
+                    pass
+                if self.api.candles.candles_data!=None:
+                    break          
             except:
                 logging.error('**error** get_candles need reconnect')
                 self.connect()
-                pass
-        while self.api.candles.candles_data==None:
-            pass
+         
         return self.api.candles.candles_data
-#______________________________________________________________
-#_____________________________REAL TIME CANDLE_________________   
-#______________________________________________________________
-                    #all need to fixxxxxxxxxxxxxxxxxxxxxxx
-                    #!!!!!!!!!!!undone!!!!!!!!!!!
-    def start_all_candles_stream(self):
-        while self.api.real_time_candles == {}:
-            for ACTIVES_name in OP_code.ACTIVES:
-                self.api.subscribe(OP_code.ACTIVES[ACTIVES_name])
-                time.sleep(self.suspend)
-            time.sleep(self.suspend)
-    def get_all_realtime_candles(self):
-        return self.api.real_time_candles
-    def stop_all_candles_stream(self):
-        while self.api.real_time_candles != {}:
-            self.api.real_time_candles = {}
-            time.sleep(self.suspend)
-            for ACTIVES_name in OP_code.ACTIVES:
-                self.api.unsubscribe(OP_code.ACTIVES[ACTIVES_name])
-##############################################
-                    ##one
-    def start_candles_stream(self,ACTIVES):
-        if ACTIVES in self.subscribe_candle==False:
-            self.subscribe_candle.append(ACTIVES)
-        try:
-            self.api.subscribe(OP_code.ACTIVES[ACTIVES])
-            start=time.time()
-            while True:
-                if time.time()-start>20:
-                    logging.error('**error** fail '+ACTIVES+' start_candles_stream late for 10 sec')
-                    return False
-                try:
-                    if self.api.real_time_candles[ACTIVES] != {}:
-                        break
-                except:
-                    time.sleep(1)
-                    self.api.subscribe(OP_code.ACTIVES[ACTIVES])
-            if self.api.real_time_candles[ACTIVES] != {}:
-                return True
-        except:
-            logging.error('**error** start_candles_stream reconnect')
-            self.connect()
+#######################################################
+#______________________________________________________
+#_____________________REAL TIME CANDLE_________________   
+#______________________________________________________
+#######################################################
+    def start_candles_stream(self,ACTIVE,size,maxdict):
         
+        if size=="all":
+            for s in self.size:
+                self.full_realtime_get_candle(ACTIVE,s,maxdict)
+                self.api.real_time_candles_maxdict_table[ACTIVE][s]=maxdict
+            self.start_candles_all_size_stream(ACTIVE)
+        elif size in self.size:
+            self.api.real_time_candles_maxdict_table[ACTIVE][size]=maxdict
+            self.full_realtime_get_candle(ACTIVE,size,maxdict)
+            self.start_candles_one_stream(ACTIVE,size)
+            
+        else:
+            logging.error('**error** start_candles_stream please input right size')
 
-    def get_realtime_candles(self,ACTIVES):
-        try:
-            return self.api.real_time_candles[ACTIVES]
-        except:
-            logging.error('**error** get_realtime_candles()')
-            return False
+    def stop_candles_stream(self,ACTIVE,size):
+        if size=="all":
+            self.stop_candles_all_size_stream(ACTIVE)
+        elif size in self.size:
+            self.stop_candles_one_stream(ACTIVE,size)
+        else:
+            logging.error('**error** start_candles_stream please input right size')
 
-    def stop_candles_stream(self,ACTIVES):
-        if ACTIVES in self.subscribe_candle==True:
-            del self.subscribe_candle[ACTIVES]
+    def get_realtime_candles(self,ACTIVE,size):
+        if size=="all":
+            try:
+                return self.api.real_time_candles[ACTIVE]
+            except:
+                logging.error('**error** get_realtime_candles() size="all" can not get candle')
+                return False    
+        elif  size in self.size:
+            try:
+                return self.api.real_time_candles[ACTIVE][size]
+            except:
+                logging.error('**error** get_realtime_candles() size='+str(size)+' can not get candle')
+                return False     
+        else:
+            logging.error('**error** get_realtime_candles() please input right "size"')
+
+################################################
+#---------REAL TIME CANDLE Subset Function---------
+################################################
+#---------------------full dict get_candle-----------------------
+    def full_realtime_get_candle(self,ACTIVE,size,maxdict):
+        candles=self.get_candles(ACTIVE,size,maxdict,self.api.timesync.server_timestamp)
+        for can in candles:
+            self.api.real_time_candles[str(ACTIVE)][int(size)][can["from"]]=can
+
+#------------------------Subscribe ONE SIZE-----------------------
+    def start_candles_one_stream(self,ACTIVE,size):
+        if (str(ACTIVE+","+str(size)) in self.subscribe_candle)==False:
+            self.subscribe_candle.append((ACTIVE+","+str(size)))
+        start=time.time()
+        while True:
+            if time.time()-start>20:
+                logging.error('**error** start_candles_one_stream late for 20 sec')
+                return False
+            try:
+                if self.api.candle_generated_check[str(ACTIVE)][int(size)] == True:
+                    return True
+            except:
+                pass
+            try:
+            
+                self.api.subscribe(OP_code.ACTIVES[ACTIVE],size)
+            except:
+                logging.error('**error** start_candles_stream reconnect')
+                self.connect()
+            time.sleep(1)
+
+    def stop_candles_one_stream(self,ACTIVE,size):
+        if ((ACTIVE+","+str(size)) in self.subscribe_candle)==True:
+             self.subscribe_candle.remove(ACTIVE+","+str(size))
         while True:
             try:
-                if self.api.real_time_candles[ACTIVES] == {}:
+                if self.api.candle_generated_check[str(ACTIVE)][int(size)] == {}:
+                    return True
+            except:
+                pass
+            self.api.candle_generated_check[str(ACTIVE)][int(size)]= {}
+            self.api.unsubscribe(OP_code.ACTIVES[ACTIVE],size)
+            time.sleep(self.suspend*10)
+#------------------------Subscribe ALL SIZE-----------------------
+    def start_candles_all_size_stream(self,ACTIVE):
+        
+        if (str(ACTIVE) in self.subscribe_candle_all_size)==False:
+            self.subscribe_candle_all_size.append(str(ACTIVE))
+        start=time.time()
+        while True:
+            if time.time()-start>20:
+                logging.error('**error** fail '+ACTIVE+' start_candles_all_size_stream late for 10 sec')
+                return False
+            try:
+                if self.api.candle_generated_all_size_check[str(ACTIVE)] == True:
+                    return True       
+            except:
+                pass
+            try:
+                self.api.subscribe_all_size(OP_code.ACTIVES[ACTIVE])
+            except:
+                logging.error('**error** start_candles_all_size_stream reconnect')
+                self.connect()
+            time.sleep(1)
+    def stop_candles_all_size_stream(self,ACTIVE):
+        if (str(ACTIVE) in self.subscribe_candle_all_size)==True:
+            self.subscribe_candle_all_size.remove(str(ACTIVE))
+        while True:
+            try:
+                if self.api.candle_generated_all_size_check[str(ACTIVE)] == {}:
                     break
             except:
                 pass
-            self.api.real_time_candles[ACTIVES] = {}
+            self.api.candle_generated_all_size_check[str(ACTIVE)] = {}
+            self.api.unsubscribe_all_size(OP_code.ACTIVES[ACTIVE])
             time.sleep(self.suspend*10)
-            self.api.unsubscribe(OP_code.ACTIVES[ACTIVES])
-#__________________________Collect realtime_____________________________
-                        
-                        #______thread_____
-    def dict_queue_add(self,dict,ACTIVES,maxdict,key,value):
-        while True:
-            if len(dict)<=maxdict:
-                dict[(ACTIVES,key)]=value
-                break
-            else:
-                #del mini key
-                del dict[sorted(dict.keys(), reverse=False)[0]]
-    def thread_realtime(self,ACTIVES,maxdict):
-        t = threading.currentThread()
-        while getattr(t,"do_run",True):
-            candles=self.get_realtime_candles(ACTIVES)
-            self.dict_queue_add(dict=self.thread_collect_realtime,ACTIVES=ACTIVES,maxdict=maxdict,key=candles["at"],value=candles)
-        #self.thread_collect_realtime={}
+#---------------------------------------------------------------------
+ 
 
-    def collect_realtime_candles_thread_start(self,ACTIVES,maxdict):
-        t = threading.Thread(target=self.thread_realtime, args=(ACTIVES,maxdict))
-        t.start()
-        return t
-    def collect_realtime_candles_thread_stop(self,thread): 
-        thread.do_run = False
-        thread.join() 
+          
+         
+        
 
-#       ___None thread___
-    def collect_realtime_candles(self,ACTIVES,collect_time):
-        #doing while untill time stop
-        collect={}
-        start=time.time()
-        while time.time()<start+collect_time:
-            candles=self.get_realtime_candles(ACTIVES) 
-            collect[candles["at"]]=candles
-        return collect
-    
+################################################
+################################################            
+#-----------------------------------------------
+
 #-----------------traders_mood----------------------
     def start_mood_stream(self,ACTIVES):
         if ACTIVES in self.subscribe_mood==False:
@@ -356,17 +403,6 @@ class IQ_Option:
         #return highter %
         return self.api.traders_mood
 ##############################################################################################
-    def get_candles_as_array(self,ACTIVES,interval,count,endtime):
-        candles=self.get_candles(ACTIVES,interval,count,endtime)
-        ans = np.empty(shape=(len(candles), 4))
-        for idx, candle in enumerate(candles):
-            ans[idx][0] = candle["open"]
-            ans[idx][1] = candle["close"]
-            ans[idx][2] = candle["min"]
-            ans[idx][3] = candle["max"]
-        return ans
-
-
     def check_win(self,id_number):
         #'win'：win money 'equal'：no win no loose   'loose':loose money
         while True:

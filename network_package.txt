@@ -29,3 +29,4 @@ get-position-history
 {"name":"sendMessage","request_id":"78","msg":{"name":"get-position-history","version":"1.0","body":{"user_balance_id":76102291,"instrument_type":"crypto"}}}
 
 
+{"name":"subscribeMessage","msg":{"name":"candles-generated","params":{"routingFilters":{"active_id":1}}}}

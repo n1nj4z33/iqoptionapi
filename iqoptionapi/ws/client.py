@@ -5,6 +5,9 @@ import logging
 import websocket
 import iqoptionapi.constants as OP_code
 import iqoptionapi.global_value as global_value
+
+
+                
 class WebsocketClient(object):
     """Class for work with IQ option websocket."""
 
@@ -18,7 +21,21 @@ class WebsocketClient(object):
             self.api.wss_url, on_message=self.on_message,
             on_error=self.on_error, on_close=self.on_close,
             on_open=self.on_open)
-
+    def dict_queue_add(self,dict,maxdict,key1,key2,key3,value):
+        if key3 in dict[key1][key2]:
+                    dict[key1][key2][key3]=value
+        else:
+            while True:
+                try:
+                    dic_size=len(dict[key1][key2])
+                except:
+                    dic_size=0
+                if dic_size<maxdict:
+                    dict[key1][key2][key3]=value
+                    break
+                else:
+                    #del mini key
+                    del dict[key1][key2][sorted(dict[key1][key2].keys(), reverse=False)[0]]   
     def on_message(self, wss, message): # pylint: disable=unused-argument
         """Method to process websocket messages."""
         logger = logging.getLogger(__name__)
@@ -28,7 +45,8 @@ class WebsocketClient(object):
 
         if message["name"] == "timeSync":
             self.api.timesync.server_timestamp = message["msg"]
-
+        elif message["name"] =="heartbeat":
+            self.api.heartbeat(message["msg"])
         elif message["name"] == "profile":
             #--------------all-------------
             self.api.profile.msg=message["msg"]
@@ -78,9 +96,42 @@ class WebsocketClient(object):
 
         elif message["name"] == "api_option_init_all_result":
             self.api.api_option_init_all_result = message["msg"]
+        #######################################################
+        #---------------------for_realtime_candle______________
+        #######################################################
         elif message["name"] == "candle-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]            
-            self.api.real_time_candles[Active_name]= message["msg"]
+            
+            active=str(Active_name)
+            size=int(message["msg"]["size"])
+            from_=int(message["msg"]["from"])
+            msg=message["msg"]
+            maxdict=self.api.real_time_candles_maxdict_table[Active_name][size]
+
+            self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
+            self.api.candle_generated_check[active][size]=True
+            
+
+        elif message["name"] == "candles-generated":
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])] 
+            active=str(Active_name)      
+            for k,v in message["msg"]["candles"].items():
+                v["active_id"]=message["msg"]["active_id"]
+                v["at"]=message["msg"]["at"]
+                v["ask"]=message["msg"]["ask"]
+                v["bid"]=message["msg"]["bid"]
+                v["close"]=message["msg"]["value"]
+                v["size"]=int(k)
+                size=int(v["size"])
+                from_=int(v["from"])
+                maxdict=self.api.real_time_candles_maxdict_table[Active_name][size]
+                msg=v
+                self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
+            self.api.candle_generated_all_size_check[active]=True 
+                
+        #######################################################
+        #______________________________________________________
+        #######################################################
         elif message["name"] == "instruments":
             self.api.instruments=message["msg"]
         

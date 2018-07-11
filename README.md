@@ -1,14 +1,22 @@
 # IQ Option API
 
-Version:2.0
+Version:2.1
 
 This API is Diligent development!!
 
 Please Read Document
 
 last update:2018/7/7
+Version 2.1
+!!!reimplement realtime candel!!! because find problem
+* Add heartbeat request for keep connect 
+* !!reimplement!! realtime candel for candle "size"
+* rewrite README.md realtime candle
+* fix realtime candel data problem 
 
-news: 
+
+Version 2.0 
+
 * Forex
 * Stock
 * Commodities
@@ -420,74 +428,56 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
             #endtime:get candles from past to "endtime"
 ```
 
-#### get  realtime candles
-
-you will get ""latest"" DATA
-```python
-I_want_money.start_candles_stream("EURUSD")
-print(I_want_money.get_realtime_candles("EURUSD"))
-I_want_money.stop_candles_stream("EURUSD")
-```
-#### get all realtime candles
-```python
-I_want_money.start_all_candles_stream()
-print(I_want_money.get_all_realtime_candles())
-I_want_money.stop_all_candles_stream()
-```
-
-#### collect realtime candles
-i will do for loop untill collect time out
-```python
-I_want_money.start_candles_stream("EURUSD")
-print(I_want_money.collect_realtime_candles("EURUSD",10.5))
-#I_want_money.collect_realtime_candles("EURUSD",time)
-#time:collect time(sec) can use float :11.2       
-I_want_money.stop_candles_stream("EURUSD")
-
-```
-
-#### collect realtime candles on thread
+#### get realtime candles
 
 ##### Sample 
 ```python
 from iqoptionapi.stable_api import IQ_Option
 import logging
 import time
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+print("login...")
 I_want_money=IQ_Option("email","password")
-I_want_money.start_candles_stream("EURUSD")
-thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
-I_want_money.start_candles_stream("USDTRY")
-thread2=I_want_money.collect_realtime_candles_thread_start("USDTRY",100)
-time.sleep(3)
-#Do some thing
-ans=I_want_money.thread_collect_realtime.items()
-for k, v in ans:
-    print (k, v)
-I_want_money.collect_realtime_candles_thread_stop(thread)
-I_want_money.stop_candles_stream("EURUSD")
-I_want_money.collect_realtime_candles_thread_stop(thread2)
-I_want_money.stop_candles_stream("USDTRY")
-```
+goal="EURUSD"
+size="all"#size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000,"all"]
+maxdict=10
+print("start stream...")
+I_want_money.start_candles_stream(goal,size,maxdict)
+#DO something
+print("Do something...")
+time.sleep(10)
 
-collect data in thread with out wait
-```python
-I_want_money.start_candles_stream("EURUSD")
-thread=I_want_money.collect_realtime_candles_thread_start("EURUSD",100)
-#I_want_money.collect_realtime_candles_thread_start("EURUSD",maxdict)
-#maxdict:Set the maximum candles you want collect to prevent memory overflow
-#maxdict :because dict doing del and add len(maxdict) will change
-#sample maxdict set 100 maxdict will get 100~101 for Guarantee max at less have 100
-######do some thing#######
-time.sleep(3)
-######do some thing#######
-print(I_want_money.thread_collect_realtime)
-I_want_money.collect_realtime_candles_thread_stop(thread) 
-I_want_money.stop_candles_stream("EURUSD")
-
+print("print candles")
+cc=I_want_money.get_realtime_candles(goal,size)
+for k in cc:
+    print(goal,"size",k,cc[k])
+print("stop candle")
+I_want_money.stop_candles_stream(goal,size)
 ```
+ 
+##### start_candles_stream
+ 
+* input:
+    * goal:"EURUSD"...
+    * size:[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000,"all"]
+    * maxdict:set max buffer you want to save
+
+size
+![](image/time_interval.png)
+
+##### get_realtime_candles
+* input:
+    * goal:"EURUSD"...
+    * size:[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000,"all"]
+* output:
+    * dict
+##### stop_candles_stream
+* input:
+    * goal:"EURUSD"...
+    * size:[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000,"all"]
 
 ---
+
 ### Get mood
 
 Sample
@@ -500,6 +490,7 @@ I_want_money.start_mood_stream(goal)
 print(I_want_money.get_traders_mood(goal))
 I_want_money.stop_mood_stream(goal)
 ```
+
 #### get_traders_mood
 
 
@@ -512,8 +503,12 @@ I_want_money.get_traders_mood(goal)
 #output:(float) the higher(call)%
 #if you want to know lower(put)% try 1-I_want_money.get_traders_mood(goal)
 ```
-
-
+#### get_all_traders_mood
+get all you start mood
+```python
+I_want_money.get_all_traders_mood(goal)
+#output:(dict) all mood you start
+```
 
 ### Account
 #### get all profit
