@@ -1,14 +1,18 @@
 # IQ Option API
 
-Version:2.1
+last Version:2.1
 
 This API is Diligent development!!
 
 Please Read Document
 
 last update:2018/7/7
+
+
 Version 2.1
-!!!reimplement realtime candel!!! because find problem
+
+!!!reimplement realtime candel!!! because find problem 
+
 * Add heartbeat request for keep connect 
 * !!reimplement!! realtime candel for candle "size"
 * rewrite README.md realtime candle
