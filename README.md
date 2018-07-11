@@ -11,8 +11,6 @@ last update:2018/7/7
 
 Version 2.1
 
-!!!reimplement realtime candel!!! because find problem 
-
 * Add heartbeat request for keep connect 
 * !!reimplement!! realtime candel for candle "size"
 * rewrite README.md realtime candle
