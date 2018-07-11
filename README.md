@@ -463,6 +463,7 @@ I_want_money.stop_candles_stream(goal,size)
     * maxdict:set max buffer you want to save
 
 size
+
 ![](image/time_interval.png)
 
 ##### get_realtime_candles
