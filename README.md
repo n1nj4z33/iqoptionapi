@@ -1,13 +1,20 @@
 # IQ Option API
 
-last Version:2.1
+last Version:2.1.1
 
 This API is Diligent development!!
 
 Please Read Document
 
-last update:2018/7/7
+last update:2018/7/21
 
+Version 2.1.1
+
+
+* fix reconnect register stream problem
+* fix checkwin reconnect
+* check connect
+* reconnect
 
 Version 2.1
 
@@ -107,7 +114,22 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 ```python
 I_want_money=IQ_Option("email","password")
 ```
+---
+### Reconnect&check connect
 
+some time connect will close so this way can check connect and reconnect
+
+sample
+
+```python
+I_want_money=IQ_Option("email","password")
+#check if connect
+if I_want_money.check_connect()==False:
+    I_want_money.connect()#if not connect it will reconnect
+```
+
+ 
+ 
 ---
 ### Check version
 
