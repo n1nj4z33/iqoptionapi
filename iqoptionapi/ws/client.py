@@ -46,7 +46,10 @@ class WebsocketClient(object):
         if message["name"] == "timeSync":
             self.api.timesync.server_timestamp = message["msg"]
         elif message["name"] =="heartbeat":
-            self.api.heartbeat(message["msg"])
+            try:
+                self.api.heartbeat(message["msg"])
+            except:
+                pass
         elif message["name"] == "profile":
             #--------------all-------------
             self.api.profile.msg=message["msg"]

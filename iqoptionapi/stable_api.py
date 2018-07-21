@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1"
+    __version__="2.1.1"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -22,10 +22,8 @@ class IQ_Option:
         self.update_ACTIVES_OPCODE()
         self.get_balance_id()
 
-        
-        #time.sleep(self.suspend)
-    #*** 
-    
+    def get_server_time(self):
+        return self.api.timesync.server_timestamp
     def connect(self):
         while True:
             try:
@@ -45,7 +43,7 @@ class IQ_Option:
                 try:
                     for ac in self.subscribe_candle:
                         sp=ac.split(",")    
-                        self.start_candles_stream(sp[0],sp[1])
+                        self.start_candles_one_stream(sp[0],sp[1])
                 except:
                     pass
                 #-----------------
@@ -291,7 +289,8 @@ class IQ_Option:
                 return False     
         else:
             logging.error('**error** get_realtime_candles() please input right "size"')
-
+    def get_all_realtime_candles(self):
+        return self.api.real_time_candles
 ################################################
 #---------REAL TIME CANDLE Subset Function---------
 ################################################
@@ -306,6 +305,7 @@ class IQ_Option:
         if (str(ACTIVE+","+str(size)) in self.subscribe_candle)==False:
             self.subscribe_candle.append((ACTIVE+","+str(size)))
         start=time.time()
+        self.api.candle_generated_check[str(ACTIVE)][int(size)]= {}
         while True:
             if time.time()-start>20:
                 logging.error('**error** start_candles_one_stream late for 20 sec')
@@ -337,7 +337,7 @@ class IQ_Option:
             time.sleep(self.suspend*10)
 #------------------------Subscribe ALL SIZE-----------------------
     def start_candles_all_size_stream(self,ACTIVE):
-        
+        self.api.candle_generated_all_size_check[str(ACTIVE)]={}
         if (str(ACTIVE) in self.subscribe_candle_all_size)==False:
             self.subscribe_candle_all_size.append(str(ACTIVE))
         start=time.time()

@@ -12,7 +12,7 @@ class TimeSync(Base):
     def __init__(self):
         super(TimeSync, self).__init__()
         self.__name = "timeSync"
-        self.__server_timestamp = None
+        self.__server_timestamp = time.time()
         self.__expiration_time = 1
 
     @property
