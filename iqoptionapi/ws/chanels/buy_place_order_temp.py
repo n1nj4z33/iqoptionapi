@@ -20,8 +20,8 @@ class Buy_place_order_temp(Base):
             "leverage":int(leverage),
             "limit_price":int(limit_price),
             "stop_price":int(stop_price),
-            "stop_lose_price":int(stop_lose_price),
-            "take_profit_price":int(take_profit_price),
+            "stop_lose_price":float(stop_lose_price),
+            "take_profit_price":float(take_profit_price),
             "use_token_for_commission":"false",
             "auto_margin_call":"false"    
             }
