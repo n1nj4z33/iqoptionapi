@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1.1"
+    __version__="2.1.2"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -107,24 +107,27 @@ class IQ_Option:
     def get_all_init(self):
         self.api.api_option_init_all_result = None
         while True :
-            try:
-                self.api.get_api_option_init_all()      
-                start=time.time()
-                while True:
-                    if time.time()-start>30:
-                        logging.error('**warning** get_all_init late 30 sec')
-                        break
-                    try:
-                        if self.api.api_option_init_all_result != None:
-                            break
-                    except:
-                        time.sleep(self.suspend*5)
-                        break
-                if self.api.api_option_init_all_result["isSuccessful"]==True:
+            while True:
+                try:
+                    self.api.get_api_option_init_all()      
                     break
-            except:
-                logging.error('**error** get_all_init need reconnect')
-                self.connect()
+                except:
+                    logging.error('**error** get_all_init need reconnect')
+                    self.connect()
+                    time.sleep(5)
+            start=time.time()
+            while True:
+                if time.time()-start>30:
+                    logging.error('**warning** get_all_init late 30 sec')
+                    break
+                try:
+                    if self.api.api_option_init_all_result != None:
+                        break
+                except:
+                    pass     
+            if self.api.api_option_init_all_result["isSuccessful"]==True:
+                break
+            
         return self.api.api_option_init_all_result
    
         #return OP_code.ACTIVES

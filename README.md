@@ -1,13 +1,20 @@
 # IQ Option API
 
-last Version:2.1.1
+last Version:2.1.2
 
 This API is Diligent development!!
 
 Please Read Document
 
-last update:2018/7/21
+last update:2018/8/15
 
+Version 2.1.2
+
+
+* fix get_all_init need reconnect
+* websocket version problem
+
+  
 Version 2.1.1
 
 
