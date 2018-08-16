@@ -127,10 +127,7 @@ class IQ_Option:
                 except:
                     pass     
             if self.api.api_option_init_all_result["isSuccessful"]==True:
-                break
-            
-            
-        return self.api.api_option_init_all_result
+                return self.api.api_option_init_all_result
    
         #return OP_code.ACTIVES
     def get_profit(self,ACTIVES):
