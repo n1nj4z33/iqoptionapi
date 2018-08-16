@@ -105,8 +105,9 @@ class IQ_Option:
             
 #_________________________self.api.get_api_option_init_all() wss______________________
     def get_all_init(self):
-        self.api.api_option_init_all_result = None
+        
         while True :
+            self.api.api_option_init_all_result = None
             while True:
                 try:
                     self.api.get_api_option_init_all()      
@@ -127,6 +128,7 @@ class IQ_Option:
                     pass     
             if self.api.api_option_init_all_result["isSuccessful"]==True:
                 break
+            
             
         return self.api.api_option_init_all_result
    
