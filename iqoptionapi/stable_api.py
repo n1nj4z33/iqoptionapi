@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1.2"
+    __version__="2.1.3"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -125,9 +125,12 @@ class IQ_Option:
                     if self.api.api_option_init_all_result != None:
                         break
                 except:
-                    pass     
-            if self.api.api_option_init_all_result["isSuccessful"]==True:
-                return self.api.api_option_init_all_result
+                    pass  
+            try:           
+                if self.api.api_option_init_all_result["isSuccessful"]==True:
+                    return self.api.api_option_init_all_result
+            except:
+                pass
    
         #return OP_code.ACTIVES
     def get_profit(self,ACTIVES):
