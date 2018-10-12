@@ -395,7 +395,7 @@ class IQ_Option:
                 self.api.traders_mood[OP_code.ACTIVES[ACTIVES]]
                 break
             except:
-                time.sleep(1) 
+                time.sleep(5) 
 
     def stop_mood_stream(self,ACTIVES):
         if ACTIVES in self.subscribe_mood==True:
@@ -423,7 +423,7 @@ class IQ_Option:
         while True:
             check,data=self.get_betinfo(id_number)
             if check:
-                return data[str(id_number)]["win"]
+                return data["result"]["data"][str(id_number)]["win"]
             time.sleep(self.suspend)
 
     def get_betinfo(self,id_number):

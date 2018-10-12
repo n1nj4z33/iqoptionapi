@@ -153,7 +153,7 @@ class WebsocketClient(object):
         elif message["name"]=="api_game_betinfo_result":
             try:
                 self.api.game_betinfo.isSuccessful=message["msg"]["isSuccessful"]
-                self.api.game_betinfo.dict=message["msg"]["result"]["data"] 
+                self.api.game_betinfo.dict=message["msg"]
             except:
                 pass
         elif message["name"]=="traders-mood-changed":

@@ -456,6 +456,20 @@ I_want_money.get_candles(ACTIVES,interval,count,endtime)
             #count:how many candles you want to get from now to past
             #endtime:get candles from past to "endtime"
 ```
+:exclamation:
+try this code to get more than 1000 candle
+```python
+from iqoptionapi.stable_api import IQ_Option
+import time
+I_want_money=IQ_Option("email","password")
+end_from_time=time.time()
+ANS=[]
+for i in range(70):
+    data=I_want_money.get_candles("EURUSD", 60, 1000, end_from_time)
+    ANS =data+ANS
+    end_from_time=int(data[0]["from"])-1
+print(ANS)
+```
 
 #### get realtime candles
 
