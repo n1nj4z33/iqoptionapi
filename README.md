@@ -379,7 +379,7 @@ you will get there data
 return (True/False,position_history,None)
 
 ```python
-I_want_money.get_positions_history(instrument_type)
+I_want_money.get_position_history(instrument_type)
 ```
 
 
