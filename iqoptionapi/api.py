@@ -40,6 +40,7 @@ from iqoptionapi.ws.chanels.get_overnight_fee import Get_overnight_fee
 from iqoptionapi.ws.chanels.heartbeat import Heartbeat
 from iqoptionapi.ws.chanels.subscribe import Subscribe_candles
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
+from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -93,7 +94,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     real_time_candles_maxdict_table=nested_dict(2,dict)
     candle_generated_check=nested_dict(2,dict)
     candle_generated_all_size_check=nested_dict(1,dict)
-    
+    #---for api_game_getoptions_result
+    api_game_getoptions_result={}
     #------------------
     def __init__(self, host, username, password, proxies=None):
         """
@@ -374,10 +376,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         data = json.dumps(dict(name="api_option_init_all",
                                msg=""))
         self.websocket.send(data)
-    
+#-------------get information-------------   
     @property
     def get_betinfo(self):
         return Game_betinfo(self)
+    @property
+    def get_options(self):
+        return Getoptions(self)
 
 #____________for_______binary_______option_____________
     @property

@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1.3"
+    __version__="2.1.4"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -425,7 +425,7 @@ class IQ_Option:
             if check:
                 return data["result"]["data"][str(id_number)]["win"]
             time.sleep(self.suspend)
-
+#-------------------get infomation only for binary option------------------------
     def get_betinfo(self,id_number):
         #INPUT:int
         while True:
@@ -447,7 +447,15 @@ class IQ_Option:
             else:
                 return self.api.game_betinfo.isSuccessful,None
             time.sleep(self.suspend*10)
+    def get_optioninfo(self,limit):
+        self.api.api_game_getoptions_result=None
+        self.api.get_options(limit)
+        while self.api.api_game_getoptions_result==None:
+            pass
         
+        return self.api.api_game_getoptions_result 
+         
+
 
 #__________________________BUY__________________________
 

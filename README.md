@@ -6,37 +6,17 @@ This API is Diligent development!!
 
 Please Read Document
 
-last update:2018/8/15
+last update:2018/11/2
+
+Version 2.1.4
+* add get_optioninfo(only for binary option)
 
 Version 2.1.3
 * fix get_all_init need reconnect
 * websocket version problem
 
-  
-Version 2.1.1
-
-
-* fix reconnect register stream problem
-* fix checkwin reconnect
-* check connect
-* reconnect
-
-Version 2.1
-
-* Add heartbeat request for keep connect 
-* !!reimplement!! realtime candel for candle "size"
-* rewrite README.md realtime candle
-* fix realtime candel data problem 
-
-
-Version 2.0 
-
-* Forex
-* Stock
-* Commodities
-* Crypto
-* ETFs
-
+ 
+ 
 
 sucess on python3.6.5
 
@@ -242,7 +222,13 @@ isSuccessful,dict=I_want_money.get_betinfo(4452272449)
 #OUTPUT:isSuccessful,dict
 
 ```
+#### get_optioninfo
 
+input how many data you want to get from Trading History(only for binary option)
+
+```
+print(I_want_money.get_optioninfo(10))
+```
 ___
 
 ### For Digital
