@@ -1,6 +1,6 @@
 # IQ Option API
 
-last Version:2.1.3
+last Version:2.1.4
 
 This API is Diligent development!!
 
@@ -12,6 +12,7 @@ Version 2.1.4
 * add get_optioninfo(only for binary option)
 * add PURCHASE TIME sample
 * add get_server_timestamp
+
 Version 2.1.3
 * fix get_all_init need reconnect
 * websocket version problem
