@@ -10,7 +10,8 @@ last update:2018/11/2
 
 Version 2.1.4
 * add get_optioninfo(only for binary option)
-
+* add PURCHASE TIME sample
+* add get_server_timestamp
 Version 2.1.3
 * fix get_all_init need reconnect
 * websocket version problem
@@ -507,7 +508,39 @@ size
     * size:[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000,"all"]
 
 ---
+### time
 
+#### get_server_timestamp
+the get_server_timestamp time is sync with iqoption
+```python
+I_want_money.get_server_timestamp()
+```
+
+#### Purchase Time
+this sample get the Purchase time clock
+```python
+import time
+
+#get the end of the timestamp by expiration time
+def get_expiration_time(t):
+    exp=time.time()#or I_want_money.get_server_timestamp() to get more Precision
+    if (exp % 60) > 30:
+        end = exp - (exp % 60) + 60*(t+1)
+    else:
+        end = exp - (exp % 60)+60*(t)
+    return end
+    
+expiration_time=2
+
+end_time=0
+while True:
+    if end_time-time.time()-30<=0:
+        end_time = get_expiration_time(expiration_time)
+    print(end_time-time.time()-30)
+    time.sleep(1)
+```
+
+---
 ### Get mood
 
 Sample

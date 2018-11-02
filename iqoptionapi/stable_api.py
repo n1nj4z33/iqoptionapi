@@ -376,7 +376,10 @@ class IQ_Option:
 #---------------------------------------------------------------------
  
 
-          
+#-------------------time--------------
+
+def get_server_timestamp(self):
+    return self.api.timesync.server_timestamp         
          
         
 
