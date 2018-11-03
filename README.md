@@ -1,6 +1,6 @@
 # IQ Option API
 
-last Version:2.1.3
+last Version:2.1.4
 
 This API is Diligent development!!
 
@@ -9,15 +9,13 @@ Please Read Document
 last update:2018/11/2
 
 Version 2.1.4
-* add get_optioninfo(only for binary option)
-* add PURCHASE TIME sample
-* add get_server_timestamp
-Version 2.1.3
-* fix get_all_init need reconnect
-* websocket version problem
 
- 
- 
+[* add get_optioninfo(only for binary option)](#optioninfo)
+
+[* add PURCHASE TIME sample](#purchase)
+
+[* add get_server_timestamp](#timestamp)
+
 
 sucess on python3.6.5
 
@@ -223,7 +221,7 @@ isSuccessful,dict=I_want_money.get_betinfo(4452272449)
 #OUTPUT:isSuccessful,dict
 
 ```
-#### get_optioninfo
+#### <a id=optioninfo>get_optioninfo</a>
 
 input how many data you want to get from Trading History(only for binary option)
 
@@ -510,13 +508,13 @@ size
 ---
 ### time
 
-#### get_server_timestamp
+#### <a id=timestamp> get_server_timestamp</a>
 the get_server_timestamp time is sync with iqoption
 ```python
 I_want_money.get_server_timestamp()
 ```
 
-#### Purchase Time
+#### <a id=purchase>Purchase Time</a>
 this sample get the Purchase time clock
 ```python
 import time
