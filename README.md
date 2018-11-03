@@ -9,6 +9,16 @@ Please Read Document
 last update:2018/11/2
 
 Version 2.1.4
+<<<<<<< HEAD
+=======
+* add get_optioninfo(only for binary option)
+* add PURCHASE TIME sample
+* add get_server_timestamp
+
+Version 2.1.3
+* fix get_all_init need reconnect
+* websocket version problem
+>>>>>>> fc3dde00e78a4b56b74b0d6dd71a8548ed30b6ec
 
 [* add get_optioninfo(only for binary option)](#optioninfo)
 
