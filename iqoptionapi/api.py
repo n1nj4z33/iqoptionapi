@@ -41,6 +41,7 @@ from iqoptionapi.ws.chanels.heartbeat import Heartbeat
 from iqoptionapi.ws.chanels.subscribe import Subscribe_candles
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
 from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
+from iqoptionapi.ws.chanels.sell_option import Sell_Option
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -95,7 +96,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     candle_generated_check=nested_dict(2,dict)
     candle_generated_all_size_check=nested_dict(1,dict)
     #---for api_game_getoptions_result
-    api_game_getoptions_result={}
+    api_game_getoptions_result=None
+    sold_options_respond=None
     #------------------
     def __init__(self, host, username, password, proxies=None):
         """
@@ -385,6 +387,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         return Getoptions(self)
 
 #____________for_______binary_______option_____________
+
     @property
     def buy(self):
         """Property for get IQ Option websocket buyv2 request.
@@ -394,6 +397,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         self.buy_successful = None
         return Buyv2(self)
+    
+    @property
+    def sell_option(self):
+        return Sell_Option(self)
 #____________________for_______digital____________________
     @property
     def get_strike_list(self):

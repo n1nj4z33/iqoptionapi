@@ -1,12 +1,17 @@
 # IQ Option API
 
-last Version:2.1.4
+last Version:2.1.5
 
 This API is Diligent development!!
 
-Please Read Document
+ 
 
-last update:2018/11/2
+last update:2018/11/4
+
+Version 2.1.5
+* fix function bug,if your version is 2.1.4 please update to 2.1.5
+* change [buy](#buy) function return value
+* add [sell_option](#selloption)
 
 Version 2.1.4
 
@@ -137,7 +142,7 @@ print(I_want_money.get_all_ACTIVES_OPCODE())
 
 ### For Options
 
-#### BUY
+#### <a id=buy>BUY</a>
 
 Sample
 ```python
@@ -153,7 +158,7 @@ Money=1
 ACTIVES="EURUSD"
 ACTION="call"#or "put"
 expirations_mode=1
-force_buy= "True"
+force_buy= False#i suggest use False
 I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
 ```
 
@@ -165,9 +170,36 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
                 #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code (int)https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
                 #force_buy= True: if fail try buy untill sucess 
                             #False:if fail break
-                #return:(True/False,id):if sucess return (True,id_number) esle return(False,None)
+                #return:(None/id_number):if sucess return (id_number) esle return(None) 2.1.5 change this 
+```
+#### <a id=selloption>sell_option</a>
+
+```python
+I_want_money.sell_option(sell_all)#input int or list
 ```
 
+Sample
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import time
+print("login...")
+I_want_money=IQ_Option("email","password")
+
+Money=1
+ACTIVES="EURUSD"
+ACTION="call"#or "put"
+expirations_mode=1
+force_buy= False
+id=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
+id2=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
+
+time.sleep(5)
+sell_all=[]
+sell_all.append(id)
+sell_all.append(id2)
+print(I_want_money.sell_option(sell_all))
+```
 #### check win
 
 (only for option)

@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1.4"
+    __version__="2.1.5"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -21,9 +21,9 @@ class IQ_Option:
         self.connect()
         self.update_ACTIVES_OPCODE()
         self.get_balance_id()
-
-    def get_server_time(self):
-        return self.api.timesync.server_timestamp
+ #--------------------------------------------------------------------------       
+    def get_server_timestamp(self):
+        return self.api.timesync.server_timestamp         
     def connect(self):
         while True:
             try:
@@ -376,11 +376,7 @@ class IQ_Option:
 #---------------------------------------------------------------------
  
 
-#-------------------time--------------
-
-def get_server_timestamp(self):
-    return self.api.timesync.server_timestamp         
-         
+ 
         
 
 ################################################
@@ -463,7 +459,7 @@ def get_server_timestamp(self):
 #__________________________BUY__________________________
 
 #__________________FOR OPTION____________________________
-    def buy(self,price,ACTIVES,ACTION,expirations,force_buy=True):
+    def buy(self,price,ACTIVES,ACTION,expirations,force_buy=False):
         self.api.buy_successful==None
         while True:
             while True:
@@ -471,9 +467,9 @@ def get_server_timestamp(self):
                     self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION,expirations)
                     break
                 except:
-                    if force_buy==False:
-                        return (False,None) 
                     logging.error('self.api.buy error')
+                    if force_buy==False:
+                        return (None) 
                     self.connect()
                     pass
             start=time.time()
@@ -482,12 +478,18 @@ def get_server_timestamp(self):
                     logging.error('check buy_successful time late 60sec')
                     break
             if self.api.buy_successful:
-                return (True,self.api.buy_id)
+                return (self.api.buy_id)
             else:
                 if force_buy==False:
-                    return (False,None) 
+                    return (None) 
                 logging.error('**error** buy error...')
                 self.connect()
+    def sell_option(self,options_ids):
+        self.api.sell_option(options_ids)
+        self.api.sold_options_respond=None
+        while self.api.sold_options_respond==None:
+            pass
+        return self.api.sold_options_respond
 #__________________for digit_____________
     def get_strike_list_data(self,ACTIVES,expirations):
         try:

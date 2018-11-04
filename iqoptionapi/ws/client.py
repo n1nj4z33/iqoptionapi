@@ -177,7 +177,8 @@ class WebsocketClient(object):
             self.api.overnight_fee=message
         elif message["name"]=="api_game_getoptions_result":
             self.api.api_game_getoptions_result=message
-
+        elif message["name"]=="sold-options":
+            self.api.sold_options_respond=message
 
     
     @staticmethod
