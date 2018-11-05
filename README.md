@@ -371,6 +371,7 @@ I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_pric
 ```python
 change_order(self,buy_order_id,stop_lose,take_profit,use_trail_stop)
 ```
+![](image/change_tpsl.png)
 sample
 ```python
 from iqoptionapi.stable_api import IQ_Option
