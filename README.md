@@ -369,7 +369,7 @@ I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_pric
 ```
 #### <a id=changeorder>change_order</a>
 ```python
-change_order(self,buy_order_id,stop_lose,take_profit,use_trail_stop)
+change_order(buy_order_id,stop_lose,take_profit,use_trail_stop)
 ```
 ![](image/change_tpsl.png)
 sample
