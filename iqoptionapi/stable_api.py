@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1.5"
+    __version__="2.1.6"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -16,7 +16,6 @@ class IQ_Option:
         self.subscribe_candle=[]
         self.subscribe_candle_all_size=[]
         self.subscribe_mood=[]
-    
         #--start
         self.connect()
         self.update_ACTIVES_OPCODE()
@@ -529,7 +528,19 @@ class IQ_Option:
         else:
             
             return False,None
-        
+    def change_order(self,buy_order_id,stop_lose,take_profit,use_trail_stop):
+        check,order_data=self.get_order(buy_order_id)
+        position_id=order_data["position_id"]
+        if check:
+            self.api.tpsl_changed_respond=None
+            self.api.change_order(position_id,stop_lose,take_profit,use_trail_stop)
+            while self.api.tpsl_changed_respond==None:
+                pass
+            return self.api.tpsl_changed_respond
+        else:
+            logging.error('change_order fail to get_order')
+            return None
+
 
     def get_order(self,buy_order_id):
         #self.api.order_data["status"] 

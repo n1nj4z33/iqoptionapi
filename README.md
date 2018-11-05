@@ -1,12 +1,12 @@
 # IQ Option API
 
-last Version:2.1.5
+last Version:2.1.6
 
-This API is Diligent development!!
 
- 
+last update:2018/11/5
 
-last update:2018/11/4
+Version 2.1.6
+* add [change_order](#changeorder)
 
 Version 2.1.5
 * fix function bug,if your version is 2.1.4 please update to 2.1.5
@@ -366,6 +366,33 @@ stop_lose_price=1#stop lose price
 take_profit_price=20000#take profit price
 
 I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
+```
+#### <a id=changeorder>change_order</a>
+```python
+change_order(self,buy_order_id,stop_lose,take_profit,use_trail_stop)
+```
+sample
+```python
+from iqoptionapi.stable_api import IQ_Option
+import time
+print("login...")
+I_want_money=IQ_Option("email","password")
+instrument_type="crypto"
+instrument_id="BTCUSD"
+side="buy"#sell
+type="market"#limit
+amount=11
+limit_price=2#for limit ,if you choose market this not work,
+leverage=3#you can get more information in get_available_leverages()
+stop_lose_price=1#
+take_profit_price=20000#
+print("doing buy_order stop_lose_price="+str(stop_lose_price)+"take_profit_price"+str(take_profit_price)+"use_trail_stop=False")
+check,order_id=I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
+time.sleep(20)
+print("doing change_order stop_lose_price="+str(stop_lose_price+2)+"take_profit_price"+str(take_profit_price-500)+"use_trail_stop=True")
+print("change_order respond")
+print(I_want_money.change_order(order_id,stop_lose_price+2,take_profit_price-500,True))
+
 ```
 #### get_order
 get infomation about buy_order_id

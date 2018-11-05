@@ -42,6 +42,7 @@ from iqoptionapi.ws.chanels.subscribe import Subscribe_candles
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
 from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
+from iqoptionapi.ws.chanels.change_tpsl import Change_Tpsl
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -98,6 +99,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     #---for api_game_getoptions_result
     api_game_getoptions_result=None
     sold_options_respond=None
+    tpsl_changed_respond=None
     #------------------
     def __init__(self, host, username, password, proxies=None):
         """
@@ -412,6 +414,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def buy_order(self):
         return Buy_place_order_temp(self)
+    @property
+    def change_order(self):
+        return Change_Tpsl(self)
     @property
     def get_order(self):
         return Get_order(self)
