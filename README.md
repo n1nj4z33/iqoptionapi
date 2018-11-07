@@ -1,9 +1,12 @@
 # IQ Option API
 
-last Version:2.1.6
+last Version:2.1.7
 
 
-last update:2018/11/5
+last update:2018/11/8
+
+Version 2.1.7
+* add [set_max_reconnect](#setmaxreconnect)
 
 Version 2.1.6
 * add [change_order](#changeorder)
@@ -103,6 +106,19 @@ I suggest close it because your robot will stop to wait you to check sms code (o
 ```python
 I_want_money=IQ_Option("email","password")
 ```
+
+---
+### <a id=setmaxreconnect>set_max_reconnect</a>
+default number is 5
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/22
+
+Protect if you get some error (iqoptionapi auto reconnect) too many time,IQoption will ban your IP
+
+```
+I_want_money.set_max_reconnect(number)
+```
+
 ---
 ### Reconnect&check connect
 
