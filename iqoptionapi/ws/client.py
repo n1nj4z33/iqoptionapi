@@ -139,17 +139,8 @@ class WebsocketClient(object):
             self.api.instruments=message["msg"]
         
         elif message["name"]=="strike-list":
-            try:
-                time_key={}
-                for i in message["msg"]["strike"]:
-                    dd=i["call"]["id"].split("MC")
-                    time_key[int(dd[1])/100000]=i["call"]["id"]
-                expiration=message["msg"]["strike"][0]["call"]["id"].split("PT")[1].split("MC")[0]
-                self.api.strike_list.put_All_data(message["msg"]["underlying"],expiration,time_key)
-                #todo
-            except:
-                pass
-
+            
+            self.api.strike_list=message
         elif message["name"]=="api_game_betinfo_result":
             try:
                 self.api.game_betinfo.isSuccessful=message["msg"]["isSuccessful"]
@@ -165,6 +156,9 @@ class WebsocketClient(object):
             self.api.order_data=message
         elif message["name"]=="positions":
             self.api.positions=message
+        elif message["name"]=="position":
+            self.api.position=message
+
         elif message["name"]=="position-history":
             self.api.position_history=message
         elif message["name"]=="available-leverages":
@@ -181,6 +175,64 @@ class WebsocketClient(object):
             self.api.sold_options_respond=message
         elif message["name"]=="tpsl-changed":
             self.api.tpsl_changed_respond=message
+        elif message["name"]=="position-changed":
+            self.api.position_changed=message
+
+        elif message["name"]=="instrument-quotes-generated":
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active"])]  
+            period=message["msg"]["expiration"]["period"] 
+            ans=[]
+
+            for data in message["msg"]["quotes"]:
+                
+
+                #FROM IQ OPTION SOURCE CODE
+                #https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/128b30afdf65037f11a0ed52216549c065cb4fbe/Source%20Code/sources/com/iqoption/dto/entity/strike/Quote.java#L91
+                if data["price"]["ask"]==None:
+                    ProfitPercent=None
+                else:
+                    askPrice=(float)(data["price"]["ask"])
+                    ProfitPercent=((100-askPrice)*100)/askPrice
+                """
+                LIST:[Price][side][ID][profit]
+                """
+                for symble in data["symbols"]:
+                    try:
+                        """
+                        ID SAMPLE:doUSDJPY-OTC201811111204PT1MC11350481
+                        """
+                        temp=[]
+                        PT_INDEX=symble.index("PT")   
+                        side_INDEX=PT_INDEX+4
+                        """
+                        LIST:[Price]
+                        """
+                        price_f=(float)(symble[side_INDEX+1:len(symble)])/10e4
+                        temp.append( ("%.5f" % (price_f) ) )
+                        """
+                        LIST:[side]
+                        """
+                        if symble[side_INDEX]=="C":
+                            temp.append("call")
+                        elif symble[side_INDEX]=="P":
+                            temp.append("put")
+                        else:
+                            temp.append("*error* side")
+                        """
+                        LIST:[ID]
+                        """
+                        temp.append(symble)
+                        """
+                        LIST:[profit]
+                        """
+                        temp.append(ProfitPercent)
+                        ans.append(temp)
+                    except:
+                        pass
+            self.api.instrument_quites_generated_data[Active_name][period]=ans
+           
+ 
+            
     
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument

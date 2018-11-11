@@ -26,20 +26,27 @@ from iqoptionapi.ws.chanels.buyv2 import Buyv2
 from iqoptionapi.ws.chanels.api_game_betinfo import Game_betinfo
 from iqoptionapi.ws.chanels.instruments import Get_instruments
 from iqoptionapi.ws.chanels.strike_list import Strike_list
-from iqoptionapi.ws.chanels.digit_buy import Digit_buy
+
+
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_subscribe
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_unsubscribe
 from iqoptionapi.ws.chanels.buy_place_order_temp import Buy_place_order_temp
 from iqoptionapi.ws.chanels.get_order import Get_order
 from iqoptionapi.ws.chanels.get_positions import Get_positions
+from iqoptionapi.ws.chanels.get_positions import Get_position
 from iqoptionapi.ws.chanels.get_positions import Get_position_history
 from iqoptionapi.ws.chanels.get_available_leverages import Get_available_leverages
 from iqoptionapi.ws.chanels.cancel_order import Cancel_order
 from iqoptionapi.ws.chanels.close_position import Close_position
 from iqoptionapi.ws.chanels.get_overnight_fee import Get_overnight_fee
 from iqoptionapi.ws.chanels.heartbeat import Heartbeat
+
 from iqoptionapi.ws.chanels.subscribe import Subscribe_candles
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
+
+from iqoptionapi.ws.chanels.subscribe import Subscribe_Instrument_Quites_Generated
+from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_Instrument_Quites_Generated
+
 from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
 from iqoptionapi.ws.chanels.change_tpsl import Change_Tpsl
@@ -48,7 +55,6 @@ from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
 from iqoptionapi.ws.objects.candles import Candles
 from iqoptionapi.ws.objects.listinfodata import ListInfoData
-from iqoptionapi.ws.objects.strike_list_data import Strike_list_data
 from iqoptionapi.ws.objects.betinfo import Game_betinfo_data
 import iqoptionapi.global_value as global_value
 from collections import defaultdict
@@ -77,8 +83,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     listinfodata = ListInfoData()
     api_option_init_all_result = []
     
+    #for digital
+    position_changed=None
+    instrument_quites_generated_data=nested_dict(2,dict)
+    strike_list=None
 
-    strike_list=Strike_list_data()
     game_betinfo=Game_betinfo_data()
     instruments=None
     buy_id=None
@@ -86,6 +95,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     traders_mood={}#get hight(put) %
     order_data=None
     positions=None
+    position=None
     position_history=None
     available_leverages=None
     order_canceled=None
@@ -408,8 +418,14 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def get_strike_list(self):
         return Strike_list(self)
     @property
-    def digit_buy(self):
-        return Digit_buy(self)
+    def subscribe_instrument_quites_generated(self):
+        return Subscribe_Instrument_Quites_Generated(self)
+    @property
+    def unsubscribe_instrument_quites_generated(self):
+        return Unsubscribe_Instrument_Quites_Generated(self)
+
+
+
 #____BUY_for__Forex__&&__stock(cfd)__&&__ctrpto_____
     @property
     def buy_order(self):
@@ -423,6 +439,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def get_positions(self):
         return Get_positions(self)
+    @property
+    def get_position(self):
+        return Get_position(self)
     @property
     def get_position_history(self):
         return Get_position_history(self)

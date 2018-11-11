@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="2.1.7"
+    __version__="3.0"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -241,7 +241,7 @@ class IQ_Option:
             elif Balance_MODE=="PRACTICE":
                 self.api.changebalance(practice_id)
             else:
-                print("ERROR doesn't have this mode")
+                logging.error("ERROR doesn't have this mode")
                 exit(1)
 #________________________________________________________________________
 #_______________________        CANDLE      _____________________________                
@@ -499,25 +499,60 @@ class IQ_Option:
         while self.api.sold_options_respond==None:
             pass
         return self.api.sold_options_respond
-#__________________for digit_____________
-    def get_strike_list_data(self,ACTIVES,expirations):
-        try:
-            self.api.strike_list.del_data(ACTIVES,expirations)
+#__________________for Digital___________________
+    def get_strike_list(self,ACTIVES,duration):    
+        self.api.strike_list=None
+        self.api.get_strike_list(ACTIVES,duration)
+        ans={}
+        while self.api.strike_list==None:
+           pass
+        try:  
+            for data in self.api.strike_list["msg"]["strike"]:
+                temp={}
+                temp["call"]=data["call"]["id"]
+                temp["put"]=data["put"]["id"]
+                ans[("%.6f" % (float(data["value"])*10e-7) )]=temp
         except:
-            pass
-
+            logging.error('**error** get_strike_list read problem...')
+            return self.api.strike_list
+        return ans
+    def subscribe_strike_list(self,ACTIVE):
+        self.api.subscribe_instrument_quites_generated(ACTIVE)
         while True:
-            self.api.get_strike_list(ACTIVES,expirations)
-            all_strike_list_data=self.api.strike_list.get_All_data()
-            try:
-                return all_strike_list_data[str(ACTIVES),str(expirations)]
-            except:
+            if not self.api.instrument_quites_generated_data[ACTIVE][60]: 
                 pass
-            time.sleep(self.suspend*3)
-
-    def buy_digit(self,price,direction,instrument_id):
-        self.api.digit_buy(price,direction,instrument_id)
-
+            else:
+                break  
+    def unsubscribe_strike_list(self,ACTIVE):
+        self.api.unsubscribe_instrument_quites_generated(ACTIVE)
+    def get_realtime_strike_list(self,ACTIVE,duration):
+        try:
+            return self.api.instrument_quites_generated_data[ACTIVE][duration*60]
+        except:
+            return None    
+    def buy_digital(self,amount,instrument_id):
+        self.api.position_changed=None
+        return self.buy_order(instrument_type="digital-option",
+                           instrument_id=instrument_id,
+                           side="buy",type="market",amount=amount,
+                           limit_price=0,leverage=1,
+                           stop_lose_price=0,take_profit_price=0) 
+    def check_win_digital(self,buy_order_id):
+        check,data=self.get_order(self.api.buy_order_id)
+        if check:
+            check2,data2=self.get_position(int(data["position_id"]))
+            if check2:
+                if data2["position"]["status"]=="closed":
+                    return True,data2["position"]["close_effect_amount"]
+                else:
+                    return False,None
+            else:
+                return False,None
+        else:
+            return False,None
+         
+                
+     
 #----------------------------------------------------------       
 #-----------------BUY_for__Forex__&&__stock(cfd)__&&__ctrpto
     def buy_order(self,instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price):        
@@ -575,6 +610,15 @@ class IQ_Option:
             pass
         if self.api.positions["status"]==2000:
             return True,self.api.positions["msg"]
+        else:
+            return False,None
+    def get_position(self,position_id):
+        self.api.position=None
+        self.api.get_position(position_id)
+        while self.api.position==None:
+            pass
+        if self.api.position["status"]==2000:
+            return True,self.api.position["msg"]
         else:
             return False,None
     #this function is heavy 

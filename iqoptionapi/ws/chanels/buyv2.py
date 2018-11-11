@@ -2,7 +2,7 @@
 import datetime
 import time
 from iqoptionapi.ws.chanels.base import Base
-
+import logging
 
 class Buyv2(Base):
     """Class for IQ option buy websocket chanel."""
@@ -58,6 +58,6 @@ class Buyv2(Base):
                 quarter = tmp_exp + (j+1)*15*60
                 exp = quarter + period*15*60
         else:
-            print("ERROR get_expiration_time DO NOT LESS 1")
+            logging.error("ERROR get_expiration_time DO NOT LESS 1")
             exit(1)
         return exp, option

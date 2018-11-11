@@ -1,9 +1,13 @@
 # IQ Option API
 
-last Version:2.1.7
+last Version:3.0
 
 
-last update:2018/11/8
+last update:2018/11/12
+
+Version 3.0
+
+* [ !!!support Digital profit!!!! and reimplement Digital](#digital)
 
 Version 2.1.7
 * add [set_max_reconnect](#setmaxreconnect)
@@ -303,39 +307,84 @@ print(I_want_money.get_optioninfo(10))
 ```
 ___
 
-### For Digital
+### <a id=digital>For Digital</a>
 #### Sample
 
 ```python
 from iqoptionapi.stable_api import IQ_Option
-import logging
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+import time
 I_want_money=IQ_Option("email","password")
-strike_list=I_want_money.get_strike_list_data("EURUSD",1)
-print("Strike List")
-for i in strike_list:
-    print("key",i,"value",strike_list[i])
-#Choose first Strike List
-instrument_id=strike_list[list(strike_list)[0]]
-I_want_money.buy_digit(3,"put",instrument_id)
+ACTIVES="EURUSD-OTC"
+duration=1#minute 1 or 5
+amount=1000#how many you want to buy
+
+I_want_money.subscribe_strike_list(ACTIVES)
+
+strike_list=I_want_money.get_realtime_strike_list(ACTIVES,1)
+
+"""
+strike_list:[Price][side][instrument_id][profit%]
+"""
+print("strike_list",strike_list)
+
+side=strike_list[0][1]
+instrument_id=strike_list[0][2]
+profit=strike_list[0][3]
+print(amount,side,instrument_id,profit)
+
+if profit!=None:
+    buy_check,id=I_want_money.buy_digital(amount,instrument_id)
+    if buy_check:
+        print("buy succeed",buy_check, id)
+        while True:
+            check_close,win_money=I_want_money.check_win_digital(id)
+            if check_close:
+                if float(win_money)>0:
+                    win_money=("%.2f" % (win_money))
+                    print("you win",win_money,"money")
+                else:
+                    print("you loose")
+                break
+            time.sleep(1)
+        I_want_money.unsubscribe_strike_list(ACTIVES)
+    else:
+        print("buy fail please try again")
+
+
+
 ```
-#### Get strike list 
+#### Get all strike list data
+
 ```python
-strike_list=I_want_money.get_strike_list_data("EURUSD",1)
-#strike_list=I_want_money.get_strike_list_data(ACTIVE,expirations)
-#ACTIVE:"EURUSD"....
-#expirations: it seem only 1 and 5 for choose
-#return:dict{strike data,instrument_id}
-```
-#### Buy digit
-```python
-I_want_money.buy_digit(3,"put",instrument_id)
-#I_want_money.buy_digit(price,direction,instrument_id)
-#price:how many you want to buy
-#direction:"call"/"put"
-#instrument_id:you need get from strike list
+strike_list:[Price][side][instrument_id][profit%]
 ```
 
+```python
+from iqoptionapi.stable_api import IQ_Option
+import time
+I_want_money=IQ_Option("email","password")
+ACTIVES="EURUSD-OTC"
+I_want_money.subscribe_strike_list(ACTIVES)
+while True:
+    print(I_want_money.get_realtime_strike_list(ACTIVES,1))
+    time.sleep(1)
+I_want_money.unsubscribe_strike_list(ACTIVES)
+```
+
+#### Buy digit
+```python
+buy_check,id=I_want_money.buy_digital(amount,instrument_id)
+#get instrument_id from I_want_money.get_realtime_strike_list
+```
+#### check win for digital
+```python
+I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
+#return:check_close,win_money
+#return sample
+#if you loose:Ture,o
+#if you win:True,1232.3
+#if trade not clode yet:False,None
+```
 ---
 ### For Forex&Stock&Commodities&Crypto&ETFs
 

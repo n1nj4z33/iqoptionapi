@@ -14,6 +14,16 @@ class Get_positions(Base):
                 }
         }
         self.send_websocket_request(self.name, data)
+class Get_position(Base):
+    name = "sendMessage"
+    def __call__(self,position_id):
+        data = {
+            "name":"get-position",
+            "body":{
+                "position_id":position_id,
+                }
+        }
+        self.send_websocket_request(self.name, data)
 
 class Get_position_history(Base):
     name = "sendMessage"
