@@ -44,7 +44,6 @@ class Unsubscribe_Instrument_Quites_Generated(Base):
     name = "unsubscribeMessage"
     
     def __call__(self,ACTIVE):  
-        del self.api.instrument_quites_generated_data[ACTIVE]
         data = {
             "name": "instrument-quotes-generated",
             "params":{

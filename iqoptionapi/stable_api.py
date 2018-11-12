@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="3.0"
+    __version__="3.1"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -518,18 +518,40 @@ class IQ_Option:
         return ans
     def subscribe_strike_list(self,ACTIVE):
         self.api.subscribe_instrument_quites_generated(ACTIVE)
+     
+    def unsubscribe_strike_list(self,ACTIVE):
+        del self.api.instrument_quites_generated_data[ACTIVE]
+        self.api.unsubscribe_instrument_quites_generated(ACTIVE)
+
+    def get_realtime_strike_list(self,ACTIVE,duration):
         while True:
-            if not self.api.instrument_quites_generated_data[ACTIVE][60]: 
+            if not self.api.instrument_quites_generated_data[ACTIVE][duration*60]: 
                 pass
             else:
-                break  
-    def unsubscribe_strike_list(self,ACTIVE):
-        self.api.unsubscribe_instrument_quites_generated(ACTIVE)
-    def get_realtime_strike_list(self,ACTIVE,duration):
-        try:
-            return self.api.instrument_quites_generated_data[ACTIVE][duration*60]
-        except:
-            return None    
+                break
+        """
+        strike_list dict: price:{call:id,put:id}
+        """
+        ans={}
+        
+        while ans=={}:
+            strike_list=self.get_strike_list(ACTIVE,duration)
+            profit=self.api.instrument_quites_generated_data[ACTIVE][duration*60]
+            for price_key in strike_list:
+                try:
+                    side_data={}   
+                    for side_key in strike_list[price_key]:
+                        detail_data={}
+                        profit_d=profit[strike_list[price_key][side_key]]
+                        detail_data["profit"]=profit_d
+                        detail_data["id"]=strike_list[price_key][side_key]
+                        side_data[side_key]=detail_data
+                    ans[price_key]=side_data
+                except:
+                    pass
+
+        return ans  
+
     def buy_digital(self,amount,instrument_id):
         self.api.position_changed=None
         return self.buy_order(instrument_type="digital-option",

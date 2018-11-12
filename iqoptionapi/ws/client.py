@@ -181,7 +181,7 @@ class WebsocketClient(object):
         elif message["name"]=="instrument-quotes-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active"])]  
             period=message["msg"]["expiration"]["period"] 
-            ans=[]
+            ans={}
 
             for data in message["msg"]["quotes"]:
                 
@@ -193,40 +193,17 @@ class WebsocketClient(object):
                 else:
                     askPrice=(float)(data["price"]["ask"])
                     ProfitPercent=((100-askPrice)*100)/askPrice
-                """
-                LIST:[Price][side][ID][profit]
-                """
+                
                 for symble in data["symbols"]:
                     try:
                         """
                         ID SAMPLE:doUSDJPY-OTC201811111204PT1MC11350481
                         """
-                        temp=[]
-                        PT_INDEX=symble.index("PT")   
-                        side_INDEX=PT_INDEX+4
+
                         """
-                        LIST:[Price]
+                        dict ID-prodit:{ID:profit}
                         """
-                        price_f=(float)(symble[side_INDEX+1:len(symble)])/10e4
-                        temp.append( ("%.5f" % (price_f) ) )
-                        """
-                        LIST:[side]
-                        """
-                        if symble[side_INDEX]=="C":
-                            temp.append("call")
-                        elif symble[side_INDEX]=="P":
-                            temp.append("put")
-                        else:
-                            temp.append("*error* side")
-                        """
-                        LIST:[ID]
-                        """
-                        temp.append(symble)
-                        """
-                        LIST:[profit]
-                        """
-                        temp.append(ProfitPercent)
-                        ans.append(temp)
+                        ans[symble]=ProfitPercent
                     except:
                         pass
             self.api.instrument_quites_generated_data[Active_name][period]=ans

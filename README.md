@@ -1,9 +1,13 @@
 # IQ Option API
 
-last Version:3.0
+last Version:3.1
 
 
 last update:2018/11/12
+Version 3.1
+
+* [ fix Digital bug](#digital)
+
 
 Version 3.0
 
@@ -313,61 +317,81 @@ ___
 ```python
 from iqoptionapi.stable_api import IQ_Option
 import time
+import random
 I_want_money=IQ_Option("email","password")
-ACTIVES="EURUSD-OTC"
+
+ACTIVES="EURUSD"
 duration=1#minute 1 or 5
-amount=1000#how many you want to buy
-
+amount=1
 I_want_money.subscribe_strike_list(ACTIVES)
-
-strike_list=I_want_money.get_realtime_strike_list(ACTIVES,1)
-
+#get strike_list
+data=I_want_money.get_realtime_strike_list(ACTIVES, duration)
+print("get strike data")
+print(data)
+"""data
+{'1.127100': 
+    {  'call': 
+            {   'profit': None, 
+                'id': 'doEURUSD201811120649PT1MC11271'
+            },   
+        'put': 
+            {   'profit': 566.6666666666666, 
+                'id': 'doEURUSD201811120649PT1MP11271'
+            }	
+    }............
+} 
 """
-strike_list:[Price][side][instrument_id][profit%]
-"""
-print("strike_list",strike_list)
-
-side=strike_list[0][1]
-instrument_id=strike_list[0][2]
-profit=strike_list[0][3]
-print(amount,side,instrument_id,profit)
-
-if profit!=None:
-    buy_check,id=I_want_money.buy_digital(amount,instrument_id)
-    if buy_check:
-        print("buy succeed",buy_check, id)
-        while True:
-            check_close,win_money=I_want_money.check_win_digital(id)
-            if check_close:
-                if float(win_money)>0:
-                    win_money=("%.2f" % (win_money))
-                    print("you win",win_money,"money")
-                else:
-                    print("you loose")
-                break
-            time.sleep(1)
-        I_want_money.unsubscribe_strike_list(ACTIVES)
-    else:
-        print("buy fail please try again")
-
-
-
+#get price list
+price_list=list(data.keys())
+#random choose Strategy
+choose_price=price_list[random.randint(0,len(price_list)-1)]
+#get instrument_id
+instrument_id=data[choose_price]["call"]["id"]
+#get profit
+profit=data[choose_price]["call"]["profit"]
+print("choose you want to buy")
+print("price:",choose_price,"side:call","instrument_id:",instrument_id,"profit:",profit)
+#put instrument_id to buy
+buy_check,id=I_want_money.buy_digital(amount,instrument_id)
+if buy_check:
+    print("wait for check win")
+    #check win
+    while True:
+        check_close,win_money=I_want_money.check_win_digital(id)
+        if check_close:
+            if float(win_money)>0:
+                win_money=("%.2f" % (win_money))
+                print("you win",win_money,"money")
+            else:
+                print("you loose")
+            break
+    I_want_money.unsubscribe_strike_list(ACTIVES)
+else:
+    print("fail to buy,please run again")
 ```
 #### Get all strike list data
 
+##### Data format
+
 ```python
-strike_list:[Price][side][instrument_id][profit%]
+
+{'1.127100': {  'call': {'profit': None, 'id': 'doEURUSD201811120649PT1MC11271'},   'put': {'profit': 566.6666666666666, 'id': 'doEURUSD201811120649PT1MP11271'}	}.......}  
 ```
+
+##### sample
 
 ```python
 from iqoptionapi.stable_api import IQ_Option
 import time
 I_want_money=IQ_Option("email","password")
-ACTIVES="EURUSD-OTC"
+ACTIVES="EURUSD"
+duration=1#minute 1 or 5
 I_want_money.subscribe_strike_list(ACTIVES)
 while True:
-    print(I_want_money.get_realtime_strike_list(ACTIVES,1))
-    time.sleep(1)
+    data=I_want_money.get_realtime_strike_list(ACTIVES, duration)
+    for price in data:
+        print("price",price,data[price])
+    time.sleep(5)
 I_want_money.unsubscribe_strike_list(ACTIVES)
 ```
 
