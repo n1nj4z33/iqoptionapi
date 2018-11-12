@@ -6,7 +6,7 @@ import time
 import logging
 import operator
 class IQ_Option:
-    __version__="3.1"
+    __version__="3.2"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -16,7 +16,10 @@ class IQ_Option:
         self.subscribe_candle=[]
         self.subscribe_candle_all_size=[]
         self.subscribe_mood=[]
-        
+        #for digit
+        self.get_realtime_strike_list_temp_data={}
+        self.get_realtime_strike_list_temp_expiration=0
+        #
         self.max_reconnect=5
         self.connect_count=0
         #--start
@@ -514,8 +517,8 @@ class IQ_Option:
                 ans[("%.6f" % (float(data["value"])*10e-7) )]=temp
         except:
             logging.error('**error** get_strike_list read problem...')
-            return self.api.strike_list
-        return ans
+            return self.api.strike_list,None
+        return self.api.strike_list,ans
     def subscribe_strike_list(self,ACTIVE):
         self.api.subscribe_instrument_quites_generated(ACTIVE)
      
@@ -533,9 +536,18 @@ class IQ_Option:
         strike_list dict: price:{call:id,put:id}
         """
         ans={}
+        now_timestamp=self.api.instrument_quites_generated_timestamp[ACTIVE][duration*60]
         
         while ans=={}:
-            strike_list=self.get_strike_list(ACTIVE,duration)
+            if self.get_realtime_strike_list_temp_data=={} or now_timestamp!=self.get_realtime_strike_list_temp_expiration:
+                raw_data,strike_list=self.get_strike_list(ACTIVE,duration)
+                self.get_realtime_strike_list_temp_expiration=raw_data["msg"]["expiration"]
+                self.get_realtime_strike_list_temp_data=strike_list
+            else:
+                strike_list=self.get_realtime_strike_list_temp_data
+                
+
+
             profit=self.api.instrument_quites_generated_data[ACTIVE][duration*60]
             for price_key in strike_list:
                 try:

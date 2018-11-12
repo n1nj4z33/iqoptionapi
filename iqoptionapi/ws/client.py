@@ -45,6 +45,42 @@ class WebsocketClient(object):
 
         if message["name"] == "timeSync":
             self.api.timesync.server_timestamp = message["msg"]
+         #######################################################
+        #---------------------for_realtime_candle______________
+        #######################################################
+        elif message["name"] == "candle-generated":
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]            
+            
+            active=str(Active_name)
+            size=int(message["msg"]["size"])
+            from_=int(message["msg"]["from"])
+            msg=message["msg"]
+            maxdict=self.api.real_time_candles_maxdict_table[Active_name][size]
+
+            self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
+            self.api.candle_generated_check[active][size]=True
+            
+
+        elif message["name"] == "candles-generated":
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])] 
+            active=str(Active_name)      
+            for k,v in message["msg"]["candles"].items():
+                v["active_id"]=message["msg"]["active_id"]
+                v["at"]=message["msg"]["at"]
+                v["ask"]=message["msg"]["ask"]
+                v["bid"]=message["msg"]["bid"]
+                v["close"]=message["msg"]["value"]
+                v["size"]=int(k)
+                size=int(v["size"])
+                from_=int(v["from"])
+                maxdict=self.api.real_time_candles_maxdict_table[Active_name][size]
+                msg=v
+                self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
+            self.api.candle_generated_all_size_check[active]=True 
+                
+        #######################################################
+        #______________________________________________________
+        #######################################################
         elif message["name"] =="heartbeat":
             try:
                 self.api.heartbeat(message["msg"])
@@ -99,42 +135,7 @@ class WebsocketClient(object):
 
         elif message["name"] == "api_option_init_all_result":
             self.api.api_option_init_all_result = message["msg"]
-        #######################################################
-        #---------------------for_realtime_candle______________
-        #######################################################
-        elif message["name"] == "candle-generated":
-            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])]            
-            
-            active=str(Active_name)
-            size=int(message["msg"]["size"])
-            from_=int(message["msg"]["from"])
-            msg=message["msg"]
-            maxdict=self.api.real_time_candles_maxdict_table[Active_name][size]
-
-            self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
-            self.api.candle_generated_check[active][size]=True
-            
-
-        elif message["name"] == "candles-generated":
-            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])] 
-            active=str(Active_name)      
-            for k,v in message["msg"]["candles"].items():
-                v["active_id"]=message["msg"]["active_id"]
-                v["at"]=message["msg"]["at"]
-                v["ask"]=message["msg"]["ask"]
-                v["bid"]=message["msg"]["bid"]
-                v["close"]=message["msg"]["value"]
-                v["size"]=int(k)
-                size=int(v["size"])
-                from_=int(v["from"])
-                maxdict=self.api.real_time_candles_maxdict_table[Active_name][size]
-                msg=v
-                self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
-            self.api.candle_generated_all_size_check[active]=True 
-                
-        #######################################################
-        #______________________________________________________
-        #######################################################
+       
         elif message["name"] == "instruments":
             self.api.instruments=message["msg"]
         
@@ -203,9 +204,11 @@ class WebsocketClient(object):
                         """
                         dict ID-prodit:{ID:profit}
                         """
+
                         ans[symble]=ProfitPercent
                     except:
                         pass
+            self.api.instrument_quites_generated_timestamp[Active_name][period]=message["msg"]["expiration"]["timestamp"]
             self.api.instrument_quites_generated_data[Active_name][period]=ans
            
  

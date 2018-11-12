@@ -1,9 +1,13 @@
 # IQ Option API
 
-last Version:3.1
+last Version:3.12
 
 
 last update:2018/11/12
+Version 3.2
+
+* [improve Digital speed](#digital)
+
 Version 3.1
 
 * [ fix Digital bug](#digital)
@@ -13,24 +17,7 @@ Version 3.0
 
 * [ !!!support Digital profit!!!! and reimplement Digital](#digital)
 
-Version 2.1.7
-* add [set_max_reconnect](#setmaxreconnect)
 
-Version 2.1.6
-* add [change_order](#changeorder)
-
-Version 2.1.5
-* fix function bug,if your version is 2.1.4 please update to 2.1.5
-* change [buy](#buy) function return value
-* add [sell_option](#selloption)
-
-Version 2.1.4
-
-[* add get_optioninfo(only for binary option)](#optioninfo)
-
-[* add PURCHASE TIME sample](#purchase)
-
-[* add get_server_timestamp](#timestamp)
 
 
 sucess on python3.6.5

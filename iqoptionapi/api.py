@@ -86,6 +86,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     #for digital
     position_changed=None
     instrument_quites_generated_data=nested_dict(2,dict)
+    instrument_quites_generated_timestamp=nested_dict(2,dict)
     strike_list=None
 
     game_betinfo=Game_betinfo_data()
