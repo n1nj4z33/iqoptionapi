@@ -5,8 +5,16 @@ import threading
 import time
 import logging
 import operator
+from collections import defaultdict
+
+def nested_dict(n, type):
+    if n == 1:
+        return defaultdict(type)
+    else:
+        return defaultdict(lambda: nested_dict(n-1, type))
+
 class IQ_Option:
-    __version__="3.2"
+    __version__="3.3"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -145,19 +153,40 @@ class IQ_Option:
                 pass
    
         #return OP_code.ACTIVES
-    def get_profit(self,ACTIVES):
+
+#--------for binary option detail
+   
+    def get_binary_option_detail(self):
+        detail=nested_dict(2,dict)
         init_info=self.get_all_init()
-        return (100.0-init_info["result"]["turbo"]["actives"][str(OP_code.ACTIVES[ACTIVES])]["option"]["profit"]["commission"])/100.0
+        for actives in init_info["result"]["turbo"]["actives"]:
+            name=init_info["result"]["turbo"]["actives"][actives]["name"]
+            name=name[name.index(".")+1:len(name)]
+            detail[name]["turbo"]=init_info["result"]["turbo"]["actives"][actives]
+
+        for actives in init_info["result"]["binary"]["actives"]:
+            name=init_info["result"]["binary"]["actives"][actives]["name"]
+            name=name[name.index(".")+1:len(name)]
+            detail[name]["binary"]=init_info["result"]["binary"]["actives"][actives]
+        return detail
     def get_all_profit(self):
-        all_profit={}
-        init_info = self.get_all_init()
-        for active in OP_code.ACTIVES:
-            try:
-                prof = (100.0-init_info["result"]["turbo"]["actives"][str(OP_code.ACTIVES[active])]["option"]["profit"]["commission"])/100.0
-                all_profit[active]=prof
-            except:
-                pass
+        all_profit=nested_dict(2,dict)
+        init_info=self.get_all_init()
+        for actives in init_info["result"]["turbo"]["actives"]:
+            name=init_info["result"]["turbo"]["actives"][actives]["name"]
+            name=name[name.index(".")+1:len(name)]
+            all_profit[name]["turbo"]=(100-init_info["result"]["turbo"]["actives"][actives]["option"]["profit"]["commission"])/100
+
+        for actives in init_info["result"]["binary"]["actives"]:
+            name=init_info["result"]["binary"]["actives"][actives]["name"]
+            name=name[name.index(".")+1:len(name)]
+            all_profit[name]["binary"]=(100-init_info["result"]["binary"]["actives"][actives]["option"]["profit"]["commission"])/100
         return all_profit
+
+#----------------------------------------
+
+
+
 #______________________________________self.api.getprofile() https________________________________
     def get_profile(self):
         while True:
@@ -708,5 +737,7 @@ class IQ_Option:
             return True,self.api.overnight_fee["msg"]
         else:
             return False,None
-        
+
+
+
 

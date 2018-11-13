@@ -1,9 +1,16 @@
 # IQ Option API
 
-last Version:3.12
+last Version:3.3
 
 
-last update:2018/11/12
+last update:2018/11/13
+
+Version 3.3
+
+* [fix binary option profit and add get_binary_option_detail](#expirationtime)
+  
+
+
 Version 3.2
 
 * [improve Digital speed](#digital)
@@ -270,6 +277,42 @@ I_want_money.check_win_v2(23243221)
 #I_want_money.check_win_v2(id_number)
 #this function will do loop check your bet until if win/equal/loose
 ```
+
+---
+"get_binary_option_detail" and "get_all_profit" are base on "get_all_init()",if you want raw data you can call
+```python
+I_want_money.get_all_init()
+```
+
+---
+
+<a id=expirationtime></a>
+
+![](image/expiration_time.png)
+
+#### get_binary_option_detail
+
+sample 
+```python
+from iqoptionapi.stable_api import IQ_Option
+print("login...")
+I_want_money=IQ_Option("email","password")
+d=I_want_money.get_binary_option_detail()
+print(d["CADCHF"]["turbo"])
+print(d["CADCHF"]["binary"])
+```
+
+#### get all profit
+sample 
+```python
+from iqoptionapi.stable_api import IQ_Option
+print("login...")
+I_want_money=IQ_Option("email","password")
+d=I_want_money.get_all_profit()
+print(d["CADCHF"]["turbo"])
+print(d["CADCHF"]["binary"])
+```
+---
 #### get_betinfo
 
 (only for option)
@@ -297,7 +340,7 @@ input how many data you want to get from Trading History(only for binary option)
 print(I_want_money.get_optioninfo(10))
 ```
 ___
-
+---
 ### <a id=digital>For Digital</a>
 #### Sample
 
@@ -733,11 +776,6 @@ I_want_money.get_all_traders_mood(goal)
 ```
 
 ### Account
-#### get all profit
-```python
-I_want_money.get_all_profit()
-#return type(dict) sample:dict["EURUSD"]=0.85 
-```
 #### get balance
 ```python
 I_want_money.get_balance()
