@@ -4,9 +4,13 @@ last Version:3.4
 
 
 last update:2018/11/19
+
 Version 3.4
+
 FIX buy id None:https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/52
+
 FIX Options Profits https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/50
+
 Version 3.3
 
 * [fix binary option profit and add get_binary_option_detail](#expirationtime)
