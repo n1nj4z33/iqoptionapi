@@ -14,7 +14,7 @@ def nested_dict(n, type):
         return defaultdict(lambda: nested_dict(n-1, type))
 
 class IQ_Option:
-    __version__="3.3"
+    __version__="3.4"
     def __init__(self,email,password):
         self.size=[1,5,10,15,30,60,120,300,600,900,1800,3600,7200,14400,28800,43200,86400,604800,2592000]
         self.email=email
@@ -175,12 +175,12 @@ class IQ_Option:
         for actives in init_info["result"]["turbo"]["actives"]:
             name=init_info["result"]["turbo"]["actives"][actives]["name"]
             name=name[name.index(".")+1:len(name)]
-            all_profit[name]["turbo"]=(100-init_info["result"]["turbo"]["actives"][actives]["option"]["profit"]["commission"])/100
+            all_profit[name]["turbo"]=(100.0-init_info["result"]["turbo"]["actives"][actives]["option"]["profit"]["commission"])/100.0
 
         for actives in init_info["result"]["binary"]["actives"]:
             name=init_info["result"]["binary"]["actives"][actives]["name"]
             name=name[name.index(".")+1:len(name)]
-            all_profit[name]["binary"]=(100-init_info["result"]["binary"]["actives"][actives]["option"]["profit"]["commission"])/100
+            all_profit[name]["binary"]=(100.0-init_info["result"]["binary"]["actives"][actives]["option"]["profit"]["commission"])/100.0
         return all_profit
 
 #----------------------------------------
@@ -514,7 +514,7 @@ class IQ_Option:
                     self.connect()
                     pass
             start=time.time()
-            while self.api.buy_successful==None:
+            while self.api.buy_successful==None or self.api.buy_id==None:
                 if time.time()-start>60:
                     logging.error('check buy_successful time late 60sec')
                     break
