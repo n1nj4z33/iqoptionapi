@@ -445,7 +445,7 @@ I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
 #if you win:True,1232.3
 #if trade not clode yet:False,None
 ```
-####close digital
+#### close digital
 ```python
 I_want_money.close_position(id)
 ```
