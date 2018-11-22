@@ -3,7 +3,7 @@
 last Version:3.4
 
 
-last update:2018/11/19
+last update:2018/11/22
 
 Version 3.4
 
@@ -445,6 +445,18 @@ I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
 #if you win:True,1232.3
 #if trade not clode yet:False,None
 ```
+####close digital
+```python
+I_want_money.close_position(id)
+```
+#### get digital data
+```python
+print(I_want_money.get_order(id))
+print(I_want_money.get_positions("digital-option"))
+print(I_want_money.get_position_history("digital-option"))
+```
+
+
 ---
 ### For Forex&Stock&Commodities&Crypto&ETFs
 
