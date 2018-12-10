@@ -1,9 +1,13 @@
 # IQ Option API
 
-last Version:3.4
+last Version:3.5
 
 
-last update:2018/11/22
+last update:2018/12/11
+
+Version 3.5
+
+FIX FOREX BUY_ORDER
 
 Version 3.4
 

@@ -9,6 +9,7 @@ class Buy_place_order_temp(Base):
     def __call__(self,instrument_type,instrument_id,side,type,amount,leverage,limit_price,stop_price,stop_lose_price,take_profit_price):
         data = {
         "name": "place-order-temp",
+        "version":"3.0",
         "body":{
             "instrument_type":str(instrument_type),
             "instrument_id":str(instrument_id),
