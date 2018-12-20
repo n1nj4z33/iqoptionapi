@@ -3,10 +3,11 @@
 last Version:3.5
 
 
-last update:2018/12/11
+last update:2018/12/20
+
 
 Version 3.5
-
+FIX check version sample
 FIX FOREX BUY_ORDER
 
 Version 3.4
@@ -176,8 +177,8 @@ if I_want_money.check_connect()==False:
 ### Check version
 
 ```python
-I_want_money=IQ_Option("email","password")
-print(I_want_money.__version__)
+from iqoptionapi.stable_api import IQ_Option
+print(IQ_Option.__version__)
 ```
 
 ---
