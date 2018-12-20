@@ -7,7 +7,9 @@ last update:2018/12/20
 
 
 Version 3.5
+
 FIX check version sample
+
 FIX FOREX BUY_ORDER
 
 Version 3.4
