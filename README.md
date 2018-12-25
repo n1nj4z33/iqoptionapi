@@ -61,8 +61,12 @@ from iqoptionapi.api import IQOptionAPI
 ```
 
 
+
+
 ## Can not loging problem
 
+
+### problem 1
 this problem i have been pull request to websocket-client
 
 If you get this problem
@@ -72,15 +76,29 @@ error from callback <bound method WebsocketClient.on_message of <iqoptionapi.ws.
   File "/usr/lib/python3.7/site-packages/websocket/_app.py", line 343, in _callback
    callback(*args)
 ```
-### fix way 1(install old websocket-client version)
+#### fix way 1(install old websocket-client version)
 ```bash
 sudo pip3 uninstall websocket-client
 sudo pip3 install websocket-client==0.47.0
 ```
 
-### fix way 2(install my fix version on latest)
+#### fix way 2(install my fix version on latest)
 ```bash
 sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/websocket-client.git
+```
+---
+
+### problem 2
+#### websocket conflict with websocket-client
+
+if you have this problem
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/66
+
+fix way
+```bash
+sudo pip3 uninstall websocket
+sudo pip3 install websocket-client==0.47.0
 ```
 
 ---
