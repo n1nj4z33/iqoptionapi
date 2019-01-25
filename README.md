@@ -596,8 +596,8 @@ if Buy sucess return (True,buy_order_id)
 
 "diff"=Profit in Money
 
-|parameter|||||||
---|--|--|--|--|--|--|
+|parameter|||||
+--|--|--|--|--|
 instrument_type|[instrument_type](#instrumenttype)
 instrument_id| [instrument_id](#instrumentid)
 side|"buy"|"sell"
@@ -635,8 +635,8 @@ check,order_id=I_want_money.buy_order(
 ##### change Position
 ![](image/change_ID_Name_position_id.png)
 
-|parameter|||||||
---|--|--|--|--|--|--|
+|parameter|||||
+--|--|--|--|--|
 ID_Name|"position_id"|"order_id"
 order_id|"you need to get order_id from buy_order()"
 stop_lose_kind|None|"price"|"diff"|"percent"
