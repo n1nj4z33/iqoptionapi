@@ -32,6 +32,7 @@ from iqoptionapi.ws.chanels.traders_mood import Traders_mood_subscribe
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_unsubscribe
 from iqoptionapi.ws.chanels.buy_place_order_temp import Buy_place_order_temp
 from iqoptionapi.ws.chanels.get_order import Get_order
+from iqoptionapi.ws.chanels.get_deferred_orders import GetDeferredOrders
 from iqoptionapi.ws.chanels.get_positions import Get_positions
 from iqoptionapi.ws.chanels.get_positions import Get_position
 from iqoptionapi.ws.chanels.get_positions import Get_position_history
@@ -50,6 +51,7 @@ from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_Instrument_Quites_Gen
 from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
 from iqoptionapi.ws.chanels.change_tpsl import Change_Tpsl
+from iqoptionapi.ws.chanels.change_auto_margin_call import ChangeAutoMarginCall
 
 from iqoptionapi.ws.objects.timesync import TimeSync
 from iqoptionapi.ws.objects.profile import Profile
@@ -97,6 +99,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     order_data=None
     positions=None
     position=None
+    deferred_orders=None
     position_history=None
     available_leverages=None
     order_canceled=None
@@ -111,6 +114,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     api_game_getoptions_result=None
     sold_options_respond=None
     tpsl_changed_respond=None
+    auto_margin_call_changed_respond=None
     #------------------
     def __init__(self, host, username, password, proxies=None):
         """
@@ -435,8 +439,14 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def change_order(self):
         return Change_Tpsl(self)
     @property
+    def change_auto_margin_call(self):
+        return ChangeAutoMarginCall(self)
+    @property
     def get_order(self):
         return Get_order(self)
+    @property
+    def get_pending(self):
+        return GetDeferredOrders(self)
     @property
     def get_positions(self):
         return Get_positions(self)

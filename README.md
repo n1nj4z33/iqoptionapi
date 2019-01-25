@@ -5,6 +5,16 @@ last Version:3.5
 
 last update:2018/12/20
 
+version  3.6
+
+[add check connect](#checkconnect)
+
+[add reconnect](#reconnect)
+
+login speed up
+
+!!fully support [FOREX](#forex) api!!
+
 
 Version 3.5
 
@@ -89,6 +99,7 @@ sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/websocket-client.git
 ---
 
 ### problem 2
+
 #### websocket conflict with websocket-client
 
 if you have this problem
@@ -122,19 +133,6 @@ goal="EURUSD"
 print("get candles")
 print(I_want_money.get_candles(goal,60,111,time.time()))
 ```
----
-## Find ticker symbol
-when you buy some thing you need to know ""ticker"" symbol
-
-if you want to buy 
-""Alphabet Inc.""
-ticker symbol:""GOOGL""
-buysomeapi("GOOGL")
-
-you can find ticker symbol here 
-
-[https://iqoption.com/en/assets](https://iqoption.com/en/assets)
-
 
 ---
 
@@ -200,7 +198,17 @@ if I_want_money.check_connect()==False:
 from iqoptionapi.stable_api import IQ_Option
 print(IQ_Option.__version__)
 ```
+### <a id=checkconnect> Check connect</a>
 
+return True/False
+
+```python
+print(I_want_money.check_connect())
+```
+### <a id=reconnect>Reconnect</a>
+```python
+I_want_money.connect()
+```
 ---
 ### View all ACTIVES Name
 you will get right all ACTIVES and code
@@ -483,47 +491,88 @@ print(I_want_money.get_position_history("digital-option"))
 
 
 ---
-### For Forex&Stock&Commodities&Crypto&ETFs
+### <a id=forex>For Forex&Stock&Commodities&Crypto&ETFs</a>
 
 #### you need to check Asset is open or close!
 ![](image/asset_close.png)
 
 
-#### About instrument_type
-||Forex|Stock|Commodities|Crypto|ETFs
---|--|--|--|--|--|
-instrument_type|"forex"|"cfd"|"cfd"|"crypto"|"cfd"
 
-#### About active
-if you want to buy ""Alphabet Inc.""
+#### <a id=instrumenttype>About instrument_type</a>
+||Forex|Stock|Commodities|indices|Crypto|ETFs
+--|--|--|--|--|--|--|
+instrument_type|"forex"|"cfd"|"cfd"|"cfd"|"crypto"|"cfd"
 
-find ticker symbol
+#### <a id=instrumentid> About instrument_id</a>
 
-[https://iqoption.com/en/assets](https://iqoption.com/en/assets)
+find ticker symbol for instrument_id
 
-you can find "Alphabet Inc."'s ticker symbol is "GOOGLE"
+if you want to buy "Alphabet Inc."
+
+search in [https://finance.yahoo.com/](https://finance.yahoo.com/)
+
+you can find "Alphabet Inc." ticker symbol is "GOOGLE"
 
 instrument_id="GOOGL"
+
+some instrument_id can not search from [https://finance.yahoo.com/](https://finance.yahoo.com/)
+
+you need to decode from chrome DevTools
+
+Bitcoin x100:instrument_id="BTCUSD-L"
 
 #### Sample
 ```python
 from iqoptionapi.stable_api import IQ_Option
-import logging
-import time
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 I_want_money=IQ_Option("email","password")
 
 instrument_type="crypto"
 instrument_id="BTCUSD"
-side="buy"#sell
-type="market"#limit
-amount=11
-limit_price=2#for limit ,if you choose market this not work,
-leverage=3#you can get more information in get_available_leverages()
-stop_lose_price=1#
-take_profit_price=20000#
+side="buy"#input:"buy"/"sell"
+amount=1.23#input how many Amount you want to play
 
-check,order_id=I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
+#"leverage"="Multiplier"
+leverage=3#you can get more information in get_available_leverages()
+
+type="market"#input:"market"/"limit"/"stop"
+
+#for type="limit"/"stop"
+
+# only working by set type="limit"
+limit_price=None#input:None/value(float/int)
+
+# only working by set type="stop"
+stop_price=None#input:None/value(float/int)
+
+#"percent"=Profit Percentage
+#"price"=Asset Price
+#"diff"=Profit in Money
+
+stop_lose_kind="percent"#input:None/"price"/"diff"/"percent"
+stop_lose_value=95#input:None/value(float/int)
+
+take_profit_kind=None#input:None/"price"/"diff"/"percent"
+take_profit_value=None#input:None/value(float/int)
+
+#"use_trail_stop"="Trailing Stop"
+use_trail_stop=True#True/False
+
+#"auto_margin_call"="Use Balance to Keep Position Open"
+auto_margin_call=False#True/False
+#if you want "take_profit_kind"&
+#            "take_profit_value"&
+#            "stop_lose_kind"&
+#            "stop_lose_value" all being "Not Set","auto_margin_call" need to set:True
+
+use_token_for_commission=False#True/False
+
+check,order_id=I_want_money.buy_order(instrument_type=instrument_type, instrument_id=instrument_id,
+            side=side, amount=amount,leverage=leverage,
+            type=type,limit_price=limit_price, stop_price=stop_price,
+            stop_lose_value=stop_lose_value, stop_lose_kind=stop_lose_kind,
+            take_profit_value=take_profit_value, take_profit_kind=take_profit_kind,
+            use_trail_stop=use_trail_stop, auto_margin_call=auto_margin_call,
+            use_token_for_commission=use_token_for_commission)
 print(I_want_money.get_order(order_id))
 print(I_want_money.get_positions("crypto"))
 print(I_want_money.get_position_history("crypto"))
@@ -541,47 +590,81 @@ return (True/False,buy_order_id/False)
 
 if Buy sucess return (True,buy_order_id)
 
-```python
-instrument_type="crypto"
-instrument_id="BTCUSD"
-side="buy"#sell
-type="market"#limit
-amount=11#How many money you want investment
-limit_price=2#for limit ,if you choose market this not work,
-leverage=3#you can get more information in get_available_leverages()
-stop_lose_price=1#stop lose price
-take_profit_price=20000#take profit price
+"percent"=Profit Percentage
 
-I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
+"price"=Asset Price
+
+"diff"=Profit in Money
+
+|parameter|||||||
+--|--|--|--|--|--|--|
+instrument_type|[instrument_type](#instrumenttype)
+instrument_id| [instrument_id](#instrumentid)
+side|"buy"|"sell"
+amount|value(float/int)
+leverage|value(int)
+type|"market"|"limit"|"stop"
+limit_price|None|value(float/int):Only working by set type="limit"
+stop_price|None|value(float/int):Only working by set type="stop"
+stop_lose_kind|None|"price"|"diff"|"percent"
+stop_lose_value|None|value(float/int)
+take_profit_kind|None|"price"|"diff"|"percent"
+take_profit_value|None|value(float/int)
+use_trail_stop|True|False
+auto_margin_call|True|False
+use_token_for_commission|True|False
+
+```python
+check,order_id=I_want_money.buy_order(
+            instrument_type=instrument_type, instrument_id=instrument_id,
+            side=side, amount=amount,leverage=leverage,
+            type=type,limit_price=limit_price, stop_price=stop_price,
+            stop_lose_kind=stop_lose_kind,
+            stop_lose_value=stop_lose_value,
+            take_profit_kind=take_profit_kind,
+            take_profit_value=take_profit_value,
+            use_trail_stop=use_trail_stop, auto_margin_call=auto_margin_call,
+            use_token_for_commission=use_token_for_commission)
+
 ```
 #### <a id=changeorder>change_order</a>
-```python
-change_order(buy_order_id,stop_lose,take_profit,use_trail_stop)
-```
-![](image/change_tpsl.png)
-sample
-```python
-from iqoptionapi.stable_api import IQ_Option
-import time
-print("login...")
-I_want_money=IQ_Option("email","password")
-instrument_type="crypto"
-instrument_id="BTCUSD"
-side="buy"#sell
-type="market"#limit
-amount=11
-limit_price=2#for limit ,if you choose market this not work,
-leverage=3#you can get more information in get_available_leverages()
-stop_lose_price=1#
-take_profit_price=20000#
-print("doing buy_order stop_lose_price="+str(stop_lose_price)+"take_profit_price"+str(take_profit_price)+"use_trail_stop=False")
-check,order_id=I_want_money.buy_order(instrument_type,instrument_id,side,type,amount,limit_price,leverage,stop_lose_price,take_profit_price)
-time.sleep(20)
-print("doing change_order stop_lose_price="+str(stop_lose_price+2)+"take_profit_price"+str(take_profit_price-500)+"use_trail_stop=True")
-print("change_order respond")
-print(I_want_money.change_order(order_id,stop_lose_price+2,take_profit_price-500,True))
 
+##### change PENDING
+![](image/change_ID_Name_order_id.png)
+
+##### change Position
+![](image/change_ID_Name_position_id.png)
+
+|parameter|||||||
+--|--|--|--|--|--|--|
+ID_Name|"position_id"|"order_id"
+order_id|"you need to get order_id from buy_order()"
+stop_lose_kind|None|"price"|"diff"|"percent"
+stop_lose_value|None|value(float/int)
+take_profit_kind|None|"price"|"diff"|"percent"
+take_profit_value|None|value(float/int)
+use_trail_stop|True|False
+auto_margin_call|True|False
+
+
+##### sample
+```python
+ID_Name="order_id"#"position_id"/"order_id"
+stop_lose_kind=None
+stop_lose_value=None
+take_profit_kind="percent"
+take_profit_value=200
+use_trail_stop=False
+auto_margin_call=True
+I_want_money.change_order(ID_Name=ID_Name,order_id=order_id,
+                stop_lose_kind=stop_lose_kind,stop_lose_value=stop_lose_value,
+                take_profit_kind=take_profit_kind,take_profit_value=take_profit_value,
+                use_trail_stop=use_trail_stop,auto_margin_call=auto_margin_call)
 ```
+
+---
+
+
 #### get_order
 get infomation about buy_order_id
 
@@ -589,6 +672,15 @@ return (True/False,get_order,None)
 
 ```python
 I_want_money.get_order(buy_order_id)
+```
+
+#### get_pending
+you will get there data
+
+![](image/get_pending.png)
+
+```python
+I_want_money.get_pending(instrument_type)
 ```
 #### get_positions
 
@@ -600,6 +692,18 @@ return (True/False,get_positions,None)
 
 ```python
 I_want_money.get_positions(instrument_type)
+```
+#### get_position
+you will get there data
+
+![](image/get_position.png)
+
+you will get one position by buy_order_id
+
+return (True/False,position data,None)
+
+```python
+I_want_money.get_positions(buy_order_id)
 ```
 
 #### get_position_history

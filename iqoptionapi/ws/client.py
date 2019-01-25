@@ -159,6 +159,8 @@ class WebsocketClient(object):
             self.api.positions=message
         elif message["name"]=="position":
             self.api.position=message
+        elif message["name"]=="deferred-orders":
+            self.api.deferred_orders=message
 
         elif message["name"]=="position-history":
             self.api.position_history=message
@@ -178,15 +180,13 @@ class WebsocketClient(object):
             self.api.tpsl_changed_respond=message
         elif message["name"]=="position-changed":
             self.api.position_changed=message
-
+        elif message["name"]=="auto-margin-call-changed":
+            self.api.auto_margin_call_changed_respond=message
         elif message["name"]=="instrument-quotes-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active"])]  
             period=message["msg"]["expiration"]["period"] 
             ans={}
-
             for data in message["msg"]["quotes"]:
-                
-
                 #FROM IQ OPTION SOURCE CODE
                 #https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/128b30afdf65037f11a0ed52216549c065cb4fbe/Source%20Code/sources/com/iqoption/dto/entity/strike/Quote.java#L91
                 if data["price"]["ask"]==None:
