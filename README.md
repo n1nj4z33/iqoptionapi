@@ -1,9 +1,9 @@
 # IQ Option API
 
-last Version:3.5
+last Version:3.6
 
 
-last update:2018/12/20
+last update:2019/1/26
 
 version  3.6
 
