@@ -213,7 +213,7 @@ I_want_money.connect()
 ### View all ACTIVES Name
 you will get right all ACTIVES and code
 
-[ACTIVE_CODE.txt](ACTIVE_CODE.txt)
+[ACTIVES](iqoptionapi/constants.py)
 
 ```python
 print(I_want_money.get_all_ACTIVES_OPCODE())
@@ -498,28 +498,12 @@ print(I_want_money.get_position_history("digital-option"))
 
 
 
-#### <a id=instrumenttype>About instrument_type</a>
-||Forex|Stock|Commodities|indices|Crypto|ETFs
---|--|--|--|--|--|--|
-instrument_type|"forex"|"cfd"|"cfd"|"cfd"|"crypto"|"cfd"
+#### <a id=instrumenttypeid>About instrument_type and instrument_id</a>
 
-#### <a id=instrumentid> About instrument_id</a>
+you can search instrument_type and instrument_id from this file
 
-find ticker symbol for instrument_id
-
-if you want to buy "Alphabet Inc."
-
-search in [https://finance.yahoo.com/](https://finance.yahoo.com/)
-
-you can find "Alphabet Inc." ticker symbol is "GOOGLE"
-
-instrument_id="GOOGL"
-
-some instrument_id can not search from [https://finance.yahoo.com/](https://finance.yahoo.com/)
-
-you need to decode from chrome DevTools
-
-Bitcoin x100:instrument_id="BTCUSD-L"
+[search instrument_type and instrument_id](instrument.txt)
+ 
 
 #### Sample
 ```python
@@ -598,8 +582,8 @@ if Buy sucess return (True,buy_order_id)
 
 |parameter|||||
 --|--|--|--|--|
-instrument_type|[instrument_type](#instrumenttype)
-instrument_id| [instrument_id](#instrumentid)
+instrument_type|[instrument_type](#instrumenttypeid)
+instrument_id| [instrument_id](#instrumenttypeid)
 side|"buy"|"sell"
 amount|value(float/int)
 leverage|value(int)

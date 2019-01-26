@@ -106,31 +106,48 @@ class IQ_Option:
         # update from binary option
         self.get_ALL_Binary_ACTIVES_OPCODE()
         #crypto /dorex/cfd
-        self.get_all_instruments()
+        self.instruments_input_all_in_ACTIVES()
         dicc = {}
         for lis in sorted(OP_code.ACTIVES.items(), key=operator.itemgetter(1)):
             dicc[lis[0]] = lis[1]
         OP_code.ACTIVES = dicc
-
-    def instruments_input(self, types):
+    def get_name_by_activeId(self,activeId):
+        info=self.get_financial_information(activeId)
+        try:
+            return info["msg"]["data"]["active"]["name"]
+        except:
+            return None
+    def get_financial_information(self,activeId):
+        self.api.financial_information=None
+        self.api.get_financial_information(activeId)
+        while self.api.financial_information==None:
+            pass
+        return self.api.financial_information
+    def get_instruments(self,type):
+        #type="crypto"/"forex"/"cfd"
         time.sleep(self.suspend)
         self.api.instruments = None
         while self.api.instruments == None:
             try:
-                self.api.get_instruments(types)
+                self.api.get_instruments(type)
                 start = time.time()
                 while self.api.instruments == None and time.time()-start < 10:
                     pass
             except:
                 logging.error('**error** api.get_instruments need reconnect')
                 self.connect()
-        for ins in self.api.instruments["instruments"]:
-            OP_code.ACTIVES[ins["id"]] = ins["active_id"]
+        return self.api.instruments
 
-    def get_all_instruments(self):
-        self.instruments_input("crypto")
-        self.instruments_input("forex")
-        self.instruments_input("cfd")
+    def instruments_input_to_ACTIVES(self, type):
+        instruments=self.get_instruments(type)
+        for ins in instruments["instruments"]:
+            OP_code.ACTIVES[ins["id"]] = ins["active_id"]
+       
+
+    def instruments_input_all_in_ACTIVES(self):
+        self.instruments_input_to_ACTIVES("crypto")
+        self.instruments_input_to_ACTIVES("forex")
+        self.instruments_input_to_ACTIVES("cfd")
 
     def get_ALL_Binary_ACTIVES_OPCODE(self):
         init_info = self.get_all_init()

@@ -25,6 +25,7 @@ from iqoptionapi.ws.chanels.candles import GetCandles
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
 from iqoptionapi.ws.chanels.api_game_betinfo import Game_betinfo
 from iqoptionapi.ws.chanels.instruments import Get_instruments
+from iqoptionapi.ws.chanels.get_financial_information import GetFinancialInformation
 from iqoptionapi.ws.chanels.strike_list import Strike_list
 
 
@@ -93,6 +94,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
     game_betinfo=Game_betinfo_data()
     instruments=None
+    financial_information=None
     buy_id=None
     buy_order_id=None
     traders_mood={}#get hight(put) %
@@ -324,6 +326,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property   
     def get_instruments(self):
         return Get_instruments(self)
+    @property
+    def get_financial_information(self):
+        return GetFinancialInformation(self)
 #----------------------------------------------------------------------------     
     @property
     def ssid(self):

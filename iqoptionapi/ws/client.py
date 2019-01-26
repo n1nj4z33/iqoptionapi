@@ -138,7 +138,9 @@ class WebsocketClient(object):
        
         elif message["name"] == "instruments":
             self.api.instruments=message["msg"]
-        
+        elif message["name"]=="financial-information":
+            self.api.financial_information=message
+            
         elif message["name"]=="strike-list":
             
             self.api.strike_list=message
