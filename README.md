@@ -1,59 +1,21 @@
 # IQ Option API
 
-last Version:3.6
+last Version:3.6.1
 
 
-last update:2019/1/26
+last update:2019/2/10
 
-version  3.6
+version 3.6.1
 
-[add check connect](#checkconnect)
-
-[add reconnect](#reconnect)
-
-login speed up
-
-!!fully support [FOREX](#forex) api!!
-
-
-Version 3.5
-
-FIX check version sample
-
-FIX FOREX BUY_ORDER
-
-Version 3.4
-
-FIX buy id None:https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/52
-
-FIX Options Profits https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/50
-
-Version 3.3
-
-* [fix binary option profit and add get_binary_option_detail](#expirationtime)
-  
-
-
-Version 3.2
-
-* [improve Digital speed](#digital)
-
-Version 3.1
-
-* [ fix Digital bug](#digital)
-
-
-Version 3.0
-
-* [ !!!support Digital profit!!!! and reimplement Digital](#digital)
-
-
-
-
-sucess on python3.6.5
+fix sell_option()
 
 ---
 ## About API
+
+only support US Dollar account
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/73#issue-406537365
+
 ```python
 #hight level api ,This api is write base on ""iqoptionapi.api" for more easy
 from iqoptionapi.stable_api import IQ_Option
