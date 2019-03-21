@@ -16,7 +16,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.6.1"
+    __version__ = "3.6.2"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -661,22 +661,18 @@ class IQ_Option:
         return self.buy_order(instrument_type="digital-option",
                               instrument_id=instrument_id,
                               side="buy", type="market", amount=amount,
-                              limit_price=0, leverage=1,
-                              stop_lose_price=0, take_profit_price=0)
+                              limit_price=0, leverage=1)
 
     def check_win_digital(self, buy_order_id):
-        check, data = self.get_order(self.api.buy_order_id)
+        check, data = self.get_position(buy_order_id)
         if check:
-            check2, data2 = self.get_position(int(data["position_id"]))
-            if check2:
-                if data2["position"]["status"] == "closed":
-                    return True, data2["position"]["close_effect_amount"]
-                else:
-                    return False, None
+            if data["position"]["status"] == "closed":
+                return True, data["position"]["close_effect_amount"]
             else:
                 return False, None
         else:
             return False, None
+    
 
 
 # ----------------------------------------------------------

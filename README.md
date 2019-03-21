@@ -1,13 +1,13 @@
 # IQ Option API
 
-last Version:3.6.1
+last Version:3.6.2
 
 
-last update:2019/2/10
+last update:2019/3/21
 
-version 3.6.1
+version 3.6.2
 
-fix sell_option()
+fix buy digit
 
 ---
 ## About API
