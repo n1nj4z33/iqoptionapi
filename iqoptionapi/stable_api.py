@@ -562,7 +562,8 @@ class IQ_Option:
 # __________________FOR OPTION____________________________
 
     def buy(self, price, ACTIVES, ACTION, expirations, force_buy=False):
-        self.api.buy_successful == None
+        self.api.buy_successful = None
+        self.api.buy_id = None
         while True:
             while True:
                 try:

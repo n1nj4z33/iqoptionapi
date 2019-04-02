@@ -1,13 +1,12 @@
 # IQ Option API
 
-last Version:3.6.2
+last Version:3.6.3
 
+last update:2019/4/2 
 
-last update:2019/3/21
+version 3.6.3
 
-version 3.6.2
-
-fix buy digit
+fix https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/14#issuecomment-478817517
 
 ---
 ## About API
