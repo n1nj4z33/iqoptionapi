@@ -217,7 +217,6 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
 ```
 #### <a id=buymulti>buy_multi</a>
 
-speed for multi buy
 Sample
 ```python
 from iqoptionapi.stable_api import IQ_Option
