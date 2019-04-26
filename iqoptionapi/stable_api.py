@@ -16,7 +16,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.6.2"
+    __version__ = "3.6.4"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -561,6 +561,24 @@ class IQ_Option:
 
 # __________________FOR OPTION____________________________
 
+    def buy_multi(self,price,ACTIVES,ACTION,expirations):
+        self.api.buy_multi_option={}
+        if len(price)==len(ACTIVES)==len(ACTION)==len(expirations):
+            buy_len=len(price)
+            for idx in range(buy_len):
+                self.api.buyv3(price[idx], OP_code.ACTIVES[ACTIVES[idx]], ACTION[idx], expirations[idx],idx)
+            while len(self.api.buy_multi_option)<buy_len:
+                pass
+            buy_id=[]            
+            for key in sorted(self.api.buy_multi_option.keys()):
+                value=self.api.buy_multi_option[key]
+                buy_id.append(value["id"])
+            return buy_id
+        else:
+            logging.error('buy_multi error please input all same len')
+            
+
+         
     def buy(self, price, ACTIVES, ACTION, expirations, force_buy=False):
         self.api.buy_successful = None
         self.api.buy_id = None

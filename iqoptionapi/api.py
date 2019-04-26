@@ -23,6 +23,8 @@ from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe
 from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
+from iqoptionapi.ws.chanels.buyv3 import Buyv3
+
 from iqoptionapi.ws.chanels.api_game_betinfo import Game_betinfo
 from iqoptionapi.ws.chanels.instruments import Get_instruments
 from iqoptionapi.ws.chanels.get_financial_information import GetFinancialInformation
@@ -117,6 +119,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     sold_options_respond=None
     tpsl_changed_respond=None
     auto_margin_call_changed_respond=None
+
+    #--for binary option multi buy
+    buy_multi_result=None
+    buy_multi_option={}
+
     #------------------
     def __init__(self, host, username, password, proxies=None):
         """
@@ -220,7 +227,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         return self.websocket_client.wss
 
-    def send_websocket_request(self, name, msg):
+    def send_websocket_request(self, name, msg,request_id=""):
         """Send websocket request to IQ Option server.
 
         :param str name: The websocket request name.
@@ -229,7 +236,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         logger = logging.getLogger(__name__)
 
         data = json.dumps(dict(name=name,
-                               msg=msg))
+                               msg=msg,request_id=request_id))
         logger.debug(data)
         self.websocket.send(data)
 
@@ -409,6 +416,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         return Getoptions(self)
 
 #____________for_______binary_______option_____________
+
+    @property
+    def buyv3(self):
+        return Buyv3(self)
 
     @property
     def buy(self):

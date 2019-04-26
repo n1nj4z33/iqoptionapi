@@ -1,12 +1,12 @@
 # IQ Option API
 
-last Version:3.6.3
+last Version:3.6.4
 
-last update:2019/4/2 
+last update:2019/4/27 
 
-version 3.6.3
+version 3.6.4
 
-fix https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/14#issuecomment-478817517
+[add multi buy function](#buymulti)
 
 ---
 ## About API
@@ -215,6 +215,37 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
                             #False:if fail break
                 #return:(None/id_number):if sucess return (id_number) esle return(None) 2.1.5 change this 
 ```
+#### <a id=buymulti>buy_multi</a>
+
+speed for multi buy
+Sample
+```python
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+Money=[]
+ACTIVES=[]
+ACTION=[]
+expirations_mode=[]
+
+Money.append(1)
+ACTIVES.append("EURUSD")
+ACTION.append("call")#put
+expirations_mode.append(1)
+
+Money.append(1)
+ACTIVES.append("EURAUD")
+ACTION.append("call")#put
+expirations_mode.append(1)
+
+print("buy multi")
+id_list=I_want_money.buy_multi(Money,ACTIVES,ACTION,expirations_mode)
+
+print("check win only one id (id_list[0])")
+print(I_want_money.check_win_v2(id_list[0]))
+```
+
+
+
 #### <a id=selloption>sell_option</a>
 
 ```python

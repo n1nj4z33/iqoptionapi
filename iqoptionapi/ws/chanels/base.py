@@ -12,7 +12,7 @@ class Base(object):
         """
         self.api = api
 
-    def send_websocket_request(self, name, msg):
+    def send_websocket_request(self, name, msg,request_id=""):
         """Send request to IQ Option server websocket.
 
         :param str name: The websocket chanel name.
@@ -20,4 +20,4 @@ class Base(object):
 
         :returns: The instance of :class:`requests.Response`.
         """
-        return self.api.send_websocket_request(name, msg)
+        return self.api.send_websocket_request(name, msg,request_id)
