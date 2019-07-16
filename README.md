@@ -374,6 +374,8 @@ print(I_want_money.get_optioninfo(10))
 ___
 ---
 ### <a id=digital>For Digital</a>
+[Digital options buy with actual price sample code](https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/65#issuecomment-511660908)
+
 #### Sample
 
 ```python
