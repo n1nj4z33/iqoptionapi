@@ -50,7 +50,7 @@ from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
 
 from iqoptionapi.ws.chanels.subscribe import Subscribe_Instrument_Quites_Generated
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_Instrument_Quites_Generated
-
+from iqoptionapi.ws.chanels.digital_option import Digital_options_place_digital_option
 from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
 from iqoptionapi.ws.chanels.change_tpsl import Change_Tpsl
@@ -110,6 +110,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     close_position_data=None
     overnight_fee=None
     #---for real time
+    digital_option_placed_id=None
+     
     real_time_candles=nested_dict(3,dict)
     real_time_candles_maxdict_table=nested_dict(2,dict)
     candle_generated_check=nested_dict(2,dict)
@@ -445,7 +447,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def unsubscribe_instrument_quites_generated(self):
         return Unsubscribe_Instrument_Quites_Generated(self)
 
-
+    @property
+    def place_digital_option(self):
+        return Digital_options_place_digital_option(self)
 
 #____BUY_for__Forex__&&__stock(cfd)__&&__ctrpto_____
     @property

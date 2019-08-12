@@ -188,6 +188,12 @@ class WebsocketClient(object):
             self.api.position_changed=message
         elif message["name"]=="auto-margin-call-changed":
             self.api.auto_margin_call_changed_respond=message
+        elif message["name"]=="digital-option-placed":
+            try:
+                self.api.digital_option_placed_id=message["msg"]["id"]
+            except:
+                self.api.digital_option_placed_id="error"
+
         elif message["name"]=="instrument-quotes-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active"])]  
             period=message["msg"]["expiration"]["period"] 

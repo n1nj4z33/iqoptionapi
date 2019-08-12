@@ -43,12 +43,13 @@ class Unsubscribe_candles(Base):
 class Unsubscribe_Instrument_Quites_Generated(Base):
     name = "unsubscribeMessage"
     
-    def __call__(self,ACTIVE):  
+    def __call__(self,ACTIVE,expiration_period):  
         data = {
             "name": "instrument-quotes-generated",
             "params":{
                 "routingFilters":{
                         "active":int(OP_code.ACTIVES[ACTIVE]),
+                        "expiration_period":int(expiration_period*60),
                         "kind":"digital-option",
                         },
                 },

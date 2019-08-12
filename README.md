@@ -2,14 +2,18 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.6.4
+last Version:3.7
 
-last update:2019/4/27 
+last update:2019/8/13 
 
-version 3.6.4
+[buy current price](#buydigitalspot)
 
-[add multi buy function](#buymulti)
-
+[change strike_list api](#strikelist)
+need duration time
+```python
+subscribe_strike_list(ACTIVES,duration)
+unsubscribe_strike_list(ACTIVES,duration)
+``` 
 ---
 ## About API
 
@@ -387,7 +391,7 @@ I_want_money=IQ_Option("email","password")
 ACTIVES="EURUSD"
 duration=1#minute 1 or 5
 amount=1
-I_want_money.subscribe_strike_list(ACTIVES)
+I_want_money.subscribe_strike_list(ACTIVES,duration)
 #get strike_list
 data=I_want_money.get_realtime_strike_list(ACTIVES, duration)
 print("get strike data")
@@ -429,11 +433,11 @@ if buy_check:
             else:
                 print("you loose")
             break
-    I_want_money.unsubscribe_strike_list(ACTIVES)
+    I_want_money.unsubscribe_strike_list(ACTIVES,duration)
 else:
     print("fail to buy,please run again")
 ```
-#### Get all strike list data
+#### <a id=strikelist>Get all strike list data</a>
 
 ##### Data format
 
@@ -450,13 +454,29 @@ import time
 I_want_money=IQ_Option("email","password")
 ACTIVES="EURUSD"
 duration=1#minute 1 or 5
-I_want_money.subscribe_strike_list(ACTIVES)
+I_want_money.subscribe_strike_list(ACTIVES,duration)
 while True:
     data=I_want_money.get_realtime_strike_list(ACTIVES, duration)
     for price in data:
         print("price",price,data[price])
     time.sleep(5)
-I_want_money.unsubscribe_strike_list(ACTIVES)
+I_want_money.unsubscribe_strike_list(ACTIVES,duration)
+```
+
+#### <a id=buydigitalspot>buy_digital_spot</a>
+
+buy the digit in current price
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+ 
+I_want_money=IQ_Option("email","password")
+
+ACTIVES="EURUSD"
+duration=1#minute 1 or 5
+amount=1
+action="call"#put
+print(I_want_money.buy_digital_spot(ACTIVES,amount,action,duration))
 ```
 
 #### Buy digit

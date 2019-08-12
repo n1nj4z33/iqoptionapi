@@ -5,6 +5,8 @@ import threading
 import time
 import logging
 import operator
+import datetime
+import pytz  
 from collections import defaultdict
 
 
@@ -16,7 +18,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.6.4"
+    __version__ = "3.7"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -632,12 +634,12 @@ class IQ_Option:
             return self.api.strike_list, None
         return self.api.strike_list, ans
 
-    def subscribe_strike_list(self, ACTIVE):
-        self.api.subscribe_instrument_quites_generated(ACTIVE)
+    def subscribe_strike_list(self, ACTIVE,expiration_period):
+        self.api.subscribe_instrument_quites_generated(ACTIVE,expiration_period)
 
-    def unsubscribe_strike_list(self, ACTIVE):
+    def unsubscribe_strike_list(self, ACTIVE,expiration_period):
         del self.api.instrument_quites_generated_data[ACTIVE]
-        self.api.unsubscribe_instrument_quites_generated(ACTIVE)
+        self.api.unsubscribe_instrument_quites_generated(ACTIVE,expiration_period)
 
     def get_realtime_strike_list(self, ACTIVE, duration):
         while True:
@@ -674,6 +676,32 @@ class IQ_Option:
                     pass
 
         return ans
+    #thank thiagottjv 
+    #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/65#issuecomment-513998357
+    def buy_digital_spot(self, active,amount, action, duration):
+        #Expiration time need to be formatted like this: YYYYMMDDHHII
+        #And need to be on GMT time
+         
+        UTC=datetime.datetime.utcnow()
+        dateFormated = str(UTC.strftime("%Y%m%d%H"))+str(int(UTC.strftime("%M"))+duration )
+        
+        #Type - P or C
+        if action == 'put':
+            action = 'P'
+        elif action=='call':
+            action = 'C'
+        else:
+            logging.error('buy_digital_spot active error')
+            return -1
+        #doEURUSD201907191250PT5MPSPT
+        instrument_id = "do" + active + dateFormated + "PT" + str(duration) + "M" + action + "SPT" 
+        self.api.digital_option_placed_id=None
+         
+        self.api.place_digital_option(instrument_id,amount)
+        while self.api.digital_option_placed_id==None:
+            pass
+
+        return  self.api.digital_option_placed_id
 
     def buy_digital(self, amount, instrument_id):
         self.api.position_changed = None
