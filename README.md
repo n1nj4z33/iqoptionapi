@@ -2,12 +2,12 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.8
+last Version:3.8.1
 
 last update:2019/9/9 
 
 
-Version:3.8
+Version:3.8.1
 
 [fix buy current price](#buydigitalspot)
 
