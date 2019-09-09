@@ -139,12 +139,16 @@ class WebsocketClient(object):
 
         elif message["name"] == "api_option_init_all_result":
             self.api.api_option_init_all_result = message["msg"]
-       
+        elif message["name"] == "initialization-data":
+            self.api.api_option_init_all_result_v2 = message["msg"]
+        elif message["name"] == "underlying-list":
+            self.api.underlying_list_data=message["msg"]
         elif message["name"] == "instruments":
             self.api.instruments=message["msg"]
         elif message["name"]=="financial-information":
             self.api.financial_information=message
-            
+        elif message["name"]=="position-changed":
+            self.api.position_changed_data[int(message["msg"]["order_ids"][0])]=message["msg"]
         elif message["name"]=="strike-list":
             
             self.api.strike_list=message

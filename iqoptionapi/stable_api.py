@@ -8,7 +8,7 @@ import operator
 import datetime
 import pytz  
 from collections import defaultdict
-
+from interruptingcow import timeout
 
 def nested_dict(n, type):
     if n == 1:
@@ -18,7 +18,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.7"
+    __version__ = "3.8"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -83,6 +83,16 @@ class IQ_Option:
                             self.start_mood_stream(ac)
                     except:
                         pass
+                    
+                    #---------for async get name: "position-changed", microserviceName
+                    self.api.setOptions(1,True)     
+                    self.api.subscribe_position_changed("position-changed","multi-option",2)
+                    self.api.subscribe_position_changed("trading-fx-option.position-changed","fx-option",3)
+                    self.api.subscribe_position_changed("position-changed","crypto",4)
+                    self.api.subscribe_position_changed("position-changed","forex",5)
+                    self.api.subscribe_position_changed("digital-options.position-changed","digital-option",6)
+                    self.api.subscribe_position_changed("position-changed","cfd",7)
+                
                     break
                 time.sleep(self.suspend*2)
                 self.connect_count = self.connect_count+1
@@ -185,8 +195,66 @@ class IQ_Option:
                     return self.api.api_option_init_all_result
             except:
                 pass
+    def get_all_init_v2(self):
+        self.api.api_option_init_all_result_v2 = None
+
+        self.api.get_api_option_init_all_v2()
+        try:
+            with timeout(30, exception=RuntimeError):
+                while self.api.api_option_init_all_result_v2==None:
+                    pass
+        except RuntimeError:
+            logging.error('**warning** get_all_init_v2 late 30 sec')
+        return self.api.api_option_init_all_result_v2
 
         # return OP_code.ACTIVES
+#------- chek if binary/digit/cfd/stock... if open or not
+
+    def get_all_open_time(self):
+        #for binary option turbo and binary
+        OPEN_TIME=nested_dict(3, dict)
+        binary_data=self.get_all_init_v2()
+        binary_list=["binary","turbo"]
+        for option in binary_list:
+            for actives_id in binary_data[option]["actives"]:
+                active=binary_data[option]["actives"][actives_id]
+                name=str(active["name"]).split(".")[1]
+                OPEN_TIME[option][name]["open"]=active["enabled"]
+                
+        #for digital
+        digital_data=self.get_digital_underlying_list_data()["underlying"]
+        for digital in digital_data:
+            name=digital["underlying"]
+            schedule=digital["schedule"]
+            OPEN_TIME["digital"][name]["open"]=False
+            for schedule_time in schedule:
+                start=schedule_time["open"]
+                end=schedule_time["close"]
+                if start<time.time()<end:
+                        OPEN_TIME["digital"][name]["open"]=True
+
+
+        #for OTHER
+        instrument_list=["cfd","forex","crypto"]
+        for instruments_type in instrument_list:
+            ins_data=self.get_instruments(instruments_type)["instruments"]
+            for detail in ins_data:
+                name=detail["name"]
+                schedule=detail["schedule"]
+                OPEN_TIME[instruments_type][name]["open"]=False
+                for schedule_time in schedule:
+                    start=schedule_time["open"]
+                    end=schedule_time["close"]
+                    if start<time.time()<end:
+                            OPEN_TIME[instruments_type][name]["open"]=True
+
+
+                
+
+
+        return OPEN_TIME
+                    
+       
 
 # --------for binary option detail
 
@@ -616,6 +684,16 @@ class IQ_Option:
             pass
         return self.api.sold_options_respond
 # __________________for Digital___________________
+    def get_digital_underlying_list_data(self):
+        self.api.underlying_list_data=None
+        self.api.get_digital_underlying()
+        try:
+            with timeout(30, exception=RuntimeError):
+                while self.api.underlying_list_data==None:
+                    pass
+        except RuntimeError:
+            logging.error('**warning** get_digital_underlying_list_data late 30 sec')
+        return self.api.underlying_list_data
 
     def get_strike_list(self, ACTIVES, duration):
         self.api.strike_list = None
@@ -681,10 +759,7 @@ class IQ_Option:
     def buy_digital_spot(self, active,amount, action, duration):
         #Expiration time need to be formatted like this: YYYYMMDDHHII
         #And need to be on GMT time
-         
-        UTC=datetime.datetime.utcnow()
-        dateFormated = str(UTC.strftime("%Y%m%d%H"))+str(int(UTC.strftime("%M"))+duration )
-        
+       
         #Type - P or C
         if action == 'put':
             action = 'P'
@@ -694,6 +769,8 @@ class IQ_Option:
             logging.error('buy_digital_spot active error')
             return -1
         #doEURUSD201907191250PT5MPSPT
+        UTC=datetime.datetime.utcnow()
+        dateFormated = str(UTC.strftime("%Y%m%d%H"))+str(int(UTC.strftime("%M"))+duration ).zfill(2)
         instrument_id = "do" + active + dateFormated + "PT" + str(duration) + "M" + action + "SPT" 
         self.api.digital_option_placed_id=None
          
@@ -709,7 +786,6 @@ class IQ_Option:
                               instrument_id=instrument_id,
                               side="buy", type="market", amount=amount,
                               limit_price=0, leverage=1)
-
     def check_win_digital(self, buy_order_id):
         check, data = self.get_position(buy_order_id)
         if check:
@@ -720,7 +796,15 @@ class IQ_Option:
         else:
             return False, None
     
-
+    def check_win_digital_v2(self,buy_order_id):
+        order_data=self.get_async_order(buy_order_id)
+        if  order_data!=None:
+            if order_data["status"]=="closed":
+                return True,order_data["close_effect_amount"]
+            else:
+                return False,None
+        else:
+            return False,None
 
 # ----------------------------------------------------------
 # -----------------BUY_for__Forex__&&__stock(cfd)__&&__ctrpto
@@ -802,7 +886,12 @@ class IQ_Option:
         else:
             logging.error('change_order fail to get position_id')
             return False,None
-
+    
+    def get_async_order(self,buy_order_id):
+        if buy_order_id in self.api.position_changed_data:   
+            return self.api.position_changed_data[buy_order_id]
+        else:
+            return None
     def get_order(self, buy_order_id):
         # self.api.order_data["status"]
         # reject:you can not get this order

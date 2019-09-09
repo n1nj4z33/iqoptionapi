@@ -3,9 +3,9 @@ from setuptools import (setup, find_packages)
 
 setup(
     name="iqoptionapi",
-    version="3.7",
+    version="3.8",
     packages=find_packages(),
-    install_requires=["pylint","requests","websocket-client==0.47"],
+    install_requires=["pylint","requests","websocket-client==0.47","interruptingcow"],
     include_package_data = True,
     description="Best IQ Option API for python",
     long_description="Best IQ Option API for python",

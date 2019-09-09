@@ -2,10 +2,19 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.7
+last Version:3.8
 
-last update:2019/8/13 
+last update:2019/9/9 
 
+
+Version:3.8
+[fix buy current price](#buydigitalspot)
+[Check Asset if open or not](#checkopen)
+[fix digital check win](#checkwindigitalv2)
+ 
+
+
+Version:3.7
 [buy current price](#buydigitalspot)
 
 [change strike_list api](#strikelist)
@@ -14,6 +23,9 @@ need duration time
 subscribe_strike_list(ACTIVES,duration)
 unsubscribe_strike_list(ACTIVES,duration)
 ``` 
+
+
+
 ---
 ## About API
 
@@ -172,11 +184,52 @@ return True/False
 ```python
 print(I_want_money.check_connect())
 ```
+
 ### <a id=reconnect>Reconnect</a>
 ```python
 I_want_money.connect()
 ```
 ---
+
+### <a id=checkopen>Check Asset if open or not</a>
+
+:exclamation:be careful get_all_open_time() is vary heavy for natwork.
+
+get_all_open_time() return the DICT
+
+"cfd" is include Stock,Commodities,ETFs asset
+
+DICT["forex"/"cfd"/"crypto"/"digital"/"turbo"/"binary"][Asset Name]["open"]
+
+it will return True/False
+ 
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import random
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+ALL_Asset=I_want_money.get_all_open_time()
+#check if open or not
+print(ALL_Asset["forex"]["EURUSD"]["open"]) 
+print(ALL_Asset["cfd"]["FACEBOOK"]["open"])#Stock,Commodities,ETFs
+print(ALL_Asset["crypto"]["BTCUSD-L"]["open"])
+print(ALL_Asset["digital"]["EURUSD-OTC"]["open"])
+
+#Binary have two diffenence type:"turbo","binary"
+print(ALL_Asset["turbo"]["EURUSD-OTC"]["open"])
+print(ALL_Asset["binary"]["EURUSD-OTC"]["open"])
+
+
+#!!!! exception ""
+print(ALL_Asset["binary"]["not exist asset"]["open"])#it will return "{}" a None of the dict
+
+#!!!!print all!!!!
+for type_name, data in ALL_Asset.items():
+    for Asset,value in data.items():
+        print(type_name,Asset,value["open"])
+```
+
 ### View all ACTIVES Name
 you will get right all ACTIVES and code
 
@@ -425,7 +478,7 @@ if buy_check:
     print("wait for check win")
     #check win
     while True:
-        check_close,win_money=I_want_money.check_win_digital(id)
+        check_close,win_money=I_want_money.check_win_digital_v2(id)
         if check_close:
             if float(win_money)>0:
                 win_money=("%.2f" % (win_money))
@@ -485,6 +538,10 @@ buy_check,id=I_want_money.buy_digital(amount,instrument_id)
 #get instrument_id from I_want_money.get_realtime_strike_list
 ```
 #### check win for digital
+
+##### check_win_digital
+:exclamation::exclamation: this api may not working
+
 ```python
 I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
 #return:check_close,win_money
@@ -493,6 +550,20 @@ I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
 #if you win:True,1232.3
 #if trade not clode yet:False,None
 ```
+##### <a id=checkwindigitalv2>check_win_digital_v2</a>
+ 
+:exclamation::exclamation: this api is asynchronous get id data,it only can get id data before you call the buy action. if you restart the program,the asynchronous id data can not get again,so check_win_digital_v2 may not working.
+
+```python
+I_want_money.check_win_digital_v2(id)#get the id from I_want_money.buy_digital
+#return:check_close,win_money
+#return sample
+#if you loose:Ture,o
+#if you win:True,1232.3
+#if trade not clode yet:False,None
+```
+
+
 #### close digital
 ```python
 I_want_money.close_position(id)
@@ -509,6 +580,8 @@ print(I_want_money.get_position_history("digital-option"))
 ### <a id=forex>For Forex&Stock&Commodities&Crypto&ETFs</a>
 
 #### you need to check Asset is open or close!
+
+try this api [get_all_open_time](#checkopen)
 ![](image/asset_close.png)
 
 
