@@ -37,4 +37,19 @@ class Get_position_history(Base):
         }
         self.send_websocket_request(self.name, data)
  
+class Get_position_history_v2(Base):
+    name = "sendMessage"
+    def __call__(self,instrument_types,limit,offset,start=0,end=0):
+        data = {
+            "name":"portfolio.get-history-positions",
+            "body":{
+                "instrument_types":[instrument_types],
+                "limit":limit,
+                "offset":offset,
+                "start":start,
+                "end":end,
+                "user_balance_id":int(self.api.profile.balance_id)
+                }
+        }
+        self.send_websocket_request(self.name, data)
  

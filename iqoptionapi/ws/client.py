@@ -174,6 +174,8 @@ class WebsocketClient(object):
 
         elif message["name"]=="position-history":
             self.api.position_history=message
+        elif message["name"]=="history-positions":
+            self.api.position_history_v2=message
         elif message["name"]=="available-leverages":
             self.api.available_leverages=message
         elif message["name"]=="order-canceled":

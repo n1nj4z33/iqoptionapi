@@ -39,6 +39,7 @@ from iqoptionapi.ws.chanels.get_deferred_orders import GetDeferredOrders
 from iqoptionapi.ws.chanels.get_positions import Get_positions
 from iqoptionapi.ws.chanels.get_positions import Get_position
 from iqoptionapi.ws.chanels.get_positions import Get_position_history
+from iqoptionapi.ws.chanels.get_positions import Get_position_history_v2
 from iqoptionapi.ws.chanels.get_available_leverages import Get_available_leverages
 from iqoptionapi.ws.chanels.cancel_order import Cancel_order
 from iqoptionapi.ws.chanels.close_position import Close_position
@@ -94,7 +95,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     instrument_quites_generated_data = nested_dict(2, dict)
     instrument_quites_generated_timestamp = nested_dict(2, dict)
     strike_list = None
-    position_changed_data={}
+    position_changed_data = {}
     game_betinfo = Game_betinfo_data()
     instruments = None
     financial_information = None
@@ -106,6 +107,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     position = None
     deferred_orders = None
     position_history = None
+    position_history_v2 = None
     available_leverages = None
     order_canceled = None
     close_position_data = None
@@ -393,19 +395,18 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def unsubscribe_all_size(self):
         return Unsubscribe_candles(self)
 
-
-    def subscribe_position_changed(self,name,instrument_type,request_id):
-        #instrument_type="multi-option","crypto","forex","cfd"
-        #name="position-changed","trading-fx-option.position-changed",digital-options.position-changed
+    def subscribe_position_changed(self, name, instrument_type, request_id):
+        # instrument_type="multi-option","crypto","forex","cfd"
+        # name="position-changed","trading-fx-option.position-changed",digital-options.position-changed
         logger = logging.getLogger(__name__)
         data = json.dumps(dict(name="subscribeMessage",
                                request_id=str(request_id),
                                msg={"name": name,
                                     "version": "1.0",
                                     "params": {
-                                        "routingFilters":{"instrument_type":str(instrument_type)}
+                                        "routingFilters": {"instrument_type": str(instrument_type)}
 
-                                            }
+                                    }
                                     }
                                )
                           )
@@ -413,8 +414,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         logger.debug(data)
         self.websocket.send(data)
 
-    def setOptions(self,request_id,sendResults):
-        #sendResults True/False
+    def setOptions(self, request_id, sendResults):
+        # sendResults True/False
         logger = logging.getLogger(__name__)
         data = json.dumps(dict(name="setOptions",
                                request_id=str(request_id),
@@ -427,7 +428,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
 # --------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------
-
 
     @property
     def setactives(self):
@@ -449,7 +449,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
     def get_api_option_init_all(self):
         logger = logging.getLogger(__name__)
-        
+
         data = json.dumps(dict(name="api_option_init_all",
                                msg=""))
         logger.debug(data)
@@ -557,6 +557,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def get_position_history(self):
         return Get_position_history(self)
+
+    @property
+    def get_position_history_v2(self):
+        return Get_position_history_v2(self)
 
     @property
     def get_available_leverages(self):

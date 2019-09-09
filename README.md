@@ -14,7 +14,8 @@ Version:3.8
 [Check Asset if open or not](#checkopen)
 
 [fix digital check win](#checkwindigitalv2)
- 
+
+[better !! get_position_history_v2](#getpositionhistoryv2)
 
 
 Version:3.7
@@ -792,7 +793,41 @@ return (True/False,position_history,None)
 ```python
 I_want_money.get_position_history(instrument_type)
 ```
+#### <a id=getpositionhistoryv2>get_position_history_v2</a>
 
+instrument_type="crypto","forex","fx-option","turbo-option","multi-option","cfd","digital-option"
+
+get_position_history_v2(instrument_type,limit,offset,start,end)
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import random
+import time
+import datetime
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+
+#instrument_type="crypto","forex","fx-option","turbo-option","multi-option","cfd","digital-option"  
+instrument_type="digital-option"
+limit=2#How many you want to get
+offset=0#offset from end time,if end time is 0,it mean get the data from now 
+start=0#start time Timestamp
+end=0#Timestamp
+data=I_want_money.get_position_history_v2(instrument_type,limit,offset,start,end)
+
+print(data)
+
+#--------- this will get data start from 2019/7/1(end) to 2019/1/1(start) and only get 2(limit) data and offset is 0
+instrument_type="digital-option"
+limit=2#How many you want to get
+offset=0#offset from end time,if end time is 0,it mean get the data from now 
+start=int(time.mktime(datetime.datetime.strptime("2019/1/1", "%Y/%m/%d").timetuple()))
+end=int(time.mktime(datetime.datetime.strptime("2019/7/1", "%Y/%m/%d").timetuple()))
+data=I_want_money.get_position_history_v2(instrument_type,limit,offset,start,end)
+print(data)
+
+```
 
 #### get_available_leverages
 

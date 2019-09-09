@@ -951,6 +951,18 @@ class IQ_Option:
         else:
             return False, None
 
+    def get_position_history_v2(self, instrument_type,limit,offset,start,end):
+        #instrument_type=crypto forex fx-option multi-option cfd digital-option turbo-option
+        self.api.position_history_v2 = None 
+        self.api.get_position_history_v2(instrument_type,limit,offset,start,end)
+        while self.api.position_history_v2 == None:
+            pass
+
+        if self.api.position_history_v2["status"] == 2000:
+            return True, self.api.position_history_v2["msg"]
+        else:
+            return False, None
+
     def get_available_leverages(self, instrument_type, actives):
         self.api.available_leverages = None
         self.api.get_available_leverages(
