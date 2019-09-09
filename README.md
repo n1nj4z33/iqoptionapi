@@ -8,8 +8,11 @@ last update:2019/9/9
 
 
 Version:3.8
+
 [fix buy current price](#buydigitalspot)
+
 [Check Asset if open or not](#checkopen)
+
 [fix digital check win](#checkwindigitalv2)
  
 
