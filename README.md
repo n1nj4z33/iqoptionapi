@@ -2,10 +2,19 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.8.1
+last Version:3.9
 
-last update:2019/9/9 
+last update:2019/9/10
 
+Version:3.9
+
+fix duration time
+[change buy api: remove force_buy&!!!fix duration time!!](#buy)
+[fix buy_digital_spot() error problem](#buydigitalspot)
+
+Version:3.8.2
+
+[fix digital check win return&add sample code](#checkwindigitalv2)
 
 Version:3.8.1
 
@@ -264,18 +273,16 @@ Money=1
 ACTIVES="EURUSD"
 ACTION="call"#or "put"
 expirations_mode=1
-force_buy= False#i suggest use False
-I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
+
+I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
 ```
 
 ```python
-I_want_money.buy(Money,ACTIVES,ACTION,expirations,force_buy)
+I_want_money.buy(Money,ACTIVES,ACTION,expirations)
                 #Money:How many you want to buy type(int)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
                 #ACTION:"call"/"put" type(str)
                 #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code (int)https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-                #force_buy= True: if fail try buy untill sucess 
-                            #False:if fail break
                 #return:(None/id_number):if sucess return (id_number) esle return(None) 2.1.5 change this 
 ```
 #### <a id=buymulti>buy_multi</a>
@@ -326,9 +333,9 @@ Money=1
 ACTIVES="EURUSD"
 ACTION="call"#or "put"
 expirations_mode=1
-force_buy= False
-id=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
-id2=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode,force_buy)
+
+id=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
+id2=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
 
 time.sleep(5)
 sell_all=[]
@@ -565,6 +572,37 @@ I_want_money.check_win_digital_v2(id)#get the id from I_want_money.buy_digital
 #if you loose:Ture,o
 #if you win:True,1232.3
 #if trade not clode yet:False,None
+```
+
+sample code
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import random
+import time
+import datetime
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+
+
+ACTIVES="EURUSD"
+duration=1#minute 1 or 5
+amount=1
+action="call"#put
+id=(I_want_money.buy_digital_spot(ACTIVES,amount,action,duration))
+print(id)
+if id !="error":
+    while True:
+        check,win=I_want_money.check_win_digital_v2(id)
+        if check==True:
+            break
+    if win<0:
+        print("you loss "+str(win)+"$")
+    else:
+        print("you win "+str(win)+"$")
+else:
+    print("please try again")
 ```
 
 

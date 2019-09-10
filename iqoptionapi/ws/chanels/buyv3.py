@@ -3,7 +3,7 @@ import time
 from iqoptionapi.ws.chanels.base import Base
 import logging
 
-
+from iqoptionapi.expiration import get_expiration_time
 class Buyv3(Base):
 
     name = "sendMessage"
@@ -12,7 +12,11 @@ class Buyv3(Base):
 
         # thank Darth-Carrotpie's code
         # https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-        exp, option = self.get_expiration_time(duration)
+        exp,idx=get_expiration_time(int(self.api.timesync.server_timestamp),duration)  
+        if idx<=5:
+            option = 3#"turbo"
+        else:
+             option = 1#"binary"
         data = {
             "body": {"price": price,
                      "active_id": active,
@@ -24,7 +28,7 @@ class Buyv3(Base):
             "version": "1.0"
         }
         self.send_websocket_request(self.name, data,str(request_id))
-
+"""
     # thank Darth-Carrotpie's code
     # https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
     def get_expiration_time(self, duration):
@@ -55,3 +59,4 @@ class Buyv3(Base):
             logging.error("ERROR get_expiration_time DO NOT LESS 1")
             exit(1)
         return exp, option
+"""

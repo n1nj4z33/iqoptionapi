@@ -9,7 +9,10 @@ import datetime
 import pytz  
 from collections import defaultdict
 from interruptingcow import timeout
+from iqoptionapi.expiration import get_expiration_time
+from datetime import datetime,timedelta
 
+ 
 def nested_dict(n, type):
     if n == 1:
         return defaultdict(type)
@@ -18,7 +21,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.8.1"
+    __version__ = "3.9"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -641,41 +644,32 @@ class IQ_Option:
                 pass
             buy_id=[]            
             for key in sorted(self.api.buy_multi_option.keys()):
-                value=self.api.buy_multi_option[key]
-                buy_id.append(value["id"])
+                try:
+                    value=self.api.buy_multi_option[key]
+                    buy_id.append(value["id"])
+                except:
+                    buy_id.append(None)
+
             return buy_id
         else:
             logging.error('buy_multi error please input all same len')
             
 
          
-    def buy(self, price, ACTIVES, ACTION, expirations, force_buy=False):
+    def buy(self, price, ACTIVES, ACTION, expirations):
         self.api.buy_successful = None
         self.api.buy_id = None
-        while True:
-            while True:
-                try:
-                    self.api.buy(
-                        price, OP_code.ACTIVES[ACTIVES], ACTION, expirations)
-                    break
-                except:
-                    logging.error('self.api.buy error')
-                    if force_buy == False:
-                        return (None)
-                    self.connect()
+        self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION, expirations)
+        try:
+            with timeout(30, exception=RuntimeError):
+                while self.api.buy_successful == None and self.api.buy_id == None:
                     pass
-            start = time.time()
-            while self.api.buy_successful == None or self.api.buy_id == None:
-                if time.time()-start > 60:
-                    logging.error('check buy_successful time late 60sec')
-                    break
-            if self.api.buy_successful:
-                return (self.api.buy_id)
-            else:
-                if force_buy == False:
-                    return (None)
-                logging.error('**error** buy error...')
-                self.connect()
+        except RuntimeError:
+            logging.error('**warning** buy late 30 sec')
+
+
+        return self.api.buy_successful,self.api.buy_id
+        
 
     def sell_option(self, options_ids):
         self.api.sell_option(options_ids)
@@ -769,8 +763,10 @@ class IQ_Option:
             logging.error('buy_digital_spot active error')
             return -1
         #doEURUSD201907191250PT5MPSPT
-        UTC=datetime.datetime.utcnow()
-        dateFormated = str(UTC.strftime("%Y%m%d%H"))+str(int(UTC.strftime("%M"))+duration ).zfill(2)
+         
+        exp,idx=get_expiration_time(int(self.api.timesync.server_timestamp),duration)  
+       
+        dateFormated = str(datetime.utcfromtimestamp(exp).strftime("%Y%m%d%H%M"))
         instrument_id = "do" + active + dateFormated + "PT" + str(duration) + "M" + action + "SPT" 
         self.api.digital_option_placed_id=None
          
@@ -800,7 +796,7 @@ class IQ_Option:
         order_data=self.get_async_order(buy_order_id)
         if  order_data!=None:
             if order_data["status"]=="closed":
-                return True,order_data["close_effect_amount"]
+                return True,order_data["pnl_realized_enrolled"]
             else:
                 return False,None
         else:

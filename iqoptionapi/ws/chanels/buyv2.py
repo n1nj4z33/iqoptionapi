@@ -3,6 +3,8 @@ import datetime
 import time
 from iqoptionapi.ws.chanels.base import Base
 import logging
+from iqoptionapi.expiration import get_expiration_time
+from datetime import datetime,timedelta
 
 class Buyv2(Base):
     """Class for IQ option buy websocket chanel."""
@@ -19,11 +21,19 @@ class Buyv2(Base):
         """
         # thank Darth-Carrotpie's code 
         #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-        exp, option = self.get_expiration_time(duration)   
+      
+        exp,idx=get_expiration_time(int(self.api.timesync.server_timestamp),duration)  
+        if idx<=5:
+            option="turbo"
+        else:
+            option="binary"
+
+
+
         data = {
             "price": price,
             "act": active,
-            "exp":exp,
+            "exp":int(exp),
             "type": option,
             "direction": direction.lower(),
             "time": self.api.timesync.server_timestamp
@@ -33,7 +43,7 @@ class Buyv2(Base):
 
     # thank Darth-Carrotpie's code 
     #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-    def get_expiration_time(self, duration):
+"""    def get_expiration_time(self, duration):
         exp=int(self.api.timesync.server_timestamp)
         if duration>=1 and duration<=5:
             option="turbo"
@@ -60,4 +70,4 @@ class Buyv2(Base):
         else:
             logging.error("ERROR get_expiration_time DO NOT LESS 1")
             exit(1)
-        return exp, option
+        return exp, option"""
