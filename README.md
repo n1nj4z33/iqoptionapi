@@ -9,7 +9,9 @@ last update:2019/9/10
 Version:3.9
 
 fix duration time
+
 [change buy api: remove force_buy&!!!fix duration time!!](#buy)
+
 [fix buy_digital_spot() error problem](#buydigitalspot)
 
 Version:3.8.2
