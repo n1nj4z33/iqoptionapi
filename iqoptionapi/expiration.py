@@ -8,14 +8,14 @@ def get_expiration_time(timestamp,duration):
     #
     now_date = datetime.fromtimestamp(timestamp)
     exp_date=now_date.replace(second=0,microsecond=0)
-    if (int((exp_date+timedelta(minutes=1)).strftime("%s"))-timestamp)>30:
+    if (int((exp_date+timedelta(minutes=1)).timestamp())-timestamp)>30:
         exp_date= exp_date+timedelta(minutes=1)
     
     else:
         exp_date= exp_date+timedelta(minutes=2)
     exp=[]
     for _ in range(5):
-        exp.append(exp_date.strftime("%s"))
+        exp.append(exp_date.timestamp())
         exp_date= exp_date+timedelta(minutes=1)
     
     
@@ -25,8 +25,8 @@ def get_expiration_time(timestamp,duration):
     now_date = datetime.fromtimestamp(timestamp)
     exp_date=now_date.replace(second=0,microsecond=0)
     while index<idx:
-        if int(exp_date.strftime("%M"))%15==0 and (int(exp_date.strftime("%s"))-int(timestamp))>60*5:
-            exp.append(exp_date.strftime("%s"))
+        if int(exp_date.strftime("%M"))%15==0 and (int(exp_date.timestamp())-int(timestamp))>60*5:
+            exp.append(exp_date.timestamp())
             index=index+1
         exp_date= exp_date+timedelta(minutes=1)
 
@@ -43,22 +43,22 @@ def get_expiration_time(timestamp,duration):
 def get_remaning_time(timestamp):
     now_date = datetime.fromtimestamp(timestamp)
     exp_date=now_date.replace(second=0,microsecond=0)
-    if (int((exp_date+timedelta(minutes=1)).strftime("%s"))-timestamp)>30:
+    if (int((exp_date+timedelta(minutes=1)).timestamp())-timestamp)>30:
         exp_date= exp_date+timedelta(minutes=1)
 
     else:
         exp_date= exp_date+timedelta(minutes=2)
     exp=[]
     for _ in range(5):
-        exp.append(exp_date.strftime("%s"))
+        exp.append(exp_date.timestamp())
         exp_date= exp_date+timedelta(minutes=1)
     idx=11
     index=0
     now_date = datetime.fromtimestamp(timestamp)
     exp_date=now_date.replace(second=0,microsecond=0)
     while index<idx:
-        if int(exp_date.strftime("%M"))%15==0 and (int(exp_date.strftime("%s"))-int(timestamp))>60*5:
-            exp.append(exp_date.strftime("%s"))
+        if int(exp_date.strftime("%M"))%15==0 and (int(exp_date.timestamp())-int(timestamp))>60*5:
+            exp.append(exp_date.timestamp())
             index=index+1
         exp_date= exp_date+timedelta(minutes=1)
 

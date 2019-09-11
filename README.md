@@ -2,9 +2,15 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.9.1
+last Version:3.9.2
 
 last update:2019/9/11
+
+Version:3.9.2
+
+[fix buy() for support OS:window](#buy)
+
+
 Version:3.9.1
 
 please update to 3.9.1

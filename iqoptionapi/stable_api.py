@@ -8,7 +8,6 @@ import operator
 import datetime
 import pytz  
 from collections import defaultdict
-from interruptingcow import timeout
 from iqoptionapi.expiration import get_expiration_time
 from datetime import datetime,timedelta
 
@@ -21,7 +20,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.9.1"
+    __version__ = "3.9.2"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -202,12 +201,11 @@ class IQ_Option:
         self.api.api_option_init_all_result_v2 = None
 
         self.api.get_api_option_init_all_v2()
-        try:
-            with timeout(30, exception=RuntimeError):
-                while self.api.api_option_init_all_result_v2==None:
-                    pass
-        except RuntimeError:
-            logging.error('**warning** get_all_init_v2 late 30 sec')
+        start_t=time.time()
+        while self.api.api_option_init_all_result_v2==None:
+            if time.time()-start_t>=30:
+                logging.error('**warning** get_all_init_v2 late 30 sec')
+                return None
         return self.api.api_option_init_all_result_v2
 
         # return OP_code.ACTIVES
@@ -660,14 +658,12 @@ class IQ_Option:
         self.api.buy_successful = None
         self.api.buy_id = None
         self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION, expirations)
-        try:
-            with timeout(30, exception=RuntimeError):
-                while self.api.buy_successful == None and self.api.buy_id == None:
-                    pass
-        except RuntimeError:
-            logging.error('**warning** buy late 30 sec')
-
-
+        start_t=time.time()
+        while self.api.buy_successful == None and self.api.buy_id == None:
+            if time.time()-start_t>=30:
+                logging.error('**warning** buy late 30 sec')
+                return False,None
+             
         return self.api.buy_successful,self.api.buy_id
         
 
@@ -681,12 +677,12 @@ class IQ_Option:
     def get_digital_underlying_list_data(self):
         self.api.underlying_list_data=None
         self.api.get_digital_underlying()
-        try:
-            with timeout(30, exception=RuntimeError):
-                while self.api.underlying_list_data==None:
-                    pass
-        except RuntimeError:
-            logging.error('**warning** get_digital_underlying_list_data late 30 sec')
+        start_t=time.time()
+        while self.api.underlying_list_data==None:
+            if time.time()-start_t>=30:
+                logging.error('**warning** get_digital_underlying_list_data late 30 sec')
+                return None
+           
         return self.api.underlying_list_data
 
     def get_strike_list(self, ACTIVES, duration):
