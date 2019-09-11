@@ -2,9 +2,16 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.9
+last Version:3.9.1
 
-last update:2019/9/10
+last update:2019/9/11
+Version:3.9.1
+
+please update to 3.9.1
+
+in Version:3.9 the buy() api may buy realmode money because the code not add the "user_balance_id"
+
+[fix buy()](#buy)
 
 Version:3.9
 

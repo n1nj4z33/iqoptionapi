@@ -36,6 +36,7 @@ class Buyv2(Base):
             "exp":int(exp),
             "type": option,
             "direction": direction.lower(),
+            "user_balance_id":int(self.api.profile.balance_id),
             "time": self.api.timesync.server_timestamp
         }
 
