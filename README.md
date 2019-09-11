@@ -9,7 +9,7 @@ Version:3.9.1
 
 please update to 3.9.1
 
-in Version:3.9 the buy() api may buy realmode money because the code not add the "user_balance_id"
+Before Version 3.9.1 the buy() API active buy "realmode money" in "practice MODE" without call  change_balance("REAL") API.   Cause lose real money
 
 [fix buy()](#buy)
 
