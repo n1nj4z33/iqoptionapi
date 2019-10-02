@@ -4,7 +4,12 @@
 
 last update:2019/10/2
 
-last Version:3.9.3
+last Version:3.9.4
+
+fix version problem
+
+
+Version:3.9.3
 
 change and fix close digit(close_position) to close_digital_option
 
