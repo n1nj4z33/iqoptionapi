@@ -773,11 +773,24 @@ class IQ_Option:
         return  self.api.digital_option_placed_id
 
     def buy_digital(self, amount, instrument_id):
-        self.api.position_changed = None
-        return self.buy_order(instrument_type="digital-option",
-                              instrument_id=instrument_id,
-                              side="buy", type="market", amount=amount,
-                              limit_price=0, leverage=1)
+        self.api.digital_option_placed_id=None
+        self.api.place_digital_option(instrument_id,amount)
+        start_t=time.time()
+        while self.api.digital_option_placed_id==None:
+            if time.time()-start_t>30:
+                logging.error('buy_digital loss digital_option_placed_id')
+                return False,None
+        return  True,self.api.digital_option_placed_id
+    def close_digital_option(self,position_id):
+        self.api.result=None
+        while self.get_async_order(position_id)==None:
+            pass
+        position_changed=self.get_async_order(position_id)
+        self.api.close_digital_option(position_changed["id"])
+        while self.api.result==None:
+            pass
+        return self.api.result
+
     def check_win_digital(self, buy_order_id):
         check, data = self.get_position(buy_order_id)
         if check:
@@ -976,8 +989,8 @@ class IQ_Option:
         else:
             return False
 
-    def close_position(self, buy_order_id):
-        check, data = self.get_order(buy_order_id)
+    def close_position(self, position_id):
+        check, data = self.get_order(position_id)
         if data["position_id"] != None:
             self.api.close_position_data = None
             self.api.close_position(data["position_id"])
@@ -989,6 +1002,19 @@ class IQ_Option:
                 return False
         else:
             return False
+    def close_position_v2(self,position_id):
+        while self.get_async_order(position_id)==None:
+            pass
+        position_changed=self.get_async_order(position_id)
+        self.api.close_position(position_changed["id"])
+        while self.api.close_position_data == None:
+            pass
+        if self.api.close_position_data["status"] == 2000:
+            return True
+        else:
+            return False
+         
+
 
     def get_overnight_fee(self, instrument_type, active):
         self.api.overnight_fee = None

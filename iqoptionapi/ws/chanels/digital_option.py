@@ -21,3 +21,15 @@ class Digital_options_place_digital_option(Base):
         }
         self.send_websocket_request(self.name, data)
  
+class Digital_options_close_position(Base):
+    name = "sendMessage"
+    def __call__(self,position_id):
+        data = {
+        "name": "digital-options.close-position",
+        "version":"1.0",
+        "body":{
+            "position_id":int(position_id)
+            }
+        }
+        self.send_websocket_request(self.name, data)
+ 

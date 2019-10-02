@@ -2,9 +2,21 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last Version:3.9.2
+last update:2019/10/2
 
-last update:2019/9/11
+last Version:3.9.3
+
+change and fix close digit(close_position) to close_digital_option
+
+fix buy_digital problem
+
+get_order only work for forex..., digital not work
+
+fix close_position api for forex...
+
+fix binary option buy api support python2&python3
+
+ 
 
 Version:3.9.2
 
@@ -623,11 +635,11 @@ else:
 
 #### close digital
 ```python
-I_want_money.close_position(id)
+I_want_money.close_digital_option(id)
 ```
 #### get digital data
 ```python
-print(I_want_money.get_order(id))
+#print(I_want_money.get_order(id))#not work for digital
 print(I_want_money.get_positions("digital-option"))
 print(I_want_money.get_position_history("digital-option"))
 ```
@@ -702,7 +714,7 @@ check,order_id=I_want_money.buy_order(instrument_type=instrument_type, instrumen
             take_profit_value=take_profit_value, take_profit_kind=take_profit_kind,
             use_trail_stop=use_trail_stop, auto_margin_call=auto_margin_call,
             use_token_for_commission=use_token_for_commission)
-print(I_want_money.get_order(order_id))
+print(I_want_money.get_order(order_id)) 
 print(I_want_money.get_positions("crypto"))
 print(I_want_money.get_position_history("crypto"))
 print(I_want_money.get_available_leverages("crypto","BTCUSD"))
@@ -795,6 +807,8 @@ I_want_money.change_order(ID_Name=ID_Name,order_id=order_id,
 
 
 #### get_order
+
+ 
 get infomation about buy_order_id
 
 return (True/False,get_order,None)

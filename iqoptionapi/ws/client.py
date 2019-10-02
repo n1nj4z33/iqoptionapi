@@ -199,7 +199,8 @@ class WebsocketClient(object):
                 self.api.digital_option_placed_id=message["msg"]["id"]
             except:
                 self.api.digital_option_placed_id="error"
-
+        elif message["name"]=="result":
+            self.api.result=message["msg"]["success"]
         elif message["name"]=="instrument-quotes-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active"])]  
             period=message["msg"]["expiration"]["period"] 

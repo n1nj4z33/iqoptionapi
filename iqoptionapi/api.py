@@ -51,7 +51,7 @@ from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
 
 from iqoptionapi.ws.chanels.subscribe import Subscribe_Instrument_Quites_Generated
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_Instrument_Quites_Generated
-from iqoptionapi.ws.chanels.digital_option import Digital_options_place_digital_option
+from iqoptionapi.ws.chanels.digital_option import *
 from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
 from iqoptionapi.ws.chanels.change_tpsl import Change_Tpsl
@@ -128,7 +128,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     # --for binary option multi buy
     buy_multi_result = None
     buy_multi_option = {}
-
+    #
+    result=None
     # ------------------
 
     def __init__(self, host, username, password, proxies=None):
@@ -524,6 +525,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def place_digital_option(self):
         return Digital_options_place_digital_option(self)
+
+    @property
+    def close_digital_option(self):
+        return Digital_options_close_position(self)
 
 # ____BUY_for__Forex__&&__stock(cfd)__&&__ctrpto_____
     @property
