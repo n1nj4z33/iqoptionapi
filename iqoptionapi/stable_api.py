@@ -20,7 +20,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.9.4"
+    __version__ = "3.9.5"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -805,7 +805,13 @@ class IQ_Option:
         order_data=self.get_async_order(buy_order_id)
         if  order_data!=None:
             if order_data["status"]=="closed":
-                return True,order_data["pnl_realized_enrolled"]
+                if order_data["close_reason"]=="expired":
+                    if order_data["close_effect_amount"]==0:
+                        return True,-1*max(order_data["buy_amount"],order_data["sell_amount"])
+                    else:
+                        return True,order_data["close_effect_amount"]-max(order_data["buy_amount"],order_data["sell_amount"])
+                elif order_data["close_reason"]=="default":
+                    return True,order_data["pnl_realized_enrolled"]
             else:
                 return False,None
         else:

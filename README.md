@@ -2,9 +2,15 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/2
+last update:2019/10/5
 
-last Version:3.9.4
+Version:3.9.5
+
+fix check_win_digital_v2
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/126
+
+Version:3.9.4
 
 fix version problem
 
