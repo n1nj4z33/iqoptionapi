@@ -6,7 +6,6 @@ import time
 import logging
 import operator
 import datetime
-import pytz  
 from collections import defaultdict
 from iqoptionapi.expiration import get_expiration_time
 from datetime import datetime,timedelta
