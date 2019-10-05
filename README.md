@@ -244,7 +244,7 @@ I_want_money.connect()
 
 ### <a id=checkopen>Check Asset if open or not</a>
 
-:exclamation:be careful get_all_open_time() is vary heavy for natwork.
+:exclamation:be careful get_all_open_time() is very heavy for network.
 
 get_all_open_time() return the DICT
 
