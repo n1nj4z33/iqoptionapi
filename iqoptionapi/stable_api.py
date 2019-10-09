@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.9.5"
+    __version__ = "3.9.6"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -743,6 +743,13 @@ class IQ_Option:
                     pass
 
         return ans
+        
+    def get_digital_current_profit(self, ACTIVE, duration):
+        profit = self.api.instrument_quites_generated_data[ACTIVE][duration*60]
+        for key in profit:
+            if key.find("SPT")!=-1:
+                return profit[key]
+        return False
     #thank thiagottjv 
     #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/65#issuecomment-513998357
     def buy_digital_spot(self, active,amount, action, duration):

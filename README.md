@@ -2,7 +2,13 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/5
+last update:2019/10/9
+
+Version:3.9.6
+
+add [get_digital_current_profit](#getdigitalcurrentprofit)
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/121#issuecomment-539793386
 
 Version:3.9.5
 
@@ -579,6 +585,26 @@ duration=1#minute 1 or 5
 amount=1
 action="call"#put
 print(I_want_money.buy_digital_spot(ACTIVES,amount,action,duration))
+```
+#### <a id=getdigitalcurrentprofit>get_digital_current_profit</a>
+
+get current price profit
+
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import time
+import logging
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+ACTIVES="EURUSD"
+duration=1#minute 1 or 5
+I_want_money.subscribe_strike_list(ACTIVES,duration)
+while True:
+    data=I_want_money.get_digital_current_profit(ACTIVES, duration)
+    print(data)#from first print it may be get false,just wait a second you can get the profit
+    time.sleep(1)
+I_want_money.unsubscribe_strike_list(ACTIVES,duration)
 ```
 
 #### Buy digit
