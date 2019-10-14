@@ -5,7 +5,7 @@ import threading
 import time
 import logging
 import operator
-import datetime
+ 
 from collections import defaultdict
 from iqoptionapi.expiration import get_expiration_time
 from datetime import datetime,timedelta
@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.9.6"
+    __version__ = "3.9.7"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -219,7 +219,14 @@ class IQ_Option:
             for actives_id in binary_data[option]["actives"]:
                 active=binary_data[option]["actives"][actives_id]
                 name=str(active["name"]).split(".")[1]
-                OPEN_TIME[option][name]["open"]=active["enabled"]
+                if active["enabled"]==True:
+                    if active["is_suspended"]==True:
+                        OPEN_TIME[option][name]["open"]=False
+                    else:
+                        OPEN_TIME[option][name]["open"]=True
+                else:
+                    OPEN_TIME[option][name]["open"]=active["enabled"]
+
                 
         #for digital
         digital_data=self.get_digital_underlying_list_data()["underlying"]
@@ -765,8 +772,17 @@ class IQ_Option:
             logging.error('buy_digital_spot active error')
             return -1
         #doEURUSD201907191250PT5MPSPT
-         
-        exp,idx=get_expiration_time(int(self.api.timesync.server_timestamp),duration)  
+        timestamp=int(self.api.timesync.server_timestamp)
+        if duration==1:
+            exp,_=get_expiration_time(timestamp,duration) 
+        else:
+            now_date = datetime.fromtimestamp(timestamp)+timedelta(minutes=1,seconds=30)
+            while True:
+                if now_date.minute%duration==0 and time.mktime(now_date.timetuple())-timestamp>30:
+                    break
+                now_date = now_date+timedelta(minutes=1)
+            print(now_date)
+            exp=time.mktime(now_date.timetuple())
        
         dateFormated = str(datetime.utcfromtimestamp(exp).strftime("%Y%m%d%H%M"))
         instrument_id = "do" + active + dateFormated + "PT" + str(duration) + "M" + action + "SPT" 

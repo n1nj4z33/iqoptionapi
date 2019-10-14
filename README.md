@@ -2,7 +2,18 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/9
+last update:2019/10/15
+
+Version:3.9.7
+
+fix buy_digital_spot duration 5&15
+
+fix check binary option open
+if asset is close is may return "False" !!or!! "{}"
+if asset is open is return "True"
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/122
+
+
 
 Version:3.9.6
 
