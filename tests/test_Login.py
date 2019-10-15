@@ -12,5 +12,4 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(I_want_money.check_connect(), True)
          
  
-if __name__ == '__main__':
-    unittest.main()
+ 
