@@ -229,7 +229,8 @@ class WebsocketClient(object):
                         pass
             self.api.instrument_quites_generated_timestamp[Active_name][period]=message["msg"]["expiration"]["timestamp"]
             self.api.instrument_quites_generated_data[Active_name][period]=ans
-           
+        elif message["name"]=="training-balance-reset":
+            self.api.training_balance_reset_request=message["msg"]["isSuccessful"]
  
             
     

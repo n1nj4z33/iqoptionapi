@@ -5,7 +5,12 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/15
+last update:2019/10/16
+
+Version:3.9.8
+add [reset_practice_balance](#resetpracticebalance) api
+
+
 
 Version:3.9.7
 
@@ -1151,10 +1156,23 @@ I_want_money.get_all_traders_mood(goal)
 ```
 
 ### Account
+
 #### get balance
 ```python
 I_want_money.get_balance()
 ```
+
+ 
+#### <a id=resetpracticebalance>reset practice balance</a>
+
+reset practice balance to $10000
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+print(I_want_money.reset_practice_balance())
+```
+
 #### Change real/practice Account
 ```python
 I_want_money.change_balance(MODE)

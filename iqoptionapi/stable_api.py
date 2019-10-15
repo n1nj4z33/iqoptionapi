@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "3.9.7"
+    __version__ = "3.9.8"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -366,7 +366,12 @@ class IQ_Option:
             return "REAL"
         elif self.api.profile.balance_type == 4:
             return "PRACTICE"
-
+    def reset_practice_balance(self):
+        self.api.training_balance_reset_request=None
+        self.api.reset_training_balance()
+        while self.api.training_balance_reset_request==None:
+            pass
+        return self.api.training_balance_reset_request
     def change_balance(self, Balance_MODE):
         real_id = None
         practice_id = None

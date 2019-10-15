@@ -129,7 +129,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     buy_multi_result = None
     buy_multi_option = {}
     #
-    result=None
+    result = None
+    training_balance_reset_request=None
     # ------------------
 
     def __init__(self, host, username, password, proxies=None):
@@ -299,6 +300,18 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     #         <iqoptionapi.http.profile.Profile>`.
     #     """
     #     return Profile(self)
+    def reset_training_balance(self):
+        # sendResults True/False
+        # {"name":"sendMessage","request_id":"142","msg":{"name":"reset-training-balance","version":"2.0"}}
+        logger = logging.getLogger(__name__)
+        data = json.dumps(dict(name="sendMessage",
+                               msg={"name": "reset-training-balance",
+                                    "version": "2.0"}
+                               )
+                          )
+
+        logger.debug(data)
+        self.websocket.send(data)
 
     @property
     def changebalance(self):
