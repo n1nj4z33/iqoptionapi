@@ -8,8 +8,8 @@ install:
  - pip install codecov
  - pip install pytest-cov
 script:
- - pytest --cov=./  --cov-report=xml tests/
+ - pytest tests/
 after_success:
- - codecov --file coverage.xml --token $CODECOV_TOKEN
+ - codecov  
 
 
