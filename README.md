@@ -7,7 +7,20 @@
 
 last update:2019/10/16
 
+Version:4.0.0
+
+:exclamation::exclamation::exclamation:
+update websocket-client==0.56
+:exclamation:
+please uninstall all websocket-client and update up websocket-client==0.56
+```
+sudo pip uninstall websocket-client
+sudo pip install websocket-client==0.56
+```
+:exclamation:
+
 Version:3.9.8
+
 add [reset_practice_balance](#resetpracticebalance) api
 
 
@@ -130,28 +143,13 @@ from iqoptionapi.api import IQOptionAPI
 
 ## Can not loging problem
 
-
-### problem 1
-this problem i have been pull request to websocket-client
-
-If you get this problem
-
-```bash
-error from callback <bound method WebsocketClient.on_message of <iqoptionapi.ws.client.WebsocketClient object at 0x7f174fdb5e48>>: on_message() missing 1 required positional argument: 'message'
-  File "/usr/lib/python3.7/site-packages/websocket/_app.py", line 343, in _callback
-   callback(*args)
-```
-#### fix way 1(install old websocket-client version)
+#### fix way 1 
 ```bash
 sudo pip3 uninstall websocket-client
-sudo pip3 install websocket-client==0.47.0
+sudo pip3 install websocket-client==0.56
 ```
 
-#### fix way 2(install my fix version on latest)
-```bash
-sudo pip3 install -U git+git://github.com/Lu-Yi-Hsun/websocket-client.git
-```
----
+ 
 
 ### problem 2
 

@@ -36,7 +36,7 @@ class WebsocketClient(object):
                 else:
                     #del mini key
                     del dict[key1][key2][sorted(dict[key1][key2].keys(), reverse=False)[0]]   
-    def on_message(self, wss, message): # pylint: disable=unused-argument
+    def on_message(self, message): # pylint: disable=unused-argument
         """Method to process websocket messages."""
         logger = logging.getLogger(__name__)
         logger.debug(message)
