@@ -1,4 +1,3 @@
- 
 import unittest
 import os
 from iqoptionapi.stable_api import IQ_Option
