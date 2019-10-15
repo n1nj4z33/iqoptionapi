@@ -5,6 +5,7 @@ python:
  - '3.7'
 install:
  - pip install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
+ - pip install codecov
 script:
  - pytest
 after_success:
