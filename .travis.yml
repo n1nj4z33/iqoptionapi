@@ -4,6 +4,7 @@ python:
  - '2.7'
  - '3.7'
 install:
+ - pip install enum34 --upgrade  --ignore-installed
  - sudo pip install -U git+git://github.com/Lu-Yi-Hsun/iqoptionapi.git
 script:
  - pytest
