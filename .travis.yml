@@ -8,8 +8,9 @@ install:
  - pip install codecov
  - pip install pytest-cov
 script:
- - pytest tests/
-after_success:
- - codecov  
+ - python tests/test_Login.py
+# - pytest --cov=./  --cov-report=xml tests/
+#after_success:
+# - codecov --file coverage.xml --token $CODECOV_TOKEN
 
 
