@@ -16,13 +16,16 @@ class TestCandle(unittest.TestCase):
         I_want_money.reset_practice_balance()
         self.assertEqual(I_want_money.check_connect(), True)
         #start test binary option
-        opcode_dict=I_want_money.get_all_ACTIVES_OPCODE()
-        for asset,value in opcode_dict.items():
-            I_want_money.get_candles(asset, 60, 1000, time.time())
-       
-            #realtime candle
-            size="all"
-            I_want_money.start_candles_stream(asset,size,10)
-            I_want_money.get_realtime_candles(asset,size)
-            I_want_money.stop_candles_stream(asset,size)
+        ALL_Asset=I_want_money.get_all_open_time()
+        if ALL_Asset["turbo"]["EURUSD"]["open"]:
+            ACTIVES="EURUSD"
+        else:
+            ACTIVES="EURUSD-OTC"
+
+        I_want_money.get_candles(ACTIVES, 60, 1000, time.time())
+        #realtime candle
+        size="all"
+        I_want_money.start_candles_stream(ACTIVES,size,10)
+        I_want_money.get_realtime_candles(ACTIVES,size)
+        I_want_money.stop_candles_stream(ACTIVES,size)
 
