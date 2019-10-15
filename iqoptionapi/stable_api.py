@@ -582,7 +582,7 @@ class IQ_Option:
 ##############################################################################################
 
     def check_win(self, id_number):
-        # 'win'：win money 'equal'：no win no loose   'loose':loose money
+        # 'win':win money 'equal':no win no loose   'loose':loose money
         while True:
             try:
                 listinfodata_dict = self.api.listinfodata.get(id_number)
