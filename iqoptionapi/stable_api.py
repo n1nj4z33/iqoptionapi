@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "4.0.0"
+    __version__ = "4.0.1"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -637,8 +637,16 @@ class IQ_Option:
             pass
 
         return self.api.api_game_getoptions_result
+    def get_optioninfo_v2(self, limit):
+        self.api.get_options_v2_data=None
+        self.api.get_options_v2(limit,"binary,turbo")
+        while self.api.get_options_v2_data == None:
+            pass
+
+        return self.api.get_options_v2_data
 
 
+    
 # __________________________BUY__________________________
 
 # __________________FOR OPTION____________________________

@@ -5,7 +5,15 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/16
+last update:2019/10/23
+
+Version:4.0.1
+
+fix get_positions()
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/132
+
+add get_optioninfo_v2
+
 
 Version:4.0.0
 
@@ -500,6 +508,14 @@ input how many data you want to get from Trading History(only for binary option)
 ```
 print(I_want_money.get_optioninfo(10))
 ```
+#### <a id=optioninfo>get_optioninfo_v2</a>
+
+input how many data you want to get from Trading History(only for binary option)
+
+```
+print(I_want_money.get_optioninfo_v2(10))
+```
+
 ___
 ---
 ### <a id=digital>For Digital</a>
@@ -887,9 +903,15 @@ you will get there data
 
 return (True/False,get_positions,None)
 
+
+:exclamation: not support ""turbo-option""
+
+instrument_type="crypto","forex","fx-option","multi-option","cfd","digital-option"
+
 ```python
 I_want_money.get_positions(instrument_type)
 ```
+
 #### get_position
 you will get there data
 

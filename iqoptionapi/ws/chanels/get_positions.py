@@ -6,8 +6,14 @@ from iqoptionapi.ws.chanels.base import Base
 class Get_positions(Base):
     name = "sendMessage"
     def __call__(self,instrument_type):
+        if instrument_type=="digital-option":
+            name="digital-options.get-positions"
+        elif instrument_type=="fx-option":
+            name="trading-fx-option.get-positions"
+        else:
+            name="get-positions"
         data = {
-            "name":"get-positions",
+            "name":name ,
             "body":{
                 "instrument_type":instrument_type,
                 "user_balance_id":int(self.api.profile.balance_id)

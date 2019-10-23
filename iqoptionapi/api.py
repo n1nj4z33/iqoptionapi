@@ -52,7 +52,7 @@ from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
 from iqoptionapi.ws.chanels.subscribe import Subscribe_Instrument_Quites_Generated
 from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_Instrument_Quites_Generated
 from iqoptionapi.ws.chanels.digital_option import *
-from iqoptionapi.ws.chanels.api_game_getoptions import Getoptions
+from iqoptionapi.ws.chanels.api_game_getoptions import *
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
 from iqoptionapi.ws.chanels.change_tpsl import Change_Tpsl
 from iqoptionapi.ws.chanels.change_auto_margin_call import ChangeAutoMarginCall
@@ -125,6 +125,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     tpsl_changed_respond = None
     auto_margin_call_changed_respond = None
 
+    get_options_v2_data=None
     # --for binary option multi buy
     buy_multi_result = None
     buy_multi_option = {}
@@ -488,7 +489,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
     @property
     def get_options(self):
-        return Getoptions(self)
+        return Get_options(self)
+    @property
+    def get_options_v2(self):
+        return Get_options_v2(self)
 
 # ____________for_______binary_______option_____________
 

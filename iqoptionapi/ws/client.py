@@ -60,7 +60,8 @@ class WebsocketClient(object):
             self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
             self.api.candle_generated_check[active][size]=True
             
-
+        elif message["name"]=="options":
+            self.api.get_options_v2_data=message
         elif message["name"] == "candles-generated":
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active_id"])] 
             active=str(Active_name)      
