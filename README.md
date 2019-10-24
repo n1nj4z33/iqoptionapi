@@ -1155,7 +1155,7 @@ I_want_money.unsubscribe_top_assets_updated(instrument_type)
 
 https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/131
 
-!()[https://user-images.githubusercontent.com/7738916/66943816-c9ee1380-f000-11e9-996e-e06efba64101.png]
+![](https://user-images.githubusercontent.com/7738916/66943816-c9ee1380-f000-11e9-996e-e06efba64101.png)
 
 ```python
 from iqoptionapi.stable_api import IQ_Option
