@@ -69,3 +69,18 @@ class Unsubscribe_Instrument_Quites_Generated(Base):
             
         return ans
 
+class Unsubscribe_top_assets_updated(Base):
+    name = "unsubscribeMessage"
+
+    def __call__(self, instrument_type):
+ 
+        data = {"name":"top-assets-updated",
+                "params":{
+                       "routingFilters":{
+                                        "instrument_type":str(instrument_type) 
+                                       
+                                        }
+                        },
+                "version":"1.2"
+                }
+        self.send_websocket_request(self.name, data)

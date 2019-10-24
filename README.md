@@ -7,6 +7,11 @@
 
 last update:2019/10/24
 
+Version:4.3
+
+add subscribe_top_assets_updated & popularity
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/131
+
 Version:4.2
 
 add reconnect sample
@@ -1123,6 +1128,78 @@ while True:
     print(end_time-time.time()-30)
     time.sleep(1)
 ```
+---
+### Get top_assets_updated
+
+instrument_type="binary-option"/"digital-option"/"forex"/"cfd"/"crypto"
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+instrument_type="digital-option"#"binary-option"/"digital-option"/"forex"/"cfd"/"crypto"
+I_want_money.subscribe_top_assets_updated(instrument_type)
+
+print("__Please_wait_for_sec__")
+while True:
+    if I_want_money.get_top_assets_updated(instrument_type)!=None:
+        print(I_want_money.get_top_assets_updated(instrument_type))
+        print("\n\n")
+    time.sleep(1)
+I_want_money.unsubscribe_top_assets_updated(instrument_type)
+```
+
+#### get popularity by top_assets_updated() api
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/131
+
+!()[https://user-images.githubusercontent.com/7738916/66943816-c9ee1380-f000-11e9-996e-e06efba64101.png]
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+import operator
+ 
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+def opcode_to_name(opcode_data,opcode):
+    return list(opcode_data.keys())[list(opcode_data.values()).index(opcode)]            
+
+I_want_money=IQ_Option("email","password")
+I_want_money.update_ACTIVES_OPCODE()
+opcode_data=I_want_money.get_all_ACTIVES_OPCODE()
+
+instrument_type="digital-option"#"binary-option"/"digital-option"/"forex"/"cfd"/"crypto"
+I_want_money.subscribe_top_assets_updated(instrument_type)
+
+
+print("__Please_wait_for_sec__")
+while True:
+    if I_want_money.get_top_assets_updated(instrument_type)!=None:
+        break
+
+top_assets=I_want_money.get_top_assets_updated(instrument_type)
+popularity={}
+for asset in top_assets:
+    opcode=asset["active_id"]
+    popularity_value=asset["popularity"]["value"]
+    try:
+        name=opcode_to_name(opcode_data,opcode)
+        popularity[name]=popularity_value
+    except:
+        pass
+ 
+ 
+sorted_popularity = sorted(popularity.items(), key=operator.itemgetter(1))
+print("__Popularity_min_to_max__")
+for lis in sorted_popularity:
+    print(lis)
+
+I_want_money.unsubscribe_top_assets_updated(instrument_type)
+```
+
 
 ---
 ### Get mood

@@ -18,8 +18,8 @@ from iqoptionapi.http.changebalance import Changebalance
 from iqoptionapi.ws.client import WebsocketClient
 
 from iqoptionapi.ws.chanels.ssid import Ssid
-from iqoptionapi.ws.chanels.subscribe import Subscribe
-from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe
+from iqoptionapi.ws.chanels.subscribe import *
+from iqoptionapi.ws.chanels.unsubscribe import *
 from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
@@ -46,11 +46,7 @@ from iqoptionapi.ws.chanels.close_position import Close_position
 from iqoptionapi.ws.chanels.get_overnight_fee import Get_overnight_fee
 from iqoptionapi.ws.chanels.heartbeat import Heartbeat
 
-from iqoptionapi.ws.chanels.subscribe import Subscribe_candles
-from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_candles
-
-from iqoptionapi.ws.chanels.subscribe import Subscribe_Instrument_Quites_Generated
-from iqoptionapi.ws.chanels.unsubscribe import Unsubscribe_Instrument_Quites_Generated
+ 
 from iqoptionapi.ws.chanels.digital_option import *
 from iqoptionapi.ws.chanels.api_game_getoptions import *
 from iqoptionapi.ws.chanels.sell_option import Sell_Option
@@ -126,7 +122,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     sold_options_respond = None
     tpsl_changed_respond = None
     auto_margin_call_changed_respond = None
-
+    top_assets_updated_data={}
     get_options_v2_data=None
     # --for binary option multi buy
     buy_multi_result = None
@@ -442,6 +438,14 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
         logger.debug(data)
         self.websocket.send(data)
+    
+    @property
+    def Subscribe_Top_Assets_Updated(self):
+        return Subscribe_top_assets_updated(self)
+
+    @property
+    def Unsubscribe_Top_Assets_Updated(self):
+        return Unsubscribe_top_assets_updated(self)
 
 # --------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------

@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "4.2"
+    __version__ = "4.3"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -163,10 +163,11 @@ class IQ_Option:
 
     def get_ALL_Binary_ACTIVES_OPCODE(self):
         init_info = self.get_all_init()
-        for i in init_info["result"]["binary"]["actives"]:
-            OP_code.ACTIVES[(init_info["result"]["binary"]
-                             ["actives"][i]["name"]).split(".")[1]] = int(i)
-
+        for dirr in (["binary","turbo"]):
+            for i in init_info["result"][dirr]["actives"]:
+                OP_code.ACTIVES[(init_info["result"][dirr]
+                                ["actives"][i]["name"]).split(".")[1]] = int(i)
+       
 # _________________________self.api.get_api_option_init_all() wss______________________
     def get_all_init(self):
 
@@ -550,11 +551,17 @@ class IQ_Option:
             self.api.candle_generated_all_size_check[str(ACTIVE)] = {}
             self.api.unsubscribe_all_size(OP_code.ACTIVES[ACTIVE])
             time.sleep(self.suspend*10)
-# ---------------------------------------------------------------------
+# ------------------------top_assets_updated---------------------------------------------
 
-
-################################################
-################################################
+    def subscribe_top_assets_updated(self,instrument_type):
+        self.api.Subscribe_Top_Assets_Updated(instrument_type)
+    def unsubscribe_top_assets_updated(self,instrument_type):
+        self.api.Unsubscribe_Top_Assets_Updated(instrument_type)
+    def get_top_assets_updated(self,instrument_type):
+        if instrument_type in self.api.top_assets_updated_data:
+            return self.api.top_assets_updated_data[instrument_type]
+        else:
+            return None
 # -----------------------------------------------
 
 # -----------------traders_mood----------------------

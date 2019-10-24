@@ -154,7 +154,8 @@ class WebsocketClient(object):
             self.api.microserviceName_binary_options_name_option[int(message["msg"]["option_id"])]=message
         elif message["name"]=="option-closed":
             self.api.microserviceName_binary_options_name_option[int(message["msg"]["option_id"])]=message
-
+        elif message["name"]=="top-assets-updated":
+            self.api.top_assets_updated_data[str(message["msg"]["instrument_type"])]=message["msg"]["data"]
         elif message["name"]=="strike-list":  
             self.api.strike_list=message
         elif message["name"]=="api_game_betinfo_result":
