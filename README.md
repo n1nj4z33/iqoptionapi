@@ -5,7 +5,12 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/23
+last update:2019/10/24
+
+Version:4.2
+
+add reconnect sample
+add get_async_order api
 
 Version:4.0.1
 
@@ -26,102 +31,6 @@ sudo pip uninstall websocket-client
 sudo pip install websocket-client==0.56
 ```
 :exclamation:
-
-Version:3.9.8
-
-add [reset_practice_balance](#resetpracticebalance) api
-
-
-
-Version:3.9.7
-
-fix buy_digital_spot duration 5&15
-
-fix check binary option open
-if asset is close is may return "False" !!or!! "{}"
-if asset is open is return "True"
-https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/122
-
-
-
-Version:3.9.6
-
-add [get_digital_current_profit](#getdigitalcurrentprofit)
-
-https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/121#issuecomment-539793386
-
-Version:3.9.5
-
-fix check_win_digital_v2
-
-https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/126
-
-Version:3.9.4
-
-fix version problem
-
-
-Version:3.9.3
-
-change and fix close digit(close_position) to close_digital_option
-
-fix buy_digital problem
-
-get_order only work for forex..., digital not work
-
-fix close_position api for forex...
-
-fix binary option buy api support python2&python3
-
- 
-
-Version:3.9.2
-
-[fix buy() for support OS:window](#buy)
-
-
-Version:3.9.1
-
-please update to 3.9.1
-
-Before Version 3.9.1 the buy() API active buy "realmode money" in "practice MODE" without call  change_balance("REAL") API.   Cause lose real money
-
-[fix buy()](#buy)
-
-Version:3.9
-
-fix duration time
-
-[change buy api: remove force_buy&!!!fix duration time!!](#buy)
-
-[fix buy_digital_spot() error problem](#buydigitalspot)
-
-Version:3.8.2
-
-[fix digital check win return&add sample code](#checkwindigitalv2)
-
-Version:3.8.1
-
-[fix buy current price](#buydigitalspot)
-
-[Check Asset if open or not](#checkopen)
-
-[fix digital check win](#checkwindigitalv2)
-
-[better !! get_position_history_v2](#getpositionhistoryv2)
-
-
-Version:3.7
-[buy current price](#buydigitalspot)
-
-[change strike_list api](#strikelist)
-need duration time
-```python
-subscribe_strike_list(ACTIVES,duration)
-unsubscribe_strike_list(ACTIVES,duration)
-``` 
-
-
 
 ---
 ## About API
@@ -241,13 +150,22 @@ I_want_money.set_max_reconnect(number)
 
 some time connect will close so this way can check connect and reconnect
 
-sample
+try close your network and restart network in this sample
 
 ```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 I_want_money=IQ_Option("email","password")
-#check if connect
-if I_want_money.check_connect()==False:
-    I_want_money.connect()#if not connect it will reconnect
+I_want_money.set_max_reconnect(-1)#allow unlimited reconnect 
+while True:
+    #you can !!close yuor network!! to simulation network fails
+    if I_want_money.check_connect()==False:#detect the websocket is close
+        print("try reconnect")
+        I_want_money.connect()#try to connect
+        print("reconnect Success")
+    time.sleep(1)
 ```
 
  
@@ -322,7 +240,71 @@ print(I_want_money.get_all_ACTIVES_OPCODE())
 ```
 
 ---
+
+### For all
+
+this api can work for option&digital&Forex&Stock&Commodities&Crypto&ETFs
+
+#### get_async_order
+
+get the order data by id 
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
  
+ACTIVES="EURUSD"
+duration=1#minute 1 or 5
+amount=1
+action="call"#put
+
+print("__For_Binary_Option__")
+_,id=I_want_money.buy(amount,ACTIVES,action,duration)
+while I_want_money.get_async_order(id)==None:
+    pass
+print(I_want_money.get_async_order(id))
+print("\n\n")
+
+print("__For_Digital_Option__spot")
+id=I_want_money.buy_digital_spot(ACTIVES,amount,action,duration)
+while I_want_money.get_async_order(id)==None:
+    pass
+order_data=I_want_money.get_async_order(id)
+print(I_want_money.get_async_order(id))
+print("\n\n")
+
+print("__For_Forex_Stock_Commodities_Crypto_ETFs")
+instrument_type="crypto"
+instrument_id="BTCUSD"
+side="buy"
+amount=1.23
+leverage=3
+type="market"
+limit_price=None 
+stop_price=None 
+stop_lose_kind="percent" 
+stop_lose_value=95 
+take_profit_kind=None 
+take_profit_value=None 
+use_trail_stop=True 
+auto_margin_call=False 
+use_token_for_commission=False 
+check,id=I_want_money.buy_order(instrument_type=instrument_type, instrument_id=instrument_id,
+            side=side, amount=amount,leverage=leverage,
+            type=type,limit_price=limit_price, stop_price=stop_price,
+            stop_lose_value=stop_lose_value, stop_lose_kind=stop_lose_kind,
+            take_profit_value=take_profit_value, take_profit_kind=take_profit_kind,
+            use_trail_stop=use_trail_stop, auto_margin_call=auto_margin_call,
+            use_token_for_commission=use_token_for_commission)
+while I_want_money.get_async_order(id)==None:
+    pass
+order_data=I_want_money.get_async_order(id)
+print(I_want_money.get_async_order(id))
+```
+
 
 ### For Options
 

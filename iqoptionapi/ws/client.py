@@ -150,8 +150,12 @@ class WebsocketClient(object):
             self.api.financial_information=message
         elif message["name"]=="position-changed":
             self.api.position_changed_data[int(message["msg"]["order_ids"][0])]=message["msg"]
-        elif message["name"]=="strike-list":
-            
+        elif message["name"]=="option-opened":
+            self.api.microserviceName_binary_options_name_option[int(message["msg"]["option_id"])]=message
+        elif message["name"]=="option-closed":
+            self.api.microserviceName_binary_options_name_option[int(message["msg"]["option_id"])]=message
+
+        elif message["name"]=="strike-list":  
             self.api.strike_list=message
         elif message["name"]=="api_game_betinfo_result":
             try:

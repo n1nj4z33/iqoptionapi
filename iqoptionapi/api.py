@@ -114,6 +114,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     overnight_fee = None
     # ---for real time
     digital_option_placed_id = None
+    
+    microserviceName_binary_options_name_option={}
 
     real_time_candles = nested_dict(3, dict)
     real_time_candles_maxdict_table = nested_dict(2, dict)
@@ -615,8 +617,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def connect(self):
         global_value.check_websocket_if_connect = None
         """Method for connection to IQ Option API."""
-        response = self.login(
-            self.username, self.password)  # pylint: disable=not-callable
+        try:
+            response = self.login(self.username, self.password)  # pylint: disable=not-callable
+        except Exception as e:
+            logger = logging.getLogger(__name__)
+            logger.error(e)
+            return False
+
         ssid = response.cookies["ssid"]
         self.set_session_cookies()
         self.websocket_client = WebsocketClient(self)

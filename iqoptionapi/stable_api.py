@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "4.0.1"
+    __version__ = "4.2"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -56,14 +56,13 @@ class IQ_Option:
             except:
                 pass
                 #logging.error('**warning** self.api.close() fail')
-            if self.connect_count < self.max_reconnect:
+            if self.connect_count < self.max_reconnect or self.max_reconnect<0:
                 self.api = IQOptionAPI(
                     "iqoption.com", self.email, self.password)
                 check = None
-                try:
-                    check = self.api.connect()
-                except:
-                    logging.error('**error** connect() fail')
+                 
+                check = self.api.connect()
+                 
                 if check == True:
                     # -------------reconnect subscribe_candle
                     try:
@@ -794,7 +793,6 @@ class IQ_Option:
                 if now_date.minute%duration==0 and time.mktime(now_date.timetuple())-timestamp>30:
                     break
                 now_date = now_date+timedelta(minutes=1)
-            print(now_date)
             exp=time.mktime(now_date.timetuple())
        
         dateFormated = str(datetime.utcfromtimestamp(exp).strftime("%Y%m%d%H%M"))
@@ -936,6 +934,8 @@ class IQ_Option:
     def get_async_order(self,buy_order_id):
         if buy_order_id in self.api.position_changed_data:   
             return self.api.position_changed_data[buy_order_id]
+        elif buy_order_id in self.api.microserviceName_binary_options_name_option:
+            return self.api.microserviceName_binary_options_name_option[buy_order_id]
         else:
             return None
     def get_order(self, buy_order_id):
