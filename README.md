@@ -5,7 +5,13 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/24
+last update:2019/10/27
+
+Version:4.4
+
+fix check_win_digital(check_win_digital and check_win_digital_v2 are different implement way)
+ 
+add get_digital_position()
 
 Version:4.3
 
@@ -635,7 +641,9 @@ buy_check,id=I_want_money.buy_digital(amount,instrument_id)
 #### check win for digital
 
 ##### check_win_digital
-:exclamation::exclamation: this api may not working
+
+
+this api is implement by get_digital_position()
 
 ```python
 I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
@@ -647,7 +655,7 @@ I_want_money.check_win_digital(id)#get the id from I_want_money.buy_digital
 ```
 ##### <a id=checkwindigitalv2>check_win_digital_v2</a>
  
-:exclamation::exclamation: this api is asynchronous get id data,it only can get id data before you call the buy action. if you restart the program,the asynchronous id data can not get again,so check_win_digital_v2 may not working.
+:exclamation::exclamation: this api is asynchronous get id data,it only can get id data before you call the buy action. if you restart the program,the asynchronous id data can not get again,so check_win_digital_v2 may not working,so you need to use "check_win_digital"!
 
 ```python
 I_want_money.check_win_digital_v2(id)#get the id from I_want_money.buy_digital
@@ -695,9 +703,36 @@ else:
 I_want_money.close_digital_option(id)
 ```
 #### get digital data
+
+##### sample1
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+import logging
+import time
+#logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
+I_want_money=IQ_Option("email","password")
+ACTIVES="EURUSD-OTC"
+duration=1#minute 1 or 5
+amount=1
+action="call"#put
+from datetime import datetime
+ 
+id=I_want_money.buy_digital_spot(ACTIVES,amount,action,duration) 
+
+while True:
+    check,_=I_want_money.check_win_digital(id)
+    if check:
+        break
+print(I_want_money.get_digital_position(id))
+print(I_want_money.check_win_digital(id))
+```
+#####sample 2
+
 ```python
 #print(I_want_money.get_order(id))#not work for digital
 print(I_want_money.get_positions("digital-option"))
+print(I_want_money.get_digital_position(2323433))#in put the id
 print(I_want_money.get_position_history("digital-option"))
 ```
 

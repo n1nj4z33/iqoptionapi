@@ -3,7 +3,7 @@ from setuptools import (setup, find_packages)
 
 setup(
     name="iqoptionapi",
-    version="4.3",
+    version="4.4",
     packages=find_packages(),
     install_requires=["pylint","requests","websocket-client==0.56"],
     include_package_data = True,

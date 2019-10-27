@@ -36,10 +36,8 @@ from iqoptionapi.ws.chanels.traders_mood import Traders_mood_unsubscribe
 from iqoptionapi.ws.chanels.buy_place_order_temp import Buy_place_order_temp
 from iqoptionapi.ws.chanels.get_order import Get_order
 from iqoptionapi.ws.chanels.get_deferred_orders import GetDeferredOrders
-from iqoptionapi.ws.chanels.get_positions import Get_positions
-from iqoptionapi.ws.chanels.get_positions import Get_position
-from iqoptionapi.ws.chanels.get_positions import Get_position_history
-from iqoptionapi.ws.chanels.get_positions import Get_position_history_v2
+from iqoptionapi.ws.chanels.get_positions import *
+ 
 from iqoptionapi.ws.chanels.get_available_leverages import Get_available_leverages
 from iqoptionapi.ws.chanels.cancel_order import Cancel_order
 from iqoptionapi.ws.chanels.close_position import Close_position
@@ -581,7 +579,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def get_position(self):
         return Get_position(self)
-
+    @property
+    def get_digital_position(self):
+        return Get_digital_position(self)
     @property
     def get_position_history(self):
         return Get_position_history(self)

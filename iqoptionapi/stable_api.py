@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "4.3"
+    __version__ = "4.4"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -832,14 +832,16 @@ class IQ_Option:
         return self.api.result
 
     def check_win_digital(self, buy_order_id):
-        check, data = self.get_position(buy_order_id)
-        if check:
-            if data["position"]["status"] == "closed":
-                return True, data["position"]["close_effect_amount"]
-            else:
-                return False, None
-        else:
+        data = self.get_digital_position(buy_order_id)
+        
+        if data["msg"]["position"]["status"] == "closed":
+            if data["msg"]["position"]["close_reason"]=="default":
+                return True, data["msg"]["position"]["pnl_realized"]
+            elif data["msg"]["position"]["close_reason"]=="expired":
+                return True, data["msg"]["position"]["pnl_realized"]-data["msg"]["position"]["buy_amount"]
+        else :
             return False, None
+         
     
     def check_win_digital_v2(self,buy_order_id):
         order_data=self.get_async_order(buy_order_id)
@@ -992,7 +994,15 @@ class IQ_Option:
         else:
             return False, None
     # this function is heavy
-
+    def get_digital_position(self,order_id):
+        self.api.position = None
+        while self.get_async_order(order_id)==None:
+            pass
+        position_id=self.get_async_order(order_id)["id"]
+        self.api.get_digital_position(position_id)
+        while self.api.position==None:
+            pass
+        return self.api.position
     def get_position_history(self, instrument_type):
         self.api.position_history = None
         self.api.get_position_history(instrument_type)

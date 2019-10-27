@@ -58,4 +58,14 @@ class Get_position_history_v2(Base):
                 }
         }
         self.send_websocket_request(self.name, data)
- 
+
+class Get_digital_position(Base):
+    name = "sendMessage"
+    def __call__(self,position_id):
+        data = {
+            "name":"digital-options.get-position",
+            "body":{
+                "position_id":position_id,
+                }
+        }
+        self.send_websocket_request(self.name, data)
