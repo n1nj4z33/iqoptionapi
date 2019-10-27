@@ -8,8 +8,8 @@
 last update:2019/10/27
 
 Version:4.4
-
-fix check_win_digital(check_win_digital and check_win_digital_v2 are different implement way)
+ 
+fix check_win_digital(check_win_digital(Synchronous message) and check_win_digital_v2(Asynchronous messages) are different implement way)
  
 add get_digital_position()
 
