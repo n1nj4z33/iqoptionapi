@@ -7,7 +7,7 @@ import logging
 import operator
  
 from collections import defaultdict
-from iqoptionapi.expiration import get_expiration_time
+from iqoptionapi.expiration import get_expiration_time,get_remaning_time
 from datetime import datetime,timedelta
 
  
@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "4.4"
+    __version__ = "4.5"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -678,7 +678,13 @@ class IQ_Option:
             logging.error('buy_multi error please input all same len')
             
 
-         
+    def get_remaning(self,duration):
+        for remaning in get_remaning_time(self.api.timesync.server_timestamp):
+            if remaning[0]==duration:
+                return remaning[1]
+        logging.error('get_remaning(self,duration) ERROR duration')
+        return "ERROR duration"
+        
     def buy(self, price, ACTIVES, ACTION, expirations):
         self.api.buy_successful = None
         self.api.buy_id = None

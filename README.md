@@ -5,7 +5,11 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/27
+last update:2019/10/31
+
+Version:4.5
+
+add [get_remaning](#getremaning) api
 
 Version:4.4
  
@@ -375,7 +379,24 @@ print("check win only one id (id_list[0])")
 print(I_want_money.check_win_v2(id_list[0]))
 ```
 
+#### <a id=getremaning>get_remaning</a>
 
+purchase time=remaning time - 30
+
+```python
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+Money=1
+ACTIVES="EURUSD"
+ACTION="call"#or "put"
+expirations_mode=1
+while True:
+    remaning_time=I_want_money.get_remaning(expirations_mode)
+    purchase_time=remaning_time-30
+    if purchase_time<4:#buy the binary option at purchase_time<4
+        I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
+        break
+```
 
 #### <a id=selloption>sell_option</a>
 
