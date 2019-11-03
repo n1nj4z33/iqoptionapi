@@ -87,6 +87,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     underlying_list_data = None
     position_changed = None
     instrument_quites_generated_data = nested_dict(2, dict)
+    instrument_quotes_generated_raw_data=nested_dict(2, dict)
     instrument_quites_generated_timestamp = nested_dict(2, dict)
     strike_list = None
     position_changed_data = {}

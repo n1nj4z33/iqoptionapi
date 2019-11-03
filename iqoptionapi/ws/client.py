@@ -208,6 +208,7 @@ class WebsocketClient(object):
         elif message["name"]=="result":
             self.api.result=message["msg"]["success"]
         elif message["name"]=="instrument-quotes-generated":
+             
             Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(message["msg"]["active"])]  
             period=message["msg"]["expiration"]["period"] 
             ans={}
@@ -235,6 +236,8 @@ class WebsocketClient(object):
                         pass
             self.api.instrument_quites_generated_timestamp[Active_name][period]=message["msg"]["expiration"]["timestamp"]
             self.api.instrument_quites_generated_data[Active_name][period]=ans
+
+            self.api.instrument_quotes_generated_raw_data[Active_name][period]=message
         elif message["name"]=="training-balance-reset":
             self.api.training_balance_reset_request=message["msg"]["isSuccessful"]
  

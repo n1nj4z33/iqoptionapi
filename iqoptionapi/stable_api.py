@@ -740,6 +740,11 @@ class IQ_Option:
         del self.api.instrument_quites_generated_data[ACTIVE]
         self.api.unsubscribe_instrument_quites_generated(ACTIVE,expiration_period)
 
+    def get_instrument_quites_generated_data(self,ACTIVE,duration):
+        while self.api.instrument_quotes_generated_raw_data[ACTIVE][duration*60]=={}:
+            pass
+        return self.api.instrument_quotes_generated_raw_data[ACTIVE][duration*60]
+
     def get_realtime_strike_list(self, ACTIVE, duration):
         while True:
             if not self.api.instrument_quites_generated_data[ACTIVE][duration*60]:
