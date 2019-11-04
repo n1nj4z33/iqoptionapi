@@ -1291,6 +1291,8 @@ I_want_money.unsubscribe_top_assets_updated(instrument_type)
 ---
 ### Get mood
 
+for now... only support get binary option mood , i will implement beterr if need..
+
 Sample
 
 ```python
