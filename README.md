@@ -5,7 +5,15 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/10/31
+last update:2019/11/4
+
+Version:5.0
+
+please donate >< get_digital_spot_profit_after_sale pay me lot of time
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/125
+
+add [get_digital_spot_profit_after_sale](#getdigitalspotprofitaftersale) api
 
 Version:4.5
 
@@ -633,6 +641,29 @@ amount=1
 action="call"#put
 print(I_want_money.buy_digital_spot(ACTIVES,amount,action,duration))
 ```
+
+#### <a id=getdigitalspotprofitaftersale>get_digital_spot_profit_after_sale</a>
+
+get Profit After Sale(P/L)
+![](image/profit_after_sale.png)
+```python
+from iqoptionapi.stable_api import IQ_Option 
+I_want_money=IQ_Option("email","passord")
+ACTIVES="EURUSD"
+duration=1#minute 1 or 5
+amount=100
+action="put"#put
+ 
+I_want_money.subscribe_strike_list(ACTIVES,duration)
+id=I_want_money.buy_digital_spot(ACTIVES,amount,action,duration) 
+ 
+while True:
+    PL=I_want_money.get_digital_spot_profit_after_sale(id)
+    if PL!=None:
+        print(PL)
+     
+```
+
 #### <a id=getdigitalcurrentprofit>get_digital_current_profit</a>
 
 get current price profit

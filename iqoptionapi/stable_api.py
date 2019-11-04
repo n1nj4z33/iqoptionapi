@@ -19,7 +19,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "4.5"
+    __version__ = "5.0"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -32,6 +32,7 @@ class IQ_Option:
         self.subscribe_candle_all_size = []
         self.subscribe_mood = []
         # for digit
+        self.get_digital_spot_profit_after_sale_data=nested_dict(2,int)
         self.get_realtime_strike_list_temp_data = {}
         self.get_realtime_strike_list_temp_expiration = 0
         #
@@ -822,7 +823,92 @@ class IQ_Option:
             pass
 
         return  self.api.digital_option_placed_id
+    def get_digital_spot_profit_after_sale(self,position_id):
+        def get_instrument_id_to_bid(data,instrument_id):
+            for row in data["msg"]["quotes"]:
+                if row["symbols"][0]==instrument_id:
+                    return row["price"]["bid"]
+            return None
+        #Author:Lu-Yi-Hsun 2019/11/04
+        #email:yihsun1992@gmail.com
+        #Source code reference
+        #https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/master/Source%20Code/5.27.0/sources/com/iqoption/dto/entity/position/Position.java#L564
+        while self.get_async_order(position_id)==None:
+            pass
+        #___________________/*position*/_________________
+        position=self.get_async_order(position_id)
+        #doEURUSD201911040628PT1MPSPT
+        #z mean check if call or not
+        if position["instrument_id"].find("MPSPT"):
+            z=False 
+        elif position["instrument_id"].find("MCSPT"):
+            z=True
+        else:
+            logging.error('get_digital_spot_profit_after_sale position error'+str(position["instrument_id"]))
+        ACTIVES=position["instrument_underlying"]
+        amount=max(position["buy_amount"],position["sell_amount"])
+        start_duration=position["instrument_id"].find("PT")+2
+        end_duration=start_duration+position["instrument_id"][start_duration:].find("M")
+ 
+        duration=int(position["instrument_id"][start_duration:end_duration])
+        z2=False
 
+        
+        getAbsCount=position["count"]
+        instrumentStrikeValue=position["instrument_strike_value"]/1000000.0
+        spotLowerInstrumentStrike=position["extra_data"]["lower_instrument_strike"]/1000000.0
+        spotUpperInstrumentStrike=position["extra_data"]["upper_instrument_strike"]/1000000.0
+
+        aVar=position["extra_data"]["lower_instrument_id"] 
+        aVar2=position["extra_data"]["upper_instrument_id"]  
+        getRate=position["currency_rate"]
+        
+        #___________________/*position*/_________________
+        instrument_quites_generated_data=self.get_instrument_quites_generated_data(ACTIVES, duration)
+         
+        f_tmp=get_instrument_id_to_bid(instrument_quites_generated_data,aVar)#https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/master/Source%20Code/5.5.1/sources/com/iqoption/dto/entity/position/Position.java#L493
+        #f is bidprice of lower_instrument_id ,f2 is bidprice of upper_instrument_id
+        if f_tmp!=None:
+            self.get_digital_spot_profit_after_sale_data[position_id]["f"]=f_tmp
+            f=f_tmp
+        else:
+            f=self.get_digital_spot_profit_after_sale_data[position_id]["f"]
+
+        f2_tmp=get_instrument_id_to_bid(instrument_quites_generated_data,aVar2) 
+        if f2_tmp!=None:
+            self.get_digital_spot_profit_after_sale_data[position_id]["f2"]=f2_tmp
+            f2=f2_tmp
+        else:
+            f2=self.get_digital_spot_profit_after_sale_data[position_id]["f2"]
+         
+        if (spotLowerInstrumentStrike != instrumentStrikeValue) and f!=None and f2 !=None:
+            
+            if (spotLowerInstrumentStrike > instrumentStrikeValue or instrumentStrikeValue > spotUpperInstrumentStrike):
+                if z:
+                    instrumentStrikeValue = (spotUpperInstrumentStrike - instrumentStrikeValue) / abs(spotUpperInstrumentStrike - spotLowerInstrumentStrike);
+                    f = abs(f2 - f);
+                else:
+                    instrumentStrikeValue = (instrumentStrikeValue - spotUpperInstrumentStrike) / abs(spotUpperInstrumentStrike - spotLowerInstrumentStrike);
+                    f = abs(f2 - f);
+            
+            elif z:
+                f += ((instrumentStrikeValue - spotLowerInstrumentStrike) / (spotUpperInstrumentStrike - spotLowerInstrumentStrike)) * (f2 - f);
+            else:
+                instrumentStrikeValue = (spotUpperInstrumentStrike - instrumentStrikeValue) / (spotUpperInstrumentStrike - spotLowerInstrumentStrike);
+                f -= f2;
+            f = f2 + (instrumentStrikeValue * f)
+            
+        if z2:
+            pass
+        if f !=None:
+            #price=f/getRate
+            #https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/master/Source%20Code/5.27.0/sources/com/iqoption/dto/entity/position/Position.java#L603
+            price=(f/getRate)
+            #getAbsCount Reference
+            #https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/master/Source%20Code/5.27.0/sources/com/iqoption/dto/entity/position/Position.java#L450
+            return price*getAbsCount-amount
+        else:
+            return None
     def buy_digital(self, amount, instrument_id):
         self.api.digital_option_placed_id=None
         self.api.place_digital_option(instrument_id,amount)
