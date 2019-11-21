@@ -609,7 +609,10 @@ class IQ_Option:
         while True:
             check, data = self.get_betinfo(id_number)
             if check:
-                return data["result"]["data"][str(id_number)]["win"]
+                try:
+                    return data["result"]["data"][str(id_number)]["win"]
+                except:
+                    pass
             time.sleep(self.suspend)
 # -------------------get infomation only for binary option------------------------
 
