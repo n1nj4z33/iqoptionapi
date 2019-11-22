@@ -1180,3 +1180,7 @@ class IQ_Option:
             return True, self.api.overnight_fee["msg"]
         else:
             return False, None
+    def get_option_open_by_other_pc(self):
+        return self.api.socket_option_opened
+    def del_option_open_by_other_pc(self,id):
+        del self.api.socket_option_opened[id]

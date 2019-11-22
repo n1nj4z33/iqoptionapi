@@ -76,7 +76,7 @@ requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member
 class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     """Class for communication with IQ Option API."""
     # pylint: disable=too-many-public-methods
-
+    socket_option_opened={}
     timesync = TimeSync()
     profile = Profile()
     candles = Candles()
