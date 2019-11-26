@@ -78,7 +78,13 @@ class WebsocketClient(object):
                 msg=v
                 self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
             self.api.candle_generated_all_size_check[active]=True 
-                
+        elif message["name"]=="commission-changed":
+            instrument_type=message["msg"]["instrument_type"]
+            active_id=message["msg"]["active_id"]
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(active_id)]            
+            commission=message["msg"]["commission"]["value"]
+            self.api.subscribe_commission_changed_data[instrument_type][Active_name][self.api.timesync.server_timestamp]=int(commission)
+            
         #######################################################
         #______________________________________________________
         #######################################################

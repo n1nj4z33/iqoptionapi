@@ -7,6 +7,7 @@ import logging
 import operator
  
 from collections import defaultdict
+from collections import deque
 from iqoptionapi.expiration import get_expiration_time,get_remaning_time
 from datetime import datetime,timedelta
 
@@ -19,7 +20,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "5.1"
+    __version__ = "5.2"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -563,6 +564,17 @@ class IQ_Option:
             return self.api.top_assets_updated_data[instrument_type]
         else:
             return None
+
+#------------------------commission_________
+#instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
+    def subscribe_commission_changed(self,instrument_type):
+ 
+        self.api.Subscribe_Commission_Changed(instrument_type)
+    def unsubscribe_commission_changed(self,instrument_type):
+        self.api.Unsubscribe_Commission_Changed(instrument_type)
+    def get_commission_change(self,instrument_type):
+        return self.api.subscribe_commission_changed_data[instrument_type]
+
 # -----------------------------------------------
 
 # -----------------traders_mood----------------------
@@ -865,6 +877,10 @@ class IQ_Option:
         aVar=position["extra_data"]["lower_instrument_id"] 
         aVar2=position["extra_data"]["upper_instrument_id"]  
         getRate=position["currency_rate"]
+        #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/144#issue-518901797
+        #float division by zero
+        if spotUpperInstrumentStrike - spotLowerInstrumentStrike==0:
+            return None
         
         #___________________/*position*/_________________
         instrument_quites_generated_data=self.get_instrument_quites_generated_data(ACTIVES, duration)

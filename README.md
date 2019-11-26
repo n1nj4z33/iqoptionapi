@@ -5,7 +5,23 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/11/22
+last update:2019/11/26
+
+
+Version:5.2
+
+add
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/152
+
+[get_commission_change](#getcommissionchange) api
+[subscribe_commission_changed](#getcommissionchange) api
+[unsubscribe_commission_changed](#getcommissionchange) api
+
+fix 
+
+https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/144
+
 
 Version:5.1
 add[get_option_open_by_other_pc](#getoptionopenbyotherpc) api
@@ -330,6 +346,40 @@ while I_want_money.get_async_order(id)==None:
     pass
 order_data=I_want_money.get_async_order(id)
 print(I_want_money.get_async_order(id))
+```
+#### <a id=getcommissionchange>get_commission_change</a>
+
+
+instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
+
+I_want_money.subscribe_commission_changed(instrument_type)
+I_want_money.get_commission_change(instrument_type)
+I_want_money.unsubscribe_commission_changed(instrument_type)
+
+Sample code
+
+```python
+import time
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+#instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
+instrument_type=["binary-option","turbo-option","digital-option","crypto","forex","cfd"]
+for ins in instrument_type:
+    I_want_money.subscribe_commission_changed(ins)
+print("Start stream please wait profit change...")
+while True:
+    for ins in instrument_type:
+        commissio_data=I_want_money.get_commission_change(ins)
+        if commissio_data!={}:
+            for active_name in commissio_data:
+                if commissio_data[active_name]!={}:
+                    the_min_timestamp=min(commissio_data[active_name].keys())
+                    commissio=commissio_data[active_name][the_min_timestamp]
+                    profit=(100-commissio)/100
+                    print("instrument_type: "+str(ins)+" active_name: "+str(active_name)+" profit change to: "+str(profit))
+                    #Data have been update so need del
+                    del I_want_money.get_commission_change(ins)[active_name][the_min_timestamp]
+    time.sleep(1)
 ```
 
 
@@ -1375,7 +1425,6 @@ I_want_money.change_balance(MODE)
 ```
 
 ---
-
 
  
  

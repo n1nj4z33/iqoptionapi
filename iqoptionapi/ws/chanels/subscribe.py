@@ -87,3 +87,23 @@ class Subscribe_top_assets_updated(Base):
                 "version":"1.2"
                 }
         self.send_websocket_request(self.name, data)
+
+
+
+"""
+{"name":"subscribeMessage","request_id":"s_114","msg":{"name":"commission-changed","version":"1.0","params":{"routingFilters":{"instrument_type":"digital-option","user_group_id":1}}}}
+"""
+#instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
+class Subscribe_commission_changed(Base):
+    name = "subscribeMessage"
+    def __call__(self, instrument_type):
+ 
+        data = {"name":"commission-changed",
+                "params":{
+                       "routingFilters":{
+                                        "instrument_type":str(instrument_type) 
+                                        }
+                        },
+                "version":"1.0"
+                }
+        self.send_websocket_request(self.name, data)
