@@ -20,7 +20,7 @@ def nested_dict(n, type):
 
 
 class IQ_Option:
-    __version__ = "5.2"
+    __version__ = "5.2.1"
 
     def __init__(self, email, password):
         self.size = [1, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800,
@@ -877,10 +877,7 @@ class IQ_Option:
         aVar=position["extra_data"]["lower_instrument_id"] 
         aVar2=position["extra_data"]["upper_instrument_id"]  
         getRate=position["currency_rate"]
-        #https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/144#issue-518901797
-        #float division by zero
-        if spotUpperInstrumentStrike - spotLowerInstrumentStrike==0:
-            return None
+         
         
         #___________________/*position*/_________________
         instrument_quites_generated_data=self.get_instrument_quites_generated_data(ACTIVES, duration)

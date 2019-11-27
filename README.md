@@ -5,8 +5,10 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-last update:2019/11/26
+last update:2019/11/28
 
+Version:5.2.1
+roll back get_digital_spot_profit_after_sale some code
 
 Version:5.2
 
@@ -15,7 +17,9 @@ add
 https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/152
 
 [get_commission_change](#getcommissionchange) api
+
 [subscribe_commission_changed](#getcommissionchange) api
+
 [unsubscribe_commission_changed](#getcommissionchange) api
 
 fix 
