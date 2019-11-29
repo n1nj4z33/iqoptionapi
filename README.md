@@ -406,7 +406,11 @@ ACTIVES="EURUSD"
 ACTION="call"#or "put"
 expirations_mode=1
 
-I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
+check,id=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
+if check:
+    print("!buy!")
+else:
+    print("buy fail")
 ```
 
 ```python
@@ -415,7 +419,7 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
                 #ACTION:"call"/"put" type(str)
                 #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code (int)https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-                #return:(None/id_number):if sucess return (id_number) esle return(None) 2.1.5 change this 
+                #return:if sucess return (True,id_number) esle return(Fale,None) 
 ```
 #### <a id=buymulti>buy_multi</a>
 
@@ -521,10 +525,11 @@ an other way to fix that(implement by get_betinfo)
 input by int
 
 ```python
-I_want_money.check_win_v2(23243221)
-#""you need to get id_number from buy function""
-#I_want_money.check_win_v2(id_number)
-#this function will do loop check your bet until if win/equal/loose
+from iqoptionapi.stable_api import IQ_Option
+I_want_money=IQ_Option("email","password")
+check,id = I_want_money.buy(1, "EURUSD", "call", 1)
+print("start check win please wait")
+print(I_want_money.check_win_v2(id))
 ```
 
 ---
