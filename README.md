@@ -13,6 +13,14 @@ last version will be privacy IQoptionapi
 for now 50USD(regist after 1/30 change to 100USD) each month 
 
 more detail please email me:yihsun1992@gmail.com
+
+privacy IQoptionapi feature
+
+-- thread safe
+-- copy top 1 trader stratagy api
+-- more support
+
+ 
  
 
 last update:2019/11/28
