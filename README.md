@@ -5,6 +5,15 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
+
+This repository not update new version anymore
+
+privacy IQoptionapi for now 50USD(after 1/30 change to 100USD) each month 
+more detail please email me:yihsun1992@gmail.com
+https://docs.google.com/forms/d/19dedYorOlq9Eg5KC49yUO33fwLYTPElS1XpBytdSlzo/viewform?edit_requested=true
+
+
+
 last update:2019/11/28
 
 Version:5.2.1
