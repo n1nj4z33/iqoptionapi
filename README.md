@@ -10,7 +10,8 @@ This repository not update new version anymore
 
 last version will be privacy IQoptionapi 
 
-for now 50USD(regist after 1/30 change to 100USD) each month 
+if you register now only 50USD each month
+if you regist after 1/30 100USD each month
 
 more detail please email me:yihsun1992@gmail.com
 
