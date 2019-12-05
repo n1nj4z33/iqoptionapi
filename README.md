@@ -6,17 +6,17 @@
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
 
-# This repository not update new version anymore
+## This repository not update new version anymore
 
-# last version will be privacy IQoptionapi 
+## last version will be privacy IQoptionapi 
 
-# if you register now only 50USD each month
+## if you register now only 50USD each month
 
-# if you regist after 1/30 100USD each month
+## if you regist after 1/30 100USD each month
 
-# if you want to regist sent email to me:yihsun1992@gmail.com
+## if you want to regist sent email to me:yihsun1992@gmail.com
 
-# privacy IQoptionapi feature
+## privacy IQoptionapi feature
 
 -- keep fix the bug
 -- copy top 1 trader stratagy api
