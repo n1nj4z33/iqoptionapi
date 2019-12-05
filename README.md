@@ -18,7 +18,7 @@ more detail please email me:yihsun1992@gmail.com
 
 privacy IQoptionapi feature
 
--- thread safe
+-- keep fix the bug
 -- copy top 1 trader stratagy api
 -- more support
 
