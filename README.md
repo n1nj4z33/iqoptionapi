@@ -12,7 +12,7 @@
 ## if you register now only 50USD each month
 
 ## if you regist after 1/30 100USD each month
-
+ 
 ## if you want to regist sent email to me:yihsun1992@gmail.com
 
 ## privacy IQoptionapi feature
@@ -21,7 +21,7 @@
 -- copy top 1 trader stratagy api
 -- more support
 
-
+### any program system you want to build email:yihsun1992@gmail.com
  
 
 last update:2019/11/28
