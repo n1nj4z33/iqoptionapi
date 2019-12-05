@@ -6,8 +6,7 @@
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
 
-## This repository not update new version anymore
-
+## This repository only support pull requests,i am not direct fix any or add any api in here
 ## last version will be privacy IQoptionapi 
 
 ## if you register now only 50USD each month
@@ -22,7 +21,7 @@
 -- copy top 1 trader stratagy api
 -- more support
 
- 
+
  
 
 last update:2019/11/28
