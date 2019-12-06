@@ -7,7 +7,7 @@
 
 
 ## This repository only support pull requests,i am not direct fix any or add any api in here
-## last version will be privacy IQoptionapi 
+## last version 6.2 will be privacy IQoptionapi 
 
 ## if you register now only 50USD each month
 
@@ -15,7 +15,7 @@
  
 ## if you want to regist sent email to me:yihsun1992@gmail.com
 
-## privacy IQoptionapi feature
+## privacy IQoptionapi 6.2 feature
 
 -- keep fix the bug
 
