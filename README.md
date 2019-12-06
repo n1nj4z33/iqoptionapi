@@ -18,7 +18,9 @@
 ## privacy IQoptionapi feature
 
 -- keep fix the bug
+
 -- copy top 1 trader stratagy api
+
 -- more support
 
 ### any program system you want to build email:yihsun1992@gmail.com
