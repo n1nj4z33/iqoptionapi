@@ -8,6 +8,9 @@
 
 ## This repository only support pull requests,i am not direct fix any or add any api in here
 ## last version 6.2 will be privacy IQoptionapi 
+### version 6.2 feture
+
+copy trade will top winner
 
 ## if you register now only 50USD each month
 
@@ -17,11 +20,7 @@
 
 ## privacy IQoptionapi 6.2 feature
 
--- keep fix the bug
-
--- copy top 1 trader stratagy api
-
--- more support
+ 
 
 ### any program system you want to build email:yihsun1992@gmail.com
  
