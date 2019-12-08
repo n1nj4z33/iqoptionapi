@@ -7,9 +7,9 @@
 
 
 ## This repository only support pull requests,i am not direct fix any or add any api in here
-## last version 6.2 will be privacy IQoptionapi 
+## last version 6.3 will be privacy IQoptionapi 
 
-## version 6.2 feture
+## version 6.3 feture
 IQoptionapi 6.3 document
 https://lu-yi-hsun.github.io/iqoptionapi_private/
  
