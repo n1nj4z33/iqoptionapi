@@ -18,11 +18,12 @@ copy trade will top winner
  
 ## if you want to regist sent email to me:yihsun1992@gmail.com
 
-## privacy IQoptionapi 6.2 feature
+## privacy IQoptionapi 6.3 feature
 
+IQoptionapi 6.3 document
+https://lu-yi-hsun.github.io/iqoptionapi_private/
  
 
-### any program system you want to build email:yihsun1992@gmail.com
  
 
 last update:2019/11/28
