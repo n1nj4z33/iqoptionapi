@@ -6,27 +6,8 @@
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
 
-## This repository only support pull requests,i am not direct fix any or add any api in here
-## last version 6.3 will be privacy IQoptionapi 
-
-## version 6.3 feture
-IQoptionapi 6.3 document
-https://lu-yi-hsun.github.io/iqoptionapi_private/
+## This repository not update anymore
  
-copy trade will top winner
-
-## register private version
-
-if you register now only 50USD each month
-
-if you regist after 1/30 100USD each month
-
-if you want to regist sent email to me:yihsun1992@gmail.com
- 
- 
-
- 
-
 last update:2019/11/28
 
 Version:5.2.1
