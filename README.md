@@ -8,20 +8,21 @@
 
 ## This repository only support pull requests,i am not direct fix any or add any api in here
 ## last version 6.2 will be privacy IQoptionapi 
-### version 6.2 feture
 
-copy trade will top winner
-
-## if you register now only 50USD each month
-
-## if you regist after 1/30 100USD each month
- 
-## if you want to regist sent email to me:yihsun1992@gmail.com
-
-## privacy IQoptionapi 6.3 feature
-
+## version 6.2 feture
 IQoptionapi 6.3 document
 https://lu-yi-hsun.github.io/iqoptionapi_private/
+ 
+copy trade will top winner
+
+## register private version
+
+if you register now only 50USD each month
+
+if you regist after 1/30 100USD each month
+
+if you want to regist sent email to me:yihsun1992@gmail.com
+ 
  
 
  
