@@ -7,7 +7,7 @@
 
 
 ## public version someday i will be back.
- 
+## if someone want fix this api, can just pull request
 last update:2019/11/28
 
 Version:5.2.1
