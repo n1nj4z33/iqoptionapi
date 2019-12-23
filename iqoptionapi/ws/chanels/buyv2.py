@@ -35,7 +35,7 @@ class Buyv2(Base):
                 "expired": int(exp),
                 "refund_value": 0,
                 "price": price,
-                "value": 0,  # Preset to 0, don't worry won't affect the actual buy contract
+                "value": 0,  # Preset to 0, dont worry won't affect the actual buy contract
                 "profit_percent": 0  # IQOption accept any value lower than the actual percent, don't worry it won't affect actual earning
             }
         }
