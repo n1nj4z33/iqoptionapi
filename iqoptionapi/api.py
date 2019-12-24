@@ -111,7 +111,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     digital_option_placed_id = None
     
     microserviceName_binary_options_name_option={}
-    subscribe_commission_changed_data=nested_dict(2,dict)
     real_time_candles = nested_dict(3, dict)
     real_time_candles_maxdict_table = nested_dict(2, dict)
     candle_generated_check = nested_dict(2, dict)
@@ -446,13 +445,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def Unsubscribe_Top_Assets_Updated(self):
         return Unsubscribe_top_assets_updated(self)
 
-    @property
-    def Subscribe_Commission_Changed(self):
-        return Subscribe_commission_changed(self)
-    @property
-    def Unsubscribe_Commission_Changed(self):
-        return Unsubscribe_commission_changed(self)
-        
 # --------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------
 
