@@ -3,4 +3,4 @@ build/
 dist/
 *.egg-info/
 .vscode/
-/.vs
+test.py

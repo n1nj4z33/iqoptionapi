@@ -84,17 +84,3 @@ class Unsubscribe_top_assets_updated(Base):
                 "version":"1.2"
                 }
         self.send_websocket_request(self.name, data)
-
-class Unsubscribe_commission_changed(Base):
-    name = "unsubscribeMessage"
-    def __call__(self, instrument_type):
- 
-        data = {"name":"commission-changed",
-                "params":{
-                       "routingFilters":{
-                                        "instrument_type":str(instrument_type) 
-                                        }
-                        },
-                "version":"1.0"
-                }
-        self.send_websocket_request(self.name, data)

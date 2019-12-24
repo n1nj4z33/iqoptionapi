@@ -5,30 +5,7 @@
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/iqoptionapi)
 
-
-## public version someday i will be back.
- 
-last update:2019/11/28
-
-Version:5.2.1
-roll back get_digital_spot_profit_after_sale some code
-
-Version:5.2
-
-add
-
-https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/152
-
-[get_commission_change](#getcommissionchange) api
-
-[subscribe_commission_changed](#getcommissionchange) api
-
-[unsubscribe_commission_changed](#getcommissionchange) api
-
-fix 
-
-https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/144
-
+last update:2019/11/22
 
 Version:5.1
 add[get_option_open_by_other_pc](#getoptionopenbyotherpc) api
@@ -354,40 +331,6 @@ while I_want_money.get_async_order(id)==None:
 order_data=I_want_money.get_async_order(id)
 print(I_want_money.get_async_order(id))
 ```
-#### <a id=getcommissionchange>get_commission_change</a>
-
-
-instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
-
-I_want_money.subscribe_commission_changed(instrument_type)
-I_want_money.get_commission_change(instrument_type)
-I_want_money.unsubscribe_commission_changed(instrument_type)
-
-Sample code
-
-```python
-import time
-from iqoptionapi.stable_api import IQ_Option
-I_want_money=IQ_Option("email","password")
-#instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
-instrument_type=["binary-option","turbo-option","digital-option","crypto","forex","cfd"]
-for ins in instrument_type:
-    I_want_money.subscribe_commission_changed(ins)
-print("Start stream please wait profit change...")
-while True:
-    for ins in instrument_type:
-        commissio_data=I_want_money.get_commission_change(ins)
-        if commissio_data!={}:
-            for active_name in commissio_data:
-                if commissio_data[active_name]!={}:
-                    the_min_timestamp=min(commissio_data[active_name].keys())
-                    commissio=commissio_data[active_name][the_min_timestamp]
-                    profit=(100-commissio)/100
-                    print("instrument_type: "+str(ins)+" active_name: "+str(active_name)+" profit change to: "+str(profit))
-                    #Data have been update so need del
-                    del I_want_money.get_commission_change(ins)[active_name][the_min_timestamp]
-    time.sleep(1)
-```
 
 
 ### For Options
@@ -409,11 +352,7 @@ ACTIVES="EURUSD"
 ACTION="call"#or "put"
 expirations_mode=1
 
-check,id=I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
-if check:
-    print("!buy!")
-else:
-    print("buy fail")
+I_want_money.buy(Money,ACTIVES,ACTION,expirations_mode)
 ```
 
 ```python
@@ -422,7 +361,7 @@ I_want_money.buy(Money,ACTIVES,ACTION,expirations)
                 #ACTIVES:sample input "EURUSD" OR "EURGBP".... you can view by get_all_ACTIVES_OPCODE
                 #ACTION:"call"/"put" type(str)
                 #expirations:input minute,careful too large will false to buy(Closed market time)thank Darth-Carrotpie's code (int)https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
-                #return:if sucess return (True,id_number) esle return(Fale,None) 
+                #return:(None/id_number):if sucess return (id_number) esle return(None) 2.1.5 change this 
 ```
 #### <a id=buymulti>buy_multi</a>
 
@@ -528,11 +467,10 @@ an other way to fix that(implement by get_betinfo)
 input by int
 
 ```python
-from iqoptionapi.stable_api import IQ_Option
-I_want_money=IQ_Option("email","password")
-check,id = I_want_money.buy(1, "EURUSD", "call", 1)
-print("start check win please wait")
-print(I_want_money.check_win_v2(id))
+I_want_money.check_win_v2(23243221)
+#""you need to get id_number from buy function""
+#I_want_money.check_win_v2(id_number)
+#this function will do loop check your bet until if win/equal/loose
 ```
 
 ---
@@ -1437,6 +1375,7 @@ I_want_money.change_balance(MODE)
 ```
 
 ---
+
 
  
  
