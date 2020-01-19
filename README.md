@@ -1,6 +1,5 @@
 # IQ Option API
 
-1/25 I WILL RESTART PRIVATE VERSION 
 
 
 [![Build Status](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi.svg?branch=master)](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi)
