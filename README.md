@@ -1,10 +1,7 @@
 # IQ Option API
 
-Sorry , everyone I have been hire by a team, 
-I can not direct fix the bug , 
-but if someone want help, they can pull request.
+1/25 I WILL RESTART PRIVATE VERSION 
 
-Sorry everyone .
 
 [![Build Status](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi.svg?branch=master)](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi)
 [![cover](https://codecov.io/gh/Lu-Yi-Hsun/iqoptionapi/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/gh/Lu-Yi-Hsun/iqoptionapi)
