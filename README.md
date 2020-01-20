@@ -19,6 +19,8 @@
 
 • Back trade system api can faster to find the Best strategy to trade. 
 
+• Any support about the api 
+
 
 
 [![Build Status](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi.svg?branch=master)](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi)
