@@ -11,7 +11,7 @@
 ### Sample code for build robot
 ### Future build binary option P/L
 ### Future build back trade system for binary option api.
-### Back trade system api can faster to find the Best strategy to trade. 
+• Back trade system api can faster to find the Best strategy to trade. 
 
 
 
