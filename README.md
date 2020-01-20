@@ -5,13 +5,13 @@
 ## Private version 200 USD per momth after 3/1 300USD .
 
 
-# keep Fix All bug and customized api.
-# Deeply decompile API
-# Great document
-# Sample code for build robot
-# Future build binary option P/L
-# Future build back trade system for binary option api.
-# Back trade system api can faster to find the Best strategy to trade. 
+### keep Fix All bug and customized api.
+### Deeply decompile API
+### Great document
+### Sample code for build robot
+### Future build binary option P/L
+### Future build back trade system for binary option api.
+### Back trade system api can faster to find the Best strategy to trade. 
 
 
 
