@@ -2,8 +2,8 @@
 
 ## 1/25 restart sell private version api 
 
-## Private version 300 USD per momth after 3/1 500USD
-## 12 month once price 24000USD
+## Private version 300 USD per momth after 3/1 rise up to 500USD per momth
+## 12 months once price 24000USD
 
 • keep Fix All bug and customized api.
 
