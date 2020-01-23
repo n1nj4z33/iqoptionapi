@@ -2,8 +2,8 @@
 
 ## 1/25 restart sell private version api 
 
-## Private version 300 USD per momth
-
+## Private version 300 USD per momth after 3/1 500USD
+## 12 month once price 24000USD
 
 • keep Fix All bug and customized api.
 
@@ -21,6 +21,7 @@
 
 • Any support about the api 
 
+• Detect which user win much, and copy his stratagy
 
 
 [![Build Status](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi.svg?branch=master)](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi)
