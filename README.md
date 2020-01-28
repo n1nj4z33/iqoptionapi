@@ -1,8 +1,10 @@
 # IQ Option API
 
-## Private version 300 USD per momth after March 1st rise up to 500USD per momth
-## 12 months once price 24000USD
-
+## Private version: $300 USD/month 
+## Hurry Purchase Now to remain Updated!...........
+# From March 1st, the price for private version will be $500 USD/month
+## Subscription for 1 Year: $24000 USD
+## Features Offered in Private Version:
 • keep Fix All bug and customized api.
 
 • Deeply decompile API
@@ -18,7 +20,7 @@
 • Back trade system api can faster to find the Best strategy to trade. 
 
 • Any support about the api 
-
+#
 ## preview private api document
 
 https://lu-yi-hsun.github.io/iqoptionapi_private/
