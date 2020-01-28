@@ -21,7 +21,11 @@
 
 • Any support about the api 
 
- 
+## preview private api document
+
+https://lu-yi-hsun.github.io/iqoptionapi_private/
+
+6.7.1 have been fix ssl error problem
 
 [![Build Status](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi.svg?branch=master)](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi)
 [![cover](https://codecov.io/gh/Lu-Yi-Hsun/iqoptionapi/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/gh/Lu-Yi-Hsun/iqoptionapi)
