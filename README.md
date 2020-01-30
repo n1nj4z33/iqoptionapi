@@ -1,7 +1,7 @@
 # IQ Option API
 ## Questionnaire about private version
 https://forms.gle/xeMCy9bFbtxDJY347
-## Private version: $300 USD/month 
+## Private version: $250 USD/month 
 ## Hurry Purchase Now to remain Updated!...........
 # From March 1st, the price for private version will be $500 USD/month
 ## Subscription for 1 Year: $24000 USD
