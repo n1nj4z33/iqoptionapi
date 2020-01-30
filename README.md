@@ -1,4 +1,9 @@
 # IQ Option API
+
+## Super Crazy Robot Copy Strategy and detect user
+
+https://npt.godaddysites.com/iq-option-robot
+
 ## Questionnaire about private version
 https://forms.gle/xeMCy9bFbtxDJY347
 ## Private version: $250 USD/month 
