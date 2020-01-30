@@ -706,13 +706,20 @@ class IQ_Option:
     def buy(self, price, ACTIVES, ACTION, expirations):
         self.api.buy_successful = None
         self.api.buy_id = None
-        self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION, expirations)
-        start_t=time.time()
-        while self.api.buy_successful == None and self.api.buy_id == None:
-            if time.time()-start_t>=30:
-                logging.error('**warning** buy late 30 sec')
-                return False,None
-             
+        decide_to_go = False
+        if int(expirations) <=5:
+            decide_to_go = self.check_active_option(ACTIVES,"turbo")
+        else:
+            decide_to_go = self.check_active_option(ACTIVES,"binary")
+        if decide_to_go == True:
+            self.api.buy(price, OP_code.ACTIVES[ACTIVES], ACTION, expirations)
+            start_t=time.time()
+            while self.api.buy_successful == None and self.api.buy_id == None:
+                if time.time()-start_t>=30:
+                    logging.error('**warning** buy late 30 sec')
+                    return False,None  
+        else:
+            return False,None
         return self.api.buy_successful,self.api.buy_id
         
 
