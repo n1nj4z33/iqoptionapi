@@ -227,8 +227,7 @@ class IQ_Option:
                         OPEN_TIME[option][name]["open"]=True
                 else:
                     OPEN_TIME[option][name]["open"]=active["enabled"]
-
-                
+        
         #for digital
         digital_data=self.get_digital_underlying_list_data()["underlying"]
         for digital in digital_data:
@@ -262,7 +261,25 @@ class IQ_Option:
 
         return OPEN_TIME
                     
-       
+    # for faster checking the information reation to option active    
+    def check_active_option(self,symbol_name,type_local="turbo"):
+        #for binary option turbo and binary
+        decision_local = False
+        data_values=self.get_all_init_v2()
+        for actives_id in data_values[type_local]["actives"]:
+            active=data_values[type_local]["actives"][actives_id]
+            if symbol_name in str(active["name"]):
+                if active["enabled"]==True:
+                    if active["is_suspended"]==True:
+                        decision_local = False
+                        break
+                    else:
+                        decision_local= True
+                        break
+                else:
+                    decision_local = active["enabled"]
+        return decision_local
+      
 
 # --------for binary option detail
 
