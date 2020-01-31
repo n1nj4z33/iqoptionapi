@@ -3,9 +3,9 @@
 ## Super Crazy Robot Copy Strategy and detect user
  
 
-<a href="https://npt.godaddysites.com/iq-option-robot/"><img src="https://github.com/Lu-Yi-Hsun/iqoptionapi/blob/master/image/83521925_616885489131244_2922459279078195200_n.jpg" width="100" height="100"></a>
+<a href="https://npt-life.com/iq-option-robot/"><img src="https://github.com/Lu-Yi-Hsun/iqoptionapi/blob/master/image/83521925_616885489131244_2922459279078195200_n.jpg" width="100" height="100"></a>
 
- https://npt.godaddysites.com/iq-option-robot/
+ https://npt-life.com/iq-option-robot/
 
 ## Questionnaire about private version
 https://forms.gle/xeMCy9bFbtxDJY347
