@@ -14,6 +14,9 @@ https://forms.gle/xeMCy9bFbtxDJY347
 # From March 1st, the price for private version will be $500 USD/month
 ## Subscription for 1 Year: $2400 USD
 ## Features Offered in Private Version:
+
+• Encrypted executable files protect your products
+
 • keep Fix All bug and customized api.
 
 • Deeply decompile API
