@@ -7,8 +7,10 @@
 
  https://npt-life.com/iq-option-robot/
 
-## Questionnaire about private version
-https://forms.gle/xeMCy9bFbtxDJY347
+## Questionnaire about how many people want to support private version
+
+https://forms.gle/8MVnhoeavym3oiwz7
+ 
 ## Private version: $250 USD/month 
 ## Hurry Purchase Now to remain Updated!...........
 # From March 1st, the price for private version will be $500 USD/month
