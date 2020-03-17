@@ -1,46 +1,5 @@
 # IQ Option API
 
-## Super Crazy Robot Copy Strategy and detect user
- 
-
-<a href="https://npt-life.com/iq-option-robot/"><img src="https://github.com/Lu-Yi-Hsun/iqoptionapi/blob/master/image/83521925_616885489131244_2922459279078195200_n.jpg" width="100" height="100"></a>
-
- https://npt-life.com/iq-option-robot/
-
-## Questionnaire about how many people want to support private version
-
-https://forms.gle/8MVnhoeavym3oiwz7
- 
-## Private version: $250 USD/month 
-## Hurry Purchase Now to remain Updated!...........
-# From March 1st, the price for private version will be $500 USD/month
-## Subscription for 1 Year: $2400 USD
-## Features Offered in Private Version:
-
-• Encrypted executable files protect your products
-
-• keep Fix All bug and customized api.
-
-• Deeply decompile API
-
-• Great document
-
-• Sample code for build robot
-
-• Future build binary option P/L
-
-• Future build back trade system for binary option api.
-
-• Back trade system api can faster to find the Best strategy to trade. 
-
-• Any support about the api 
-#
-## preview private api document
-
-https://lu-yi-hsun.github.io/iqoptionapi_private/
-
-6.7.1 have been fix ssl error problem
-
 [![Build Status](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi.svg?branch=master)](https://travis-ci.org/Lu-Yi-Hsun/iqoptionapi)
 [![cover](https://codecov.io/gh/Lu-Yi-Hsun/iqoptionapi/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/gh/Lu-Yi-Hsun/iqoptionapi)
 
