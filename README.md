@@ -1,4 +1,4 @@
-# Private version Iqoption API
+# Iqoption API
 
 ## Document
 
