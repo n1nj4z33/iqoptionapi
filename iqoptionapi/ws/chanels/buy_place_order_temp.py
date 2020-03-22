@@ -1,7 +1,7 @@
 import datetime
 import time
 from iqoptionapi.ws.chanels.base import Base
-
+import iqoptionapi.global_value as global_value
 #work for forex digit cfd(stock)
 
 class Buy_place_order_temp(Base):
@@ -43,7 +43,7 @@ class Buy_place_order_temp(Base):
             
 
             "use_token_for_commission":bool(use_token_for_commission),
-            "user_balance_id":int(self.api.profile.balance_id),
+            "user_balance_id":int(global_value.balance_id),
             "client_platform_id":"9",#important can not delete,9 mean your platform is linux
             }
         }

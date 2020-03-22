@@ -3,7 +3,7 @@
 
 from iqoptionapi.ws.chanels.base import Base
 import time
-
+import iqoptionapi.global_value as global_value
 class Get_options(Base):
 
     name = "api_game_getoptions"
@@ -11,7 +11,7 @@ class Get_options(Base):
     def __call__(self,limit):
     
         data = {"limit":int(limit),
-               "user_balance_id":int(self.api.profile.balance_id)
+               "user_balance_id":int(global_value.balance_id)
                 }
 
         self.send_websocket_request(self.name, data)
@@ -24,7 +24,7 @@ class Get_options_v2(Base):
             "body":{
                 "limit":limit,
                 "instrument_type":instrument_type,
-                "user_balance_id":int(self.api.profile.balance_id)
+                "user_balance_id":int(global_value.balance_id)
                 }
         }
         self.send_websocket_request(self.name, data)

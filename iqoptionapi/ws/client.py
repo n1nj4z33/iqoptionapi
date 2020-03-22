@@ -7,6 +7,7 @@ import iqoptionapi.constants as OP_code
 import iqoptionapi.global_value as global_value
 
 
+                
 class WebsocketClient(object):
     """Class for work with IQ option websocket."""
 
@@ -37,6 +38,7 @@ class WebsocketClient(object):
                     del dict[key1][key2][sorted(dict[key1][key2].keys(), reverse=False)[0]]   
     def on_message(self, message): # pylint: disable=unused-argument
         """Method to process websocket messages."""
+        global_value.ssl_Mutual_exclusion=True
         logger = logging.getLogger(__name__)
         logger.debug(message)
 
@@ -77,7 +79,13 @@ class WebsocketClient(object):
                 msg=v
                 self.dict_queue_add(self.api.real_time_candles,maxdict,active,size,from_,msg)
             self.api.candle_generated_all_size_check[active]=True 
-                
+        elif message["name"]=="commission-changed":
+            instrument_type=message["msg"]["instrument_type"]
+            active_id=message["msg"]["active_id"]
+            Active_name=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(active_id)]            
+            commission=message["msg"]["commission"]["value"]
+            self.api.subscribe_commission_changed_data[instrument_type][Active_name][self.api.timesync.server_timestamp]=int(commission)
+            
         #######################################################
         #______________________________________________________
         #######################################################
@@ -86,29 +94,38 @@ class WebsocketClient(object):
                 self.api.heartbeat(message["msg"])
             except:
                 pass
+        elif message["name"]=="balances":
+            self.api.balances_raw=message
+            
         elif message["name"] == "profile":
             #--------------all-------------
             self.api.profile.msg=message["msg"]
-            #---------------------------
-            try:
-                self.api.profile.balance = message["msg"]["balance"]
-            except:
-                pass
-            
-            try:
-                self.api.profile.balance_id=message["msg"]["balance_id"]
-            except:
-                pass
-            
-            try:
-                self.api.profile.balance_type=message["msg"]["balance_type"]
-            except:
-                pass
+            if self.api.profile.msg!=False:
+                #---------------------------
+                try:
+                    self.api.profile.balance = message["msg"]["balance"]
+                except:
+                    pass
+                #Set Default account
+                if global_value.balance_id==None:
+                    for balance in message["msg"]["balances"]:
+                        if balance["type"]==4:
+                            global_value.balance_id=balance["id"]
+                            break
+                try:
+                    self.api.profile.balance_id=message["msg"]["balance_id"]
+                except:
+                    pass
+                
+                try:
+                    self.api.profile.balance_type=message["msg"]["balance_type"]
+                except:
+                    pass
 
-            try:
-                self.api.profile.balances=message["msg"]["balances"]
-            except:
-                pass
+                try:
+                    self.api.profile.balances=message["msg"]["balances"]
+                except:
+                    pass
 
         elif message["name"] == "candles":
             try:
@@ -126,17 +143,12 @@ class WebsocketClient(object):
                 self.api.buy_id= message["msg"]["result"]["id"]
             except:
                 pass
+        elif message["name"] == "buyV2_result":
+            self.api.buy_successful = message["msg"]["isSuccessful"]
         #*********************buyv3
         #buy_multi_option
         elif message["name"] == "option":
-            if message["status"] == 0:
-                if message['request_id'] == "":  # for buy
-                    self.api.buy_successful = True
-                    self.api.buy_id = message["msg"]["id"]  # for multibuy
-                else:
-                    self.api.buy_multi_option[int(message["request_id"])] = message["msg"]
-            else:
-                print(message["msg"]["message"])
+            self.api.buy_multi_option[str(message["request_id"])] = message["msg"]
         #**********************************************************   
         elif message["name"] == "listInfoData":
            for get_m in message["msg"]:
@@ -156,11 +168,21 @@ class WebsocketClient(object):
         elif message["name"]=="financial-information":
             self.api.financial_information=message
         elif message["name"]=="position-changed":
-            self.api.position_changed_data[int(message["msg"]["order_ids"][0])]=message["msg"]
+            
+            if message["microserviceName"]=="portfolio" and (message["msg"]["source"]=="digital-options") or message["msg"]["source"]=="trading":
+                self.api.order_async[int(message["msg"]["raw_event"]["order_ids"][0])] [message["name"]]=message
+            elif message["microserviceName"]=="portfolio" and message["msg"]["source"]=="binary-options":
+                self.api.order_async[int(message["msg"]["external_id"])] [message["name"]]=message
+                #print(message)
+            
         elif message["name"]=="option-opened":
-            self.api.microserviceName_binary_options_name_option[int(message["msg"]["option_id"])]=message
+            self.api.order_async[int(message["msg"]["option_id"])][message["name"]]=message
+       
         elif message["name"]=="option-closed":
-            self.api.microserviceName_binary_options_name_option[int(message["msg"]["option_id"])]=message
+             
+            self.api.order_async[int(message["msg"]["option_id"])][message["name"]]=message
+        
+       
         elif message["name"]=="top-assets-updated":
             self.api.top_assets_updated_data[str(message["msg"]["instrument_type"])]=message["msg"]["data"]
         elif message["name"]=="strike-list":  
@@ -211,7 +233,7 @@ class WebsocketClient(object):
             try:
                 self.api.digital_option_placed_id=message["msg"]["id"]
             except:
-                self.api.digital_option_placed_id="error"
+                self.api.digital_option_placed_id=message["msg"]
         elif message["name"]=="result":
             self.api.result=message["msg"]["success"]
         elif message["name"]=="instrument-quotes-generated":
@@ -248,14 +270,56 @@ class WebsocketClient(object):
         elif message["name"]=="training-balance-reset":
             self.api.training_balance_reset_request=message["msg"]["isSuccessful"]
  
-            
+        elif message["name"]=="live-deal-binary-option-placed":
+            name=message["name"]
+            active_id=message["msg"]["active_id"]
+            active=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(active_id)] 
+            _type=message["msg"]["option_type"]
+            try:
+                self.api.live_deal_data[name][active][_type].appendleft(message["msg"])
+            except:
+                pass
+        elif message["name"]=="live-deal-digital-option":
+            name=message["name"]
+            active_id=message["msg"]["instrument_active_id"]
+            active=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(active_id)] 
+            _type=message["msg"]["expiration_type"]
+            try:
+                self.api.live_deal_data[name][active][_type].appendleft(message["msg"])
+            except:
+                pass
+
+        elif message["name"]=="leaderboard-deals-client":
+            self.api.leaderboard_deals_client=message["msg"]
+        elif message["name"]=="live-deal":
+            name=message["name"]
+            active_id=message["msg"]["instrument_active_id"]
+            active=list(OP_code.ACTIVES.keys())[list(OP_code.ACTIVES.values()).index(active_id)] 
+            _type=message["msg"]["instrument_type"]
+            try:
+                self.api.live_deal_data[name][active][_type].appendleft(message["msg"])
+            except:
+                pass
+
+
+        elif message["name"]=="user-profile-client":
+            self.api.user_profile_client=message["msg"]
+        elif message["name"]=="leaderboard-userinfo-deals-client":
+            self.api.leaderboard_userinfo_deals_client=message["msg"]
+        elif message["name"]=="users-availability":
+            self.api.users_availability=message["msg"]
+        else:
+            pass
+        global_value.ssl_Mutual_exclusion=False
+                
     
     @staticmethod
     def on_error(wss, error): # pylint: disable=unused-argument
         """Method to process websocket errors."""
         logger = logging.getLogger(__name__)
         logger.error(error)
-        global_value.check_websocket_if_connect=-1
+        global_value.websocket_error_reason=str(error)
+        global_value.check_websocket_if_error=True
     @staticmethod
     def on_open(wss): # pylint: disable=unused-argument
         """Method to process websocket open."""

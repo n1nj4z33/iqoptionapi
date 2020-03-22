@@ -12,4 +12,4 @@ class Heartbeat(Base):
                     }
            
         }
-        self.send_websocket_request(self.name, data)
+        self.send_websocket_request(self.name, data,no_force_send=False)

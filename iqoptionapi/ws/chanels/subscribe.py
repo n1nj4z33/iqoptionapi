@@ -87,3 +87,52 @@ class Subscribe_top_assets_updated(Base):
                 "version":"1.2"
                 }
         self.send_websocket_request(self.name, data)
+
+
+
+"""
+{"name":"subscribeMessage","request_id":"s_114","msg":{"name":"commission-changed","version":"1.0","params":{"routingFilters":{"instrument_type":"digital-option","user_group_id":1}}}}
+"""
+#instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
+class Subscribe_commission_changed(Base):
+    name = "subscribeMessage"
+    def __call__(self, instrument_type):
+ 
+        data = {"name":"commission-changed",
+                "params":{
+                       "routingFilters":{
+                                        "instrument_type":str(instrument_type) 
+                                        }
+                        },
+                "version":"1.0"
+                }
+        self.send_websocket_request(self.name, data)
+
+
+class Subscribe_live_deal(Base):
+    name = "subscribeMessage"
+
+    def __call__(self,name,active_id,_type):
+ #"live-deal-binary-option-placed"
+ #"live-deal-digital-option"
+        if name=="live-deal-binary-option-placed":
+            _type_name="option_type"#turbo/binary
+            _active_id="active_id"
+        elif name=="live-deal-digital-option":
+            _type_name="expiration_type"#
+            _active_id="instrument_active_id"
+        elif name=="live-deal":
+            _type_name="instrument_type"#
+            _active_id="instrument_active_id"
+
+
+        data = {"name":name,
+                "params":{
+                       "routingFilters":{
+                                        _active_id:int(active_id), 
+                                       _type_name:str(_type)
+                                        }
+                        },
+                "version":"2.0"
+                }
+        self.send_websocket_request(self.name, data)

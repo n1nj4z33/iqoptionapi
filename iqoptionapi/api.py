@@ -6,8 +6,11 @@ import logging
 import threading
 import requests
 import ssl
+import atexit
+from collections import deque
 from iqoptionapi.http.login import Login
 from iqoptionapi.http.loginv2 import Loginv2
+from iqoptionapi.http.logout import Logout
 from iqoptionapi.http.getprofile import Getprofile
 from iqoptionapi.http.auth import Auth
 from iqoptionapi.http.token import Token
@@ -15,7 +18,9 @@ from iqoptionapi.http.appinit import Appinit
 from iqoptionapi.http.billing import Billing
 from iqoptionapi.http.buyback import Buyback
 from iqoptionapi.http.changebalance import Changebalance
+from iqoptionapi.http.events import Events
 from iqoptionapi.ws.client import WebsocketClient
+from iqoptionapi.ws.chanels.get_balances import *
 
 from iqoptionapi.ws.chanels.ssid import Ssid
 from iqoptionapi.ws.chanels.subscribe import *
@@ -23,13 +28,13 @@ from iqoptionapi.ws.chanels.unsubscribe import *
 from iqoptionapi.ws.chanels.setactives import SetActives
 from iqoptionapi.ws.chanels.candles import GetCandles
 from iqoptionapi.ws.chanels.buyv2 import Buyv2
-from iqoptionapi.ws.chanels.buyv3 import Buyv3
-
+from iqoptionapi.ws.chanels.buyv3 import *
+from iqoptionapi.ws.chanels.user import *
 from iqoptionapi.ws.chanels.api_game_betinfo import Game_betinfo
 from iqoptionapi.ws.chanels.instruments import Get_instruments
 from iqoptionapi.ws.chanels.get_financial_information import GetFinancialInformation
 from iqoptionapi.ws.chanels.strike_list import Strike_list
-
+from iqoptionapi.ws.chanels.leaderboard import Leader_Board
 
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_subscribe
 from iqoptionapi.ws.chanels.traders_mood import Traders_mood_unsubscribe
@@ -75,6 +80,7 @@ requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member
 
 class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     """Class for communication with IQ Option API."""
+     
     # pylint: disable=too-many-public-methods
     socket_option_opened={}
     timesync = TimeSync()
@@ -90,7 +96,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     instrument_quotes_generated_raw_data=nested_dict(2, dict)
     instrument_quites_generated_timestamp = nested_dict(2, dict)
     strike_list = None
-    position_changed_data = {}
+    leaderboard_deals_client=None
+    #position_changed_data = nested_dict(2, dict)
+    #microserviceName_binary_options_name_option=nested_dict(2,dict)
+    order_async=nested_dict(2, dict)
     game_betinfo = Game_betinfo_data()
     instruments = None
     financial_information = None
@@ -109,8 +118,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     overnight_fee = None
     # ---for real time
     digital_option_placed_id = None
-    
-    microserviceName_binary_options_name_option={}
+    live_deal_data=nested_dict(3, deque)
+
+
+     
+    subscribe_commission_changed_data=nested_dict(2,dict)
     real_time_candles = nested_dict(3, dict)
     real_time_candles_maxdict_table = nested_dict(2, dict)
     candle_generated_check = nested_dict(2, dict)
@@ -128,6 +140,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     #
     result = None
     training_balance_reset_request=None
+    balances_raw=None
+    user_profile_client=None
+    leaderboard_userinfo_deals_client=None
+    users_availability=None
     # ------------------
 
     def __init__(self, host, username, password, proxies=None):
@@ -207,8 +223,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         logger = logging.getLogger(__name__)
 
-        logger.debug(url)
-
+        logger.debug(method+": "+url+" headers: "+str(self.session.headers)+" cookies: "+str(self.session.cookies.get_dict()))
+        
+        
         response = self.session.request(method=method,
                                         url=url,
                                         data=data,
@@ -220,7 +237,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         logger.debug(response.headers)
         logger.debug(response.cookies)
 
-        response.raise_for_status()
+        #response.raise_for_status()
         return response
 
     @property
@@ -231,19 +248,35 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         return self.websocket_client.wss
 
-    def send_websocket_request(self, name, msg, request_id=""):
+    def send_websocket_request(self, name, msg, request_id="",no_force_send=True):
         """Send websocket request to IQ Option server.
 
         :param str name: The websocket request name.
         :param dict msg: The websocket request msg.
         """
+        
         logger = logging.getLogger(__name__)
 
         data = json.dumps(dict(name=name,
                                msg=msg, request_id=request_id))
-        logger.debug(data)
+         
+         
+        while (global_value.ssl_Mutual_exclusion or global_value.ssl_Mutual_exclusion_write) and no_force_send:
+            pass
+        global_value.ssl_Mutual_exclusion_write=True
         self.websocket.send(data)
+        logger.debug(data)
+        global_value.ssl_Mutual_exclusion_write=False
+        
+    @property
+    def logout(self):
+        """Property for get IQ Option http login resource.
 
+        :returns: The instance of :class:`Login
+            <iqoptionapi.http.login.Login>`.
+        """
+        return Logout(self)
+    
     @property
     def login(self):
         """Property for get IQ Option http login resource.
@@ -300,15 +333,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def reset_training_balance(self):
         # sendResults True/False
         # {"name":"sendMessage","request_id":"142","msg":{"name":"reset-training-balance","version":"2.0"}}
-        logger = logging.getLogger(__name__)
-        data = json.dumps(dict(name="sendMessage",
-                               msg={"name": "reset-training-balance",
-                                    "version": "2.0"}
-                               )
-                          )
-
-        logger.debug(data)
-        self.websocket.send(data)
+         
+        self.send_websocket_request(name="sendMessage",msg={"name": "reset-training-balance",
+                                    "version": "2.0"})
+      
 
     @property
     def changebalance(self):
@@ -318,7 +346,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.http.changebalance.Changebalance>`.
         """
         return Changebalance(self)
-
+    @property
+    def events(self):
+        return Events(self)
     @property
     def billing(self):
         """Property for get IQ Option http billing resource.
@@ -347,6 +377,14 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         return Getprofile(self)
 # for active code ...
+    @property
+    def get_balances(self):
+        """Property for get IQ Option http getprofile resource.
+
+        :returns: The instance of :class:`Login
+            <iqoptionapi.http.getprofile.Getprofile>`.
+        """
+        return Get_Balances(self)
 
     @property
     def get_instruments(self):
@@ -365,6 +403,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.ssid.Ssid>`.
         """
         return Ssid(self)
+# --------------------------------------------------------------------------------
+    @property
+    def Subscribe_Live_Deal(self):
+        return Subscribe_live_deal(self)
+    @property
+    def Unscribe_Live_Deal(self):
+        return Unscribe_live_deal(self)
 # --------------------------------------------------------------------------------
 # trader mood
 
@@ -406,36 +451,87 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def unsubscribe_all_size(self):
         return Unsubscribe_candles(self)
 
+
+    def portfolio(self,Main_Name,name,instrument_type,user_balance_id="",limit=1,offset=0,request_id=""):
+        #Main name:"unsubscribeMessage"/"subscribeMessage"/"sendMessage"(only for portfolio.get-positions")
+        #name:"portfolio.order-changed"/"portfolio.get-positions"/"portfolio.position-changed"
+        #instrument_type="cfd"/"forex"/"crypto"/"digital-option"/"turbo-option"/"binary-option"
+        logger = logging.getLogger(__name__)
+        M_name=Main_Name
+        request_id=str(request_id)
+        if name=="portfolio.order-changed":               
+            msg={"name": name,
+                    "version": "1.0",
+                    "params": {
+                        "routingFilters": {"instrument_type": str(instrument_type)}
+                    }
+                    }
+                               
+        elif name=="portfolio.get-positions":                
+            msg={"name": name,
+                    "version": "3.0",
+                    "body": {
+                            "instrument_type": str(instrument_type),
+                            "limit":int(limit),
+                            "offset":int(offset)
+                        }
+                    }
+                              
+             
+        elif name=="portfolio.position-changed": 
+            msg={"name": name,
+                "version": "2.0",
+                "params": {
+                    "routingFilters": {"instrument_type": str(instrument_type),
+                                        "user_balance_id":user_balance_id    
+                               
+                                      }
+                          }
+                }
+         
+        self.send_websocket_request(name=M_name,msg=msg,request_id=request_id)
+        
+    def set_user_settings(self,balanceId,request_id=""):
+        #Main name:"unsubscribeMessage"/"subscribeMessage"/"sendMessage"(only for portfolio.get-positions")
+        #name:"portfolio.order-changed"/"portfolio.get-positions"/"portfolio.position-changed"
+        #instrument_type="cfd"/"forex"/"crypto"/"digital-option"/"turbo-option"/"binary-option"
+       
+        msg={"name": "set-user-settings",
+            "version": "1.0",
+            "body": {
+                    "name":"traderoom_gl_common",
+                    "version":3,
+                    "config":{
+                                "balanceId":balanceId
+
+                                }
+
+                    }
+            }
+        self.send_websocket_request(name="sendMessage",msg=msg,request_id=str(request_id))
+    
+
+
+
     def subscribe_position_changed(self, name, instrument_type, request_id):
         # instrument_type="multi-option","crypto","forex","cfd"
         # name="position-changed","trading-fx-option.position-changed",digital-options.position-changed
-        logger = logging.getLogger(__name__)
-        data = json.dumps(dict(name="subscribeMessage",
-                               request_id=str(request_id),
-                               msg={"name": name,
-                                    "version": "1.0",
-                                    "params": {
-                                        "routingFilters": {"instrument_type": str(instrument_type)}
+        msg={"name": name,
+            "version": "1.0",
+            "params": {
+                        "routingFilters": {"instrument_type": str(instrument_type)}
 
-                                    }
-                                    }
-                               )
-                          )
-
-        logger.debug(data)
-        self.websocket.send(data)
+                        }
+            }
+        self.send_websocket_request(name="subscribeMessage",msg=msg,request_id=str(request_id))
 
     def setOptions(self, request_id, sendResults):
         # sendResults True/False
-        logger = logging.getLogger(__name__)
-        data = json.dumps(dict(name="setOptions",
-                               request_id=str(request_id),
-                               msg={"sendResults": sendResults}
-                               )
-                          )
+       
+        msg={"sendResults": sendResults}
 
-        logger.debug(data)
-        self.websocket.send(data)
+         
+        self.send_websocket_request(name="setOptions",msg=msg,request_id=str(request_id))
     
     @property
     def Subscribe_Top_Assets_Updated(self):
@@ -445,6 +541,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def Unsubscribe_Top_Assets_Updated(self):
         return Unsubscribe_top_assets_updated(self)
 
+    @property
+    def Subscribe_Commission_Changed(self):
+        return Subscribe_commission_changed(self)
+    @property
+    def Unsubscribe_Commission_Changed(self):
+        return Unsubscribe_commission_changed(self)
+        
 # --------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------
 
@@ -456,7 +559,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             <iqoptionapi.ws.chanels.setactives.SetActives>`.
         """
         return SetActives(self)
-
+    
+    @property
+    def Get_Leader_Board(self):
+        return Leader_Board(self)
+    
     @property
     def getcandles(self):
         """Property for get IQ Option websocket candles chanel.
@@ -467,24 +574,15 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         return GetCandles(self)
 
     def get_api_option_init_all(self):
-        logger = logging.getLogger(__name__)
-
-        data = json.dumps(dict(name="api_option_init_all",
-                               msg=""))
-        logger.debug(data)
-        self.websocket.send(data)
+        self.send_websocket_request(name="api_option_init_all",msg="")
 
     def get_api_option_init_all_v2(self):
-        logger = logging.getLogger(__name__)
-        data = json.dumps(dict(name="sendMessage",
-                               msg={"name": "get-initialization-data",
+     
+        msg={"name": "get-initialization-data",
                                     "version": "3.0",
                                     "body": {}
                                     }
-                               )
-                          )
-        logger.debug(data)
-        self.websocket.send(data)
+        self.send_websocket_request(name="sendMessage",msg=msg)
 # -------------get information-------------
 
     @property
@@ -503,6 +601,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     @property
     def buyv3(self):
         return Buyv3(self)
+    @property
+    def buyv3_by_raw_expired(self):
+        return Buyv3_by_raw_expired(self)
 
     @property
     def buy(self):
@@ -520,17 +621,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 # ____________________for_______digital____________________
 
     def get_digital_underlying(self):
-        logger = logging.getLogger(__name__)
-        data = json.dumps(dict(name="sendMessage",
-                               msg={"name": "get-underlying-list",
+        msg={"name": "get-underlying-list",
                                     "version": "2.0",
                                     "body": {"type": "digital-option"}
                                     }
-                               )
-                          )
-        logger.debug(data)
-        self.websocket.send(data)
-
+        self.send_websocket_request(name="sendMessage",msg=msg)
     @property
     def get_strike_list(self):
         return Strike_list(self)
@@ -612,43 +707,101 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         return Heartbeat(self)
 # -------------------------------------------------------
 
-    def set_session_cookies(self):
+    def set_session(self,cookies,headers):
+
         """Method to set session cookies."""
-        cookies = dict(platform="15")
-        self.session.headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
+
+        self.session.headers.update(headers)
+         
+        self.session.cookies.clear_session_cookies()
         requests.utils.add_dict_to_cookiejar(self.session.cookies, cookies)
-
-    def connect(self):
+        
+    def start_websocket(self):
         global_value.check_websocket_if_connect = None
-        """Method for connection to IQ Option API."""
-        try:
-            response = self.login(self.username, self.password)  # pylint: disable=not-callable
-        except Exception as e:
-            logger = logging.getLogger(__name__)
-            logger.error(e)
-            return False
-
-        ssid = response.cookies["ssid"]
-        self.set_session_cookies()
+        global_value.check_websocket_if_error=False
+        global_value.websocket_error_reason=None
+         
         self.websocket_client = WebsocketClient(self)
 
         self.websocket_thread = threading.Thread(target=self.websocket.run_forever, kwargs={'sslopt': {
                                                  "check_hostname": False, "cert_reqs": ssl.CERT_NONE, "ca_certs": "cacert.pem"}})  # for fix pyinstall error: cafile, capath and cadata cannot be all omitted
         self.websocket_thread.daemon = True
         self.websocket_thread.start()
-
         while True:
             try:
-                if global_value.check_websocket_if_connect == 0 or global_value.check_websocket_if_connect == -1:
-                    return False
+                if global_value.check_websocket_if_error:
+                    return False,global_value.websocket_error_reason
+                if global_value.check_websocket_if_connect == 0 :
+                    return False,"Websocket connection closed."
                 elif global_value.check_websocket_if_connect == 1:
-                    break
+                    return True,None
             except:
                 pass
 
             pass
+    def get_ssid(self):
+        response=None
+        try:
+            response = self.login(self.username, self.password)  # pylint: disable=not-callable
+        except Exception as e:
+            logger = logging.getLogger(__name__)
+            logger.error(e)
+            return e
+        return response
+    def send_ssid(self):
+        self.profile.msg=None
+        self.ssid(global_value.SSID)  # pylint: disable=not-callable
+        while self.profile.msg==None:
+            pass
+        if self.profile.msg==False:
+            return False
+        else:
+            return True
+    def connect(self):
+        
+        global_value.ssl_Mutual_exclusion=False
+        global_value.ssl_Mutual_exclusion_write=False
+        """Method for connection to IQ Option API."""
+        try:
+            self.close()
+        except:
+            pass
+        check_websocket,websocket_reason=self.start_websocket()
+         
+        if check_websocket==False:
+            return check_websocket,websocket_reason
 
-        self.ssid(ssid)  # pylint: disable=not-callable
+        #doing temp ssid reconnect for speed up
+        if global_value.SSID!=None:
+            
+            check_ssid=self.send_ssid()
+           
+            if check_ssid==False:
+                #ssdi time out need reget,if sent error ssid,the weksocket will close by iqoption server
+                response=self.get_ssid()
+                try:
+                    global_value.SSID = response.cookies["ssid"]     
+                except:
+                    return False,response.text
+                atexit.register(self.logout)
+                self.start_websocket()
+                self.send_ssid()
+         
+        #the ssid is None need get ssid
+        else:
+            response=self.get_ssid()
+            try:
+               global_value.SSID = response.cookies["ssid"]
+            except:
+                self.close()
+                return False,response.text
+            atexit.register(self.logout)
+            self.send_ssid()
+        
+        #set ssis cookie
+        requests.utils.add_dict_to_cookiejar(self.session.cookies, {"ssid":global_value.SSID})
+        
+
         self.timesync.server_timestamp = None
         while True:
             try:
@@ -656,7 +809,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
                     break
             except:
                 pass
-        return True
+        return True,None
 
     def close(self):
         self.websocket.close()
@@ -664,3 +817,13 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
     def websocket_alive(self):
         return self.websocket_thread.is_alive()
+
+    @property
+    def Get_User_Profile_Client(self):
+        return Get_user_profile_client(self)
+    @property
+    def Request_Leaderboard_Userinfo_Deals_Client(self):
+        return Request_leaderboard_userinfo_deals_client(self)
+    @property
+    def Get_Users_Availability(self):
+        return Get_users_availability(self)
