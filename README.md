@@ -4,7 +4,7 @@ Free version is late with private about 10 version
 
 ## Private version (Advance Support) 
 
-* 100USD per month
+* 250USD per month
 
 * real time fix bug and support
 
