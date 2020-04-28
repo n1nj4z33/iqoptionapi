@@ -1,5 +1,8 @@
 # Iqoption API
 
+great robot
+https://npt-life.com/iq-option-robot
+
 Free version is late with private about 10 version
 
 ## Private version (Advance Support) 
