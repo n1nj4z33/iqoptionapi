@@ -7,6 +7,8 @@ Free version is late with private about 10 version
 
 ## Private version (Advance Support) 
 
+* preview private version https://lu-yi-hsun.github.io/iqoptionapi_private/
+
 * 250USD per month
 
 * real time fix bug and support
