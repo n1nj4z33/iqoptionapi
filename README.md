@@ -17,9 +17,15 @@ Free version is late with private about 10 version
 
 * protect your product
 
-* C+DPDK HIGHT SPEED API FOR arbitrage　or HFT
-
 * Build you own Copy trade product 3000usd
+
+## HFT API
+
+THIS PROJECT FOR SPECIAL HIGHT SPEED API
+
+* 500 USD per month
+
+* C+DPDK HIGHT SPEED API FOR arbitrage　or HFT
 
 ## Document
 
