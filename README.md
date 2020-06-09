@@ -3,6 +3,8 @@
 great robot
 https://npt-life.com/iq-option-robot
 
+Stop sell private version now
+
 ## Document
 
 ### New document
