@@ -3,7 +3,7 @@
 great robot
 https://npt-life.com/iq-option-robot
 
-Stop sell private version now
+Iqoption API private version & olymptrade are 500 per month
 
 ## Document
 
