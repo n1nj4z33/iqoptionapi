@@ -3,7 +3,9 @@
 great robot
 https://npt-life.com/iq-option-robot
 
-Iqoption API private version & olymptrade are 500 per month
+Iqoption API private version https://npt-life.com/iq-option-api
+
+olymptrade API https://npt-life.com/olymptrade-api
 
 ## Document
 
